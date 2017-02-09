@@ -1,0 +1,206 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<link rel="shortcut icon" href="/gd/sources/images/icon_swu.jpg">
+	<title>gs-车流监控系统</title>
+	<link href="/gd/sources/js/bootstrap-3.3.7-dist/css/bootstrap.min.css" rel="stylesheet">
+	<script src="/gd/sources/js/jquery-3.1.1.min.js"></script>
+	<script src="/gd/sources/js/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
+	
+	
+	<!-- 引入 echarts.js -->
+    <script src="/gd/sources/js/echarts/echarts.js"></script>
+    
+
+</head>
+<body>
+	
+<!--nav-->
+<nav class="navbar navbar-default" role="navigation">
+	<div class="container-fluid">
+	<div class="navbar-header">
+		<a class="navbar-brand" href="homepage.html">车流监控系统</a>
+	</div>
+	<div>
+		<ul class="nav navbar-nav">
+			<li><a href="homepage.html">地图</a></li>
+			
+			<li class="dropdown active">
+				<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+					全局动态
+					<b class="caret"></b>
+				</a>
+				<ul class="dropdown-menu">
+					<li class="active"><a href="wholeState.html">全局动态</a></li>
+					<li><a href="sectionState.html">本站点动态</a></li>
+				</ul>
+			</li>
+			<li><a href="export.html">数据导出</a></li>
+			<li><a href="user.html">用户管理</a></li>
+		</ul>
+	</div>
+	</div>
+</nav><!--nav-->
+<button class="btn" id="trig">trigger</button>
+    <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+    <div id="main" style="width: 90%;height:700px;float:left;"></div>
+    <div id="branch1" style="width: 700px;height:350px;float:left;"></div>
+    <div id="branch2" style="width: 700px;height:350px;float:left;"></div>
+
+</body>
+</html>
+
+<script type="text/javascript">
+	$(document).ready(function(){
+		$('#trig').on('click',function(){
+		var data1 = option.series[0].data;
+		//var data2 = option.series[1].data;
+		++data1[data1.length-1];
+		//++data2[data2.length-1];
+		
+		myChart1.setOption(option);
+		//myChart2.setOption(option);
+		//myChart3.setOption(option);
+		});
+	});
+	
+		var count = 1;
+		setInterval(function () {
+	    var data0 = option.series[0].data;
+	    var data1 = option.series[1].data;
+	    var data2 = option.series[2].data;
+		if(data0.length >= 10){
+			data0.shift();//delete first number
+			}
+		if(data1.length >= 10){
+			data1.shift();
+			}
+		if(data2.length >= 10){
+			data2.shift();
+			}
+		data0.push(Math.round((Math.random() * 10 + 5)));
+		data1.push(Math.round((Math.random() * 10 + 5)));
+		data2.push(Math.round((Math.random() * 10 + 5)));
+		
+		if(option.xAxis[0].data.length >= 10){
+			option.xAxis[0].data.shift(); 	
+		}
+		//if(option.xAxis[1].data.length >= 10){
+		//	option.xAxis[1].data.shift();
+		//}
+		option.xAxis[0].data.push(getNowFormatDate());
+		
+		//option.xAxis[1].data.push(count++);
+		myChart1.setOption(option);
+		//myChart2.setOption(option);
+		//myChart3.setOption(option);
+		
+		
+		}
+    
+	, 5000);
+	
+	function getNowFormatDate() {
+	    var date = new Date();
+	    var seperator1 = "-";
+	    var seperator2 = ":";
+	    var month = date.getMonth() + 1;
+	    var strDate = date.getDate();
+	    if (month >= 1 && month <= 9) {
+	        month = "0" + month;
+	    }
+	    if (strDate >= 0 && strDate <= 9) {
+	        strDate = "0" + strDate;
+	    }
+	    var currentdate = date.getFullYear() + seperator1 + month + seperator1 + strDate
+	            + " " + date.getHours() + seperator2 + date.getMinutes()
+	            + seperator2 + date.getSeconds();
+	    var cur = (date.getHours()>=0&&date.getHours()<=9)?"0"+date.getHours():date.getHours();
+	    return cur;
+	}
+</script>
+
+    <script type="text/javascript">
+        // 基于准备好的dom，初始化echarts实例
+        var myChart1 = echarts.init(document.getElementById('main'));
+				var myChart2 = echarts.init(document.getElementById('branch1'));
+				var myChart3 = echarts.init(document.getElementById('branch2'));
+
+		//设置值
+		function randomData() {
+		testdata +=1;
+		    now = new Date(+now + oneDay);
+		    value = value + Math.random() * 21 - 10;
+		    return {
+		        name: now.toString(),
+		        value: [
+		            testdata+'',//[now.getFullYear(), now.getMonth() + 1, now.getDate()].join('/'),
+		            Math.round(value)
+		        ]
+		    }
+		}
+
+		var data = [];
+		var testdata = 3;
+		var now = +new Date(1997, 9, 3);
+		var oneDay = 24 * 3600 * 1000;
+		var value = Math.random() * 1000;
+		for (var i = 0; i < 1000; i++) {
+		    data.push(randomData());
+		}
+    var option = {
+		title: {
+			text: '全局动态'
+		},
+		tooltip: {
+			trigger: 'axis',
+			
+		},
+		legend: {
+			data:['车流量1', '车流量2', '车流量3']
+		},
+		//this is x-axis, the array has only one object,that means one serious elements(on the button)
+		xAxis: [
+			{
+				type: 'category',
+				boundaryGap: true,
+				data:[getNowFormatDate()],
+				splitNumber:10,
+				
+			}
+		],
+		//this is y-axis, the same as x-axis
+		yAxis: [
+			{
+				type: 'value',
+				boundaryGap: [0, '100%'],
+				splitLine: {
+					show: false
+				}
+			},
+		],
+		series: [
+			{
+				name:'车流量1',
+				type:'line',
+				data:[0]
+			},
+			{
+				name:'车流量2',
+				type:'line',
+				data:[0]
+			},
+			{
+				name:'车流量3',
+				type:'line',
+				data:[0]
+			},
+			]
+	};
+
+        // 使用刚指定的配置项和数据显示图表。
+        myChart1.setOption(option);
+        //myChart2.setOption(option);
+        //myChart3.setOption(option);
+    </script>

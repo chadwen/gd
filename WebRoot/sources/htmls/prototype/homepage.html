@@ -1,0 +1,134 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<link rel="shortcut icon" href="/gd/sources/images/icon_swu.jpg">
+	<title>gs-车流监控系统</title>
+	<link href="/gd/sources/js/bootstrap-3.3.7-dist/css/bootstrap.min.css" rel="stylesheet">
+	<script src="/gd/sources/js/jquery-3.1.1.min.js"></script>
+	<script src="/gd/sources/js/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
+	
+	<!--BMap-->
+	<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=dofCSbYC4fKt2RXGpfgayjy55NlcfQRc"></script>
+
+	<style type="text/css">
+		body, html,#allmap {
+			width: 100%;
+			height: 100%;
+			overflow: hidden;
+			margin:0;
+			font-family:"微软雅黑";
+		}
+	</style>
+
+</style>
+</head>
+<body>
+
+	<!--nav-->
+	<nav class="navbar navbar-default" role="navigation">
+		<div class="container-fluid">
+		<div class="navbar-header">
+			<a class="navbar-brand" href="homepage.html">车流监控系统</a>
+		</div>
+		<div>
+			<ul class="nav navbar-nav">
+				<li class="active"><a href="homepage.html">地图</a></li>
+				
+				<li class="dropdown">
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+						动态
+						<b class="caret"></b>
+					</a>
+					<ul class="dropdown-menu">
+						<li><a href="wholeState.html">全局动态</a></li>
+						<li><a href="sectionState.html">本站点动态</a></li>
+					</ul>
+				</li>
+				<li><a href="export.html">数据导出</a></li>
+				<li><a href="user.html">用户管理</a></li>
+			</ul>
+		</div>
+		</div>
+	</nav><!--nav-->
+	<!--坐标-->
+	<div>
+		<div style="float:left;width:5%;text-align:right"><span>坐标：</span></div>
+		<div id="coordinate" style="width:100%px;height:30px;background-color:#fff;margin-left:5%"></div>
+	</div>
+	<!--地图-->
+	<div id="allmap"></div>
+
+</body>
+</html>
+
+<script type="text/javascript">
+	// 百度地图API功能
+	//var map = new BMap.Map("allmap");    // 创建Map实例
+	//map.centerAndZoom(new BMap.Point(106.428907,29.826584), 16);  // 初始化地图,设置中心点坐标和地图级别
+	var map = new BMap.Map("allmap");
+	var point = new BMap.Point(106.428907,29.826584);
+	map.centerAndZoom(point, 16);
+	map.addControl(new BMap.MapTypeControl());   //添加地图类型控件
+	map.setCurrentCity("北京");          // 设置地图显示的城市 此项是必须设置的。没看出来
+	map.enableScrollWheelZoom(true);     //开启鼠标滚轮缩放
+	
+	//坐标拾取
+	map.addEventListener("click",function(e){
+		$('#coordinate').html(e.point.lng + ' , ' + e.point.lat);
+		//alert(e.point.lng + "," + e.point.lat);
+	});
+	
+	//一号门
+	var marker_current = new BMap.Marker(new BMap.Point(106.435303 , 29.827845));  // 创建标注
+	map.addOverlay(marker_current);              // 将标注添加到地图中
+	marker_current.setAnimation(BMAP_ANIMATION_BOUNCE);
+	//七号门
+	var marker_current = new BMap.Marker(new BMap.Point(106.437998 , 29.837017));  // 创建标注
+	map.addOverlay(marker_current);              // 将标注添加到地图中
+	marker_current.setAnimation(BMAP_ANIMATION_BOUNCE);
+	//五号门
+	var marker_current = new BMap.Marker(new BMap.Point(106.440639 , 29.835051));  // 创建标注
+	map.addOverlay(marker_current);              // 将标注添加到地图中
+	marker_current.setAnimation(BMAP_ANIMATION_BOUNCE);
+	//三号门
+	var marker_current = new BMap.Marker(new BMap.Point(106.432177 , 29.824649));  // 创建标注
+	map.addOverlay(marker_current);              // 将标注添加到地图中
+	marker_current.setAnimation(BMAP_ANIMATION_BOUNCE);
+	//二号门
+	var marker_current = new BMap.Marker(new BMap.Point(106.428143 , 29.819847));  // 创建标注
+	map.addOverlay(marker_current);              // 将标注添加到地图中
+	marker_current.setAnimation(BMAP_ANIMATION_BOUNCE);
+	//六号门
+	var marker_current = new BMap.Marker(new BMap.Point(106.423315 , 29.817184));  // 创建标注
+	map.addOverlay(marker_current);              // 将标注添加到地图中
+	marker_current.setAnimation(BMAP_ANIMATION_BOUNCE);
+	//八号门
+	var marker_current = new BMap.Marker(new BMap.Point(106.419385 , 29.817043));  // 创建标注
+	map.addOverlay(marker_current);              // 将标注添加到地图中
+	marker_current.setAnimation(BMAP_ANIMATION_BOUNCE);
+	//中图
+	var marker = new BMap.Marker(new BMap.Point(106.4314 , 29.82658));  // 创建标注
+	map.addOverlay(marker);              // 将标注添加到地图中
+	marker.addEventListener("click",getAttr);//绑定监听器
+	function getAttr(){
+		var p = marker.getPosition();       //获取marker的位置
+		alert("marker的位置是" + p.lng + "," + p.lat);   
+	}
+	
+	//八教
+	var marker = new BMap.Marker(new BMap.Point(106.432752 , 29.828918));  // 创建标注
+	map.addOverlay(marker);              // 将标注添加到地图中
+		//八教
+	var marker = new BMap.Marker(new BMap.Point(106.427245 , 29.827375));  // 创建标注
+	map.addOverlay(marker);              // 将标注添加到地图中
+		//八教
+	var marker = new BMap.Marker(new BMap.Point(106.424811 , 29.822918));  // 创建标注
+	map.addOverlay(marker);              // 将标注添加到地图中
+		//八教
+	var marker = new BMap.Marker(new BMap.Point(106.432716 , 29.8326));  // 创建标注
+	map.addOverlay(marker);              // 将标注添加到地图中
+		//八教
+	var marker = new BMap.Marker(new BMap.Point(106.438213 , 29.83213));  // 创建标注
+	map.addOverlay(marker);              // 将标注添加到地图中
+</script>

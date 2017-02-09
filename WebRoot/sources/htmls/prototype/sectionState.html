@@ -1,0 +1,148 @@
+﻿
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>gs-车流监控系统</title>
+	<link href="/gd/sources/js/bootstrap-3.3.7-dist/css/bootstrap.min.css" rel="stylesheet">
+	<script src="/gd/sources/js/jquery-3.1.1.min.js"></script>
+	<script src="/gd/sources/js/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
+	
+	
+	<!-- 引入 echarts.js -->
+    <script src="echarts.js"></script>
+    
+    <script type="text/javascript">
+		var int=self.setInterval(function () {
+
+    for (var i = 0; i < 5; i++) {
+        data.shift();
+        data.push(randomData());
+    }
+
+    myChart1.setOption({
+        series: [{
+            data: data
+        }]
+    });
+    myChart2.setOption({
+        series: [{
+            data: data
+        }]
+    });
+    myChart3.setOption({
+        series: [{
+            data: data
+        }]
+    });
+}, 1000);
+</script>
+</head>
+<body>
+	
+<!--nav-->
+<nav class="navbar navbar-default" role="navigation">
+	<div class="container-fluid">
+	<div class="navbar-header">
+		<a class="navbar-brand" href="homepage.html">车流监控系统</a>
+	</div>
+	<div>
+		<ul class="nav navbar-nav">
+			<li><a href="homepage.html">地图</a></li>
+			
+			<li class="dropdown active">
+				<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+					本站点动态
+					<b class="caret"></b>
+				</a>
+				<ul class="dropdown-menu">
+					<li><a href="wholeState.html">全局动态</a></li>
+					<li class="active"><a href="sectionState.html">本站点动态</a></li>
+				</ul>
+			</li>
+			<li><a href="export.html">数据导出</a></li>
+			<li><a href="user.html">用户管理</a></li>
+		</ul>
+	</div>
+	</div>
+</nav><!--nav-->
+
+    <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+    <div id="main" style="width: 700px;height:350px;float:left;"></div>
+    <div id="branch1" style="width: 700px;height:350px;float:left;"></div>
+    <div id="branch2" style="width: 700px;height:350px;float:left;"></div>
+    <script type="text/javascript">
+        // 基于准备好的dom，初始化echarts实例
+        var myChart1 = echarts.init(document.getElementById('main'));
+				var myChart2 = echarts.init(document.getElementById('branch1'));
+				var myChart3 = echarts.init(document.getElementById('branch2'));
+
+		//设置值
+		function randomData() {
+		    now = new Date(+now + oneDay);
+		    value = value + Math.random() * 21 - 10;
+		    return {
+		        name: now.toString(),
+		        value: [
+		            [now.getFullYear(), now.getMonth() + 1, now.getDate()].join('/'),
+		            Math.round(value)
+		        ]
+		    }
+		}
+
+		var data = [];
+		var now = +new Date(1997, 9, 3);
+		var oneDay = 24 * 3600 * 1000;
+		var value = Math.random() * 1000;
+		for (var i = 0; i < 1000; i++) {
+		    data.push(randomData());
+		}
+    var option = {
+    title: {
+        text: '本站点动态'
+    },
+    tooltip: {
+        trigger: 'axis',
+        formatter: function (params) {
+            params = params[0];
+            var date = new Date(params.name);
+            return date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear() + ' : ' + params.value[1];
+        },
+        axisPointer: {
+            animation: false
+        }
+    },
+    xAxis: {
+        type: 'time',
+        splitLine: {
+            show: false
+        }
+    },
+    yAxis: {
+        type: 'value',
+        boundaryGap: [0, '100%'],
+        splitLine: {
+            show: false
+        }
+    },
+    series: [{
+        name: '模拟数据',
+        type: 'line',
+        showSymbol: false,
+        hoverAnimation: false,
+        data: data
+    }]
+};
+
+        // 使用刚指定的配置项和数据显示图表。
+        myChart1.setOption(option);
+        myChart2.setOption(option);
+        myChart3.setOption(option);
+    </script>
+
+
+
+
+
+</body>
+</html>
