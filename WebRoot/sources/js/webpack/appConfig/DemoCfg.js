@@ -1,8 +1,9 @@
+//DemoCfg.js
 
 import demo from '../controller/DemoCtr';
 var instance = (function () {
 
-    let de = new demo();
+    let inst = new demo();
 
 })();
 export default instance;

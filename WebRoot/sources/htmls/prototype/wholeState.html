@@ -10,8 +10,9 @@
 	
 	
 	<!-- 引入 echarts.js -->
+    <!-- 
     <script src="/gd/sources/js/echarts/echarts.js"></script>
-    
+     -->
 
 </head>
 <body>
@@ -50,7 +51,7 @@
 
 </body>
 </html>
-
+<!-- 
 <script type="text/javascript">
 	$(document).ready(function(){
 		$('#trig').on('click',function(){
@@ -120,12 +121,15 @@
 	    return cur;
 	}
 </script>
+ -->
+<script src="/gd/sources/js/webpack/build/wholestate.bundle.js"></script>
 
-    <script type="text/javascript">
+<!-- 
+<script type="text/javascript">
         // 基于准备好的dom，初始化echarts实例
-        var myChart1 = echarts.init(document.getElementById('main'));
-				var myChart2 = echarts.init(document.getElementById('branch1'));
-				var myChart3 = echarts.init(document.getElementById('branch2'));
+        var myChart1 = echarts.init(document.getElementById('main1'));
+				//var myChart2 = echarts.init(document.getElementById('branch1'));
+				//var myChart3 = echarts.init(document.getElementById('branch2'));
 
 		//设置值
 		function randomData() {
@@ -204,3 +208,4 @@
         //myChart2.setOption(option);
         //myChart3.setOption(option);
     </script>
+-->
