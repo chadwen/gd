@@ -1,6 +1,6 @@
 
 //DemoCtr.js
-import jq from '../unit/JQueryVendor.js';
+import jq from '../unit/JQueryVendor';
 class Demo{
 	constructor() {
         this.num = 5;
