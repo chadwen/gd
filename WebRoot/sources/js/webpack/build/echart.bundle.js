@@ -1,3 +1,4 @@
+/*! // gd Version 1.0  2/15/2017, 6:05:05 AM --By wcy  */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};

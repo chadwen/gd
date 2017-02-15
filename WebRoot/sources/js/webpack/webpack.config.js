@@ -46,6 +46,23 @@ module.exports = {
 		
 		plugins: [
 		          new webpack.NoErrorsPlugin(),
+		          
+		          //compress js file,do not use it until deployed 
+		          // new webpack.optimize.UglifyJsPlugin({
+		          //     sourceMap: false,
+		          //     mangle: false,
+		          //     compress: {
+		          //         warnings: false
+		          //     },
+		          // }),
+		          
+		          new webpack.BannerPlugin(
+		              "// gd Version 1.0  ".concat((new Date()).toLocaleString()," --By wcy ")
+		              //{
+		              //    raw: true, // if true, banner will not be wrapped in a comment
+		              //    entryOnly: true // if true, the banner will only be added to the entry chunks
+		              //}
+		              ),
 		          ],
 		stats: {
 		     colors: true

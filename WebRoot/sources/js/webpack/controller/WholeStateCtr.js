@@ -13,7 +13,7 @@ class WholeState{
 	}
 	initEvent(){
 		let self = this;
-		
+		//initialize chart
 		self._initChart();
 		
 		self._setInterval();
