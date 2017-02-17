@@ -65026,24 +65026,23 @@ var WholeState = function () {
 		value: function _setInterval() {
 			var self = this;
 			var option = self.option;
+			var num = 24;
 			setInterval(function () {
 				var data0 = option.series[0].data;
 				var data1 = option.series[1].data;
-				var data2 = option.series[2].data;
-				if (data0.length >= 10) {
+				//var data2 = option.series[2].data;
+				if (data0.length >= num) {
 					data0.shift(); //delete first number
 				}
-				if (data1.length >= 10) {
+				if (data1.length >= num) {
 					data1.shift();
 				}
-				if (data2.length >= 10) {
-					data2.shift();
-				}
+
 				data0.push(Math.round(Math.random() * 10 + 5));
 				data1.push(Math.round(Math.random() * 10 + 5));
-				data2.push(Math.round(Math.random() * 10 + 5));
+				//data2.push(Math.round((Math.random() * 10 + 5)));
 
-				if (option.xAxis[0].data.length >= 10) {
+				if (option.xAxis[0].data.length >= num) {
 					option.xAxis[0].data.shift();
 				}
 				//if(option.xAxis[1].data.length >= 10){
@@ -65053,7 +65052,7 @@ var WholeState = function () {
 
 				//option.xAxis[1].data.push(count++);
 				self.myChart.setOption(option);
-			}, 10000);
+			}, 1000 * 60 * 60);
 		}
 	}, {
 		key: '_getNowFormatDate',
@@ -65070,8 +65069,9 @@ var WholeState = function () {
 				strDate = "0" + strDate;
 			}
 			var currentdate = date.getFullYear() + seperator1 + month + seperator1 + strDate + " " + date.getHours() + seperator2 + date.getMinutes() + seperator2 + date.getSeconds();
-			var cur = date.getHours() >= 0 && date.getHours() <= 9 ? "0" + date.getHours() : date.getHours();
-			return cur;
+			var dateandtime = strDate + "-" + (date.getHours() >= 0 && date.getHours() <= 9 ? "0" + date.getHours() : date.getHours());
+			var times = date.getHours() >= 0 && date.getHours() <= 9 ? "0" + date.getHours() : date.getHours();
+			return times;
 		}
 	}, {
 		key: '_initChart',
@@ -65094,8 +65094,17 @@ var WholeState = function () {
 					trigger: 'axis'
 
 				},
+				toolbox: {
+					show: true,
+					feature: {
+						dataView: { readOnly: true },
+						//restore: {},
+						saveAsImage: {},
+						magicType: { type: ['line', 'bar'] }
+					}
+				},
 				legend: {
-					data: ['车流量1', '车流量2', '车流量3']
+					data: ['出车流', '入车流']
 				},
 				//this is x-axis, the array has only one object,that means one serious elements(on the button)
 				xAxis: [{
@@ -65111,22 +65120,43 @@ var WholeState = function () {
 					boundaryGap: [0, '100%'],
 					splitLine: {
 						show: false
+					},
+					axisLabel: {
+						formatter: '{value} 辆'
 					}
+
 				}],
 				series: [{
-					name: '车流量1',
+					name: '出车流',
 					type: 'line',
-					data: [0]
+					data: [0],
+					markPoint: {
+						data: [{ type: 'max', name: '最大值' }, { type: 'min', name: '最小值' }] },
+					markLine: {
+						data: [{ type: 'average', name: '平均值' }]
+					}
+
 				}, {
-					name: '车流量2',
+					name: '入车流',
 					type: 'line',
-					data: [0]
-				}, {
-					name: '车流量3',
-					type: 'line',
-					data: [0]
+					data: [0],
+					markPoint: {
+						data: [{ type: 'max', name: '最大值' }, { type: 'min', name: '最小值' }] },
+					markLine: {
+						data: [{ type: 'average', name: '平均值' }]
+					}
 				}]
 			};
+			var demoData = [5, 3, 8, 10, 5, 3, 8, 18, 54, 26, 45, 38, 58, 67, 66, 70, 80, 26, 90, 43, 78, 99, 100, 35];
+			var demoData2 = [];
+			var demoDataX = [];
+			for (var i = 0; i < 24; i++) {
+				demoDataX.push(self._getNowFormatDate());
+				demoData2.push(Math.round(Math.random() * 10 + 5));
+			}
+			self.option.series[0].data = demoData;
+			self.option.series[1].data = demoData2;
+			self.option.xAxis[0].data = demoDataX;
 		}
 	}]);
 
