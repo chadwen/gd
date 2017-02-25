@@ -8,6 +8,9 @@
     <session-factory>
 
         <mapping class="gd.web.entity.User" />
+        <mapping class="gd.web.entity.OutStreamEntity" />
+        <mapping class="gd.web.entity.InStreamEntity" />
+        <mapping class="gd.web.entity.ChartDataEntity" />
 
     </session-factory>
 </hibernate-configuration>

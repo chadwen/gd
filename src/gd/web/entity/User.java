@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 @Component
 @Entity  
 @Table(name="gd_user")  
-public class User {
+public class User{
 	@Id
     @GeneratedValue
     @Column(name="id")
@@ -57,7 +57,5 @@ public class User {
 	public void setPriv(Integer priv) {
 		this.priv = priv;
 	}
-
-	
 	
 }

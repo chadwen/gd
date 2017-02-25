@@ -1,18 +1,25 @@
 package gd.web.controller;
 
+import java.util.Date;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import gd.web.entity.ChartDataEntity;
 import gd.web.entity.User;
+import gd.web.service.ChartDataService;
 import gd.web.service.UserService;
 
 @Controller
 public class UserController {
 	@Autowired
 	private UserService userService;
+	
+	@Autowired
+	private ChartDataService chartDataService;
 	
 	@Autowired
 	private User user;
@@ -40,9 +47,16 @@ public class UserController {
 		u1.setUserName("admin");
 		u1.setPassword("admin");
 		u1.setPriv(1);
-		//userService.addUser(u1);
+		userService.addUser(u1);
 		searchUser("admin");
+		
+		ChartDataEntity cde = new ChartDataEntity();
+		cde.setStaId(0);
+		chartDataService.addChartData(cde);
+		
 		logger.info("end of addUser");
+		
+		
 		return "jsp/hello";
 	}
 	
