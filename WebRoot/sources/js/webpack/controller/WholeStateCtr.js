@@ -57,7 +57,7 @@ class WholeState{
 			
 			//option.xAxis[1].data.push(count++);
 			self.myChart.setOption(option);
-		},1000*60*60);
+		},2000);
 		
 	}	
 	_getNowFormatDate(){
@@ -78,6 +78,7 @@ class WholeState{
 	    let dateandtime = strDate+"-" +((date.getHours()>=0&&date.getHours()<=9)?"0"+date.getHours():date.getHours());
 	    let times = ((date.getHours()>=0&&date.getHours()<=9)?"0"+date.getHours():date.getHours());
 	    return times;
+	    //return date.getMinutes();
 	}
 
 	_initChart(){

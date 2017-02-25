@@ -65052,7 +65052,7 @@ var WholeState = function () {
 
 				//option.xAxis[1].data.push(count++);
 				self.myChart.setOption(option);
-			}, 1000 * 60 * 60);
+			}, 2000);
 		}
 	}, {
 		key: '_getNowFormatDate',
@@ -65072,6 +65072,7 @@ var WholeState = function () {
 			var dateandtime = strDate + "-" + (date.getHours() >= 0 && date.getHours() <= 9 ? "0" + date.getHours() : date.getHours());
 			var times = date.getHours() >= 0 && date.getHours() <= 9 ? "0" + date.getHours() : date.getHours();
 			return times;
+			//return date.getMinutes();
 		}
 	}, {
 		key: '_initChart',
