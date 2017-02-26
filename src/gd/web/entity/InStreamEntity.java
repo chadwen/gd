@@ -101,10 +101,10 @@ public class InStreamEntity {
     private String currDate;
 
 	@Column(name="createtime",nullable=false)  
-    private Date createTime;
+    private Date createTime = new Date();
 	
 	@Column(name="modifytime",nullable=false)  
-    private Date modifyTime;
+    private Date modifyTime = new Date();
 	
 	public Integer getId() {
 		return id;

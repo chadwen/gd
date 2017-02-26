@@ -11,6 +11,8 @@
         <mapping class="gd.web.entity.OutStreamEntity" />
         <mapping class="gd.web.entity.InStreamEntity" />
         <mapping class="gd.web.entity.ChartDataEntity" />
+        <mapping class="gd.web.entity.StationEntity" />
+        <mapping class="gd.web.entity.ParkEntity" />
 
     </session-factory>
 </hibernate-configuration>
