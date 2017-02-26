@@ -1,5 +1,7 @@
 package gd.web.entity;
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -14,17 +16,29 @@ import org.springframework.stereotype.Component;
 public class User{
 	@Id
     @GeneratedValue
-    @Column(name="id")
+    @Column(name="usr_id")
     private Integer id;
 	
-	@Column(name="usn",nullable=false)  
+	@Column(name="usr_name",nullable=false)  
     private String userName;
 	
-	@Column(name="pwd",nullable=false)  
+	@Column(name="usr_pwd",nullable=false)  
     private String password;
 	
 	@Column(name="privilege",nullable=false)
-	private Integer priv;
+	private String priv;
+	
+	@Column(name="phone",nullable=false)
+	private String phone;
+	
+	@Column(name="sta_id",nullable=false)
+	private String staId;
+
+	@Column(name="createtime",nullable=false)  
+    private Date createTime = new Date();
+	
+	@Column(name="modifytime",nullable=false)  
+    private Date modifyTime = new Date();
 
 	public Integer getId() {
 		return id;
@@ -50,12 +64,44 @@ public class User{
 		this.password = password;
 	}
 
-	public Integer getPriv() {
+	public String getPriv() {
 		return priv;
 	}
 
-	public void setPriv(Integer priv) {
+	public void setPriv(String priv) {
 		this.priv = priv;
+	}
+
+	public String getPhone() {
+		return phone;
+	}
+
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+
+	public String getStaId() {
+		return staId;
+	}
+
+	public void setStaId(String staId) {
+		this.staId = staId;
+	}
+
+	public Date getCreateTime() {
+		return createTime;
+	}
+
+	public void setCreateTime(Date createTime) {
+		this.createTime = createTime;
+	}
+
+	public Date getModifyTime() {
+		return modifyTime;
+	}
+
+	public void setModifyTime(Date modifyTime) {
+		this.modifyTime = modifyTime;
 	}
 	
 }
