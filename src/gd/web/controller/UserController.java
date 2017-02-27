@@ -46,9 +46,11 @@ public class UserController {
 		User u1 = new User();
 		u1.setUserName("admin");
 		u1.setPassword("admin");
-		u1.setPriv(1);
+		u1.setPriv("admin");
+		u1.setPhone("1021");
+		u1.setStaId(1);
 		userService.addUser(u1);
-		searchUser("admin");
+		//searchUser("admin");
 		
 		ChartDataEntity cde = new ChartDataEntity();
 		cde.setStaId(0);

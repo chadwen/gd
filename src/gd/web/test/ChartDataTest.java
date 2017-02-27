@@ -12,7 +12,7 @@ import gd.web.controller.UserController;
 import gd.web.entity.ChartDataEntity;
 import gd.web.service.ChartDataService;
 
-@Component
+
 public class ChartDataTest {
 
 	@Autowired
@@ -26,8 +26,8 @@ public class ChartDataTest {
 	}
 	@Test
 	public void newTestMethod(){
-		UserController uc = new UserController();
-		uc = (UserController)applicationContext.getBean("UserController");
-		System.out.println(uc.addUser());
+//		UserController uc = new UserController();
+//		uc = (UserController)applicationContext.getBean("UserController");
+//		System.out.println(uc.addUser());
 	}
 }

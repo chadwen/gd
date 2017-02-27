@@ -100,6 +100,8 @@ public class ChartDataEntity {
 	@Column(name="modifytime",nullable=false)  
     private Date modifyTime = new Date();
 	
+	@Column(name="isvalid",nullable=false)  
+    private int isValid = 1;
 	
 	public Integer getId() {
 		return id;
@@ -323,6 +325,14 @@ public class ChartDataEntity {
 
 	public void setModifyTime(Date modifyTime) {
 		this.modifyTime = modifyTime;
+	}
+
+	public int getIsValid() {
+		return isValid;
+	}
+
+	public void setIsValid(int isValid) {
+		this.isValid = isValid;
 	}
 
 

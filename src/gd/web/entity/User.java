@@ -17,7 +17,7 @@ public class User{
 	@Id
     @GeneratedValue
     @Column(name="usr_id")
-    private Integer id;
+    private int id;
 	
 	@Column(name="usr_name",nullable=false)  
     private String userName;
@@ -32,19 +32,30 @@ public class User{
 	private String phone;
 	
 	@Column(name="sta_id",nullable=false)
-	private String staId;
+	private int staId;
 
 	@Column(name="createtime",nullable=false)  
     private Date createTime = new Date();
 	
 	@Column(name="modifytime",nullable=false)  
     private Date modifyTime = new Date();
+	
+	@Column(name="isvalid",nullable=false)  
+    private int isValid = 1;
 
-	public Integer getId() {
+	public int getIsValid() {
+		return isValid;
+	}
+
+	public void setIsValid(int isValid) {
+		this.isValid = isValid;
+	}
+
+	public int getId() {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 
@@ -80,11 +91,11 @@ public class User{
 		this.phone = phone;
 	}
 
-	public String getStaId() {
+	public int getStaId() {
 		return staId;
 	}
 
-	public void setStaId(String staId) {
+	public void setStaId(int staId) {
 		this.staId = staId;
 	}
 

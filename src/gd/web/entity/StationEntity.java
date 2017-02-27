@@ -39,6 +39,17 @@ public class StationEntity {
 	
 	@Column(name="modifytime",nullable=false)  
     private Date modifyTime = new Date();
+	
+	@Column(name="isvalid",nullable=false)  
+    private int isValid = 1;
+
+	public int getIsValid() {
+		return isValid;
+	}
+
+	public void setIsValid(int isValid) {
+		this.isValid = isValid;
+	}
 
 	public Integer getId() {
 		return id;
