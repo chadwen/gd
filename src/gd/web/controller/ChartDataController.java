@@ -25,7 +25,7 @@ public class ChartDataController {
 	public void setChartData(StationEntity sta){
 		ChartDataEntity cde = new ChartDataEntity();
 		cde.setStaId(6);
-		chartDataService.addChartData(cde);
+		//chartDataService.addChartData(cde);
 		
 	}
 	

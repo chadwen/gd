@@ -54,7 +54,7 @@ public class UserController {
 		
 		ChartDataEntity cde = new ChartDataEntity();
 		cde.setStaId(0);
-		chartDataService.addChartData(cde);
+		//chartDataService.addChartData(cde);
 		
 		logger.info("end of addUser");
 		
