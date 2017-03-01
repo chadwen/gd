@@ -1,7 +1,5 @@
 package gd.web.controller;
 
-import java.util.Date;
-
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -14,19 +12,24 @@ import gd.web.service.ChartDataService;
 import gd.web.service.UserService;
 
 @Controller
+@RequestMapping(value="/user")
 public class UserController {
 	@Autowired
 	private UserService userService;
 	
-	@Autowired
-	private ChartDataService chartDataService;
+	//@Autowired
+	//private ChartDataService chartDataService;
 	
-	@Autowired
-	private User user;
+	//@Autowired
+	//private User user;
 	
 	private final Logger logger = Logger.getLogger(this.getClass().getName());
+	@RequestMapping(value="/entry",method = RequestMethod.GET)
+	public String entry(){
+		return "jsp/map";
+	}
 	//search user
-	@RequestMapping(value="/user",method = RequestMethod.GET)
+	@RequestMapping(value="/search",method = RequestMethod.GET)
 	public String searchUser(String userName){
 		User user = userService.getUserByName(userName);
 		System.out.println("\n\nnow run the system!");
@@ -40,7 +43,7 @@ public class UserController {
 		return "jsp/hello";
 	}
 	
-	@RequestMapping(value="addU",method=RequestMethod.GET)
+	@RequestMapping(value="add",method=RequestMethod.GET)
 	public String addUser(){
 		logger.info("go into addUser");
 		User u1 = new User();
