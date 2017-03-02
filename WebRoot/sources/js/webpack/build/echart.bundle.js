@@ -1,4 +1,4 @@
-/*! // gd Version 1.0  2017-2-28 21:46:49 --By wcy  */
+/*! // gd Version 1.0  3/2/2017, 9:26:12 AM --By wcy  */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -64,12 +64,69 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 8);
+/******/ 	return __webpack_require__(__webpack_require__.s = 11);
 /******/ })
 /************************************************************************/
 /******/ ({
 
-/***/ 0:
+/***/ 11:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var echarts = __webpack_require__(3);
+
+var option = {
+	title: {
+		text: '全局动态'
+	},
+	tooltip: {
+		trigger: 'axis'
+
+	},
+	legend: {
+		data: ['车流量1', '车流量2', '车流量3']
+	},
+	//this is x-axis, the array has only one object,that means one serious elements(on the button)
+	xAxis: [{
+		type: 'category',
+		boundaryGap: true,
+		data: [getNowFormatDate()],
+		splitNumber: 10
+
+	}],
+	//this is y-axis, the same as x-axis
+	yAxis: [{
+		type: 'value',
+		boundaryGap: [0, '100%'],
+		splitLine: {
+			show: false
+		}
+	}],
+	series: [{
+		name: '车流量1',
+		type: 'line',
+		data: [0]
+	}, {
+		name: '车流量2',
+		type: 'line',
+		data: [0]
+	}, {
+		name: '车流量3',
+		type: 'line',
+		data: [0]
+	}]
+};
+
+var domm = $('#main');
+var chart1 = echarts.init(document.getElementById('main'));
+
+chart1.setOption(option);
+
+/***/ }),
+
+/***/ 3:
 /***/ (function(module, exports, __webpack_require__) {
 
 (function webpackUniversalModuleDefinition(root, factory) {
@@ -64930,63 +64987,6 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ ])
 });
 ;
-
-/***/ }),
-
-/***/ 8:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var echarts = __webpack_require__(0);
-
-var option = {
-	title: {
-		text: '全局动态'
-	},
-	tooltip: {
-		trigger: 'axis'
-
-	},
-	legend: {
-		data: ['车流量1', '车流量2', '车流量3']
-	},
-	//this is x-axis, the array has only one object,that means one serious elements(on the button)
-	xAxis: [{
-		type: 'category',
-		boundaryGap: true,
-		data: [getNowFormatDate()],
-		splitNumber: 10
-
-	}],
-	//this is y-axis, the same as x-axis
-	yAxis: [{
-		type: 'value',
-		boundaryGap: [0, '100%'],
-		splitLine: {
-			show: false
-		}
-	}],
-	series: [{
-		name: '车流量1',
-		type: 'line',
-		data: [0]
-	}, {
-		name: '车流量2',
-		type: 'line',
-		data: [0]
-	}, {
-		name: '车流量3',
-		type: 'line',
-		data: [0]
-	}]
-};
-
-var domm = $('#main');
-var chart1 = echarts.init(document.getElementById('main'));
-
-chart1.setOption(option);
 
 /***/ })
 

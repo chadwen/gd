@@ -8,6 +8,7 @@ module.exports = {
 			  demo : "./appConfig/DemoCfg.js",
 			  wholestate : "./appConfig/WholeStateCfg.js",
 			  echart : "./appConfig/echart.js",
+			  homepage : "./appConfig/HomePageCfg.js"
 		  },
 		  
 		  

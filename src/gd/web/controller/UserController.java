@@ -20,12 +20,21 @@ public class UserController {
 	//@Autowired
 	//private ChartDataService chartDataService;
 	
-	//@Autowired
-	//private User user;
+	@Autowired
+	private User user;
 	
 	private final Logger logger = Logger.getLogger(this.getClass().getName());
 	@RequestMapping(value="/entry",method = RequestMethod.GET)
 	public String entry(){
+		user = userService.getUserByName("admin");
+		if(user == null){
+			user.setUserName("admin");
+			user.setPassword("admin");
+			user.setPriv("admin");
+			user.setPhone("1021");
+			user.setStaId(1);
+			userService.addUser(user);
+		}
 		return "jsp/map";
 	}
 	//search user
