@@ -1,4 +1,4 @@
-/*! // gd Version 1.0  3/3/2017, 3:08:45 AM --By wcy  */
+/*! // gd Version 1.0  3/3/2017, 5:16:56 AM --By wcy  */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -135,15 +135,36 @@ var HomePage = function () {
 	}
 
 	_createClass(HomePage, [{
-		key: 'initEvent',
+		key: "initEvent",
 		value: function initEvent() {
 			var self = this;
 			var map = this.map;
 			self._initMap();
-			//self._addPoint();
+			self._addPoint();
+
+			self._testAjax([], "OUT");
+			self._testAjax([], "IN");
 		}
 	}, {
-		key: '_addPoint',
+		key: "_testAjax",
+		value: function _testAjax(dataArr, direction) {
+			dataArr = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 3, 8, 2, 12, 9, 5, 4, 9, 6, 9];
+			//direction = 'IN';
+			$.ajax({
+				type: "POST",
+				url: "/gd/chartdata/add",
+				traditional: true,
+				//我们用text格式接收  
+				//dataType: "text",   
+				//json格式接收数据  
+				dataType: "json",
+				data: { "dataArr": dataArr, "direction": direction },
+				success: function success(jsonStr) {},
+				error: function error(xhr, ajaxOptions, thrownError) {}
+			});
+		}
+	}, {
+		key: "_addPoint",
 		value: function _addPoint() {
 			var self = this;
 			var map = self.map;
@@ -165,7 +186,7 @@ var HomePage = function () {
 			map.addContextMenu(menu);
 		}
 	}, {
-		key: '_initMap',
+		key: "_initMap",
 		value: function _initMap() {
 			var self = this;
 			var map = self.map;

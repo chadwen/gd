@@ -1,4 +1,4 @@
-/*! // gd Version 1.0  3/3/2017, 3:08:45 AM --By wcy  */
+/*! // gd Version 1.0  3/3/2017, 5:16:56 AM --By wcy  */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -65053,7 +65053,7 @@ var WholeState = function () {
 
 				//option.xAxis[1].data.push(count++);
 				self.myChart.setOption(option);
-			}, 2000);
+			}, 1000 * 60 * 60 * 24);
 		}
 	}, {
 		key: '_getNowFormatDate',

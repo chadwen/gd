@@ -57,7 +57,7 @@ class WholeState{
 			
 			//option.xAxis[1].data.push(count++);
 			self.myChart.setOption(option);
-		},2000);
+		},1000*60*60*24);
 		
 	}	
 	_getNowFormatDate(){

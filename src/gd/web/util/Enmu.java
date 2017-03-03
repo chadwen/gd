@@ -2,5 +2,11 @@ package gd.web.util;
 
 public enum Enmu {
 
-	ADMINISTRATOR,OPERATOR,GENERAL
+	ADMINISTRATOR,
+	OPERATOR,
+	GENERAL,
+	
+	IN,
+	OUT,
+	
 }

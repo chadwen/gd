@@ -1,10 +1,17 @@
 package gd.web.controller;
 
+import java.util.Calendar;
+import java.util.List;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+
 
 import gd.web.entity.ChartDataEntity;
 import gd.web.entity.User;
@@ -24,6 +31,14 @@ public class UserController {
 	private User user;
 	
 	private final Logger logger = Logger.getLogger(this.getClass().getName());
+	
+	// what' that????????????????
+	//public @ResponseBody List<Goods> testAjax(@RequestParam String types){}
+	@RequestMapping(value="/test",method = RequestMethod.GET)
+	public void testMthod(){
+		Calendar cal = Calendar.getInstance();
+		System.out.println(cal.get(Calendar.HOUR_OF_DAY));
+	}
 	@RequestMapping(value="/entry",method = RequestMethod.GET)
 	public String entry(){
 		user = userService.getUserByName("admin");
