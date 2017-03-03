@@ -5,20 +5,48 @@ import hpService from '../services/HomePageService';
 class HomePage{
 	constructor(){
 		this.hpservice = new hpService();
+		this.position = null;
+		
+		this.map = new BMap.Map("swuMap");
 		this.initEvent();
 	}
 	initEvent(){
 		let self = this;
+		let map = this.map;
 		self._initMap();
+		//self._addPoint();
 	}
 	
 	
-	
+	_addPoint(){
+		let self = this;
+		let map = self.map;
+		let menu = new BMap.ContextMenu();
+		let txtMenuItem = [
+		           		{
+		           			text:'添加站点',
+		           			callback:function(){
+		           				alert(self.position.lng + "add entrance" + self.position.lat);
+		           			}
+		           		},
+		           		{
+		           			text:'添加停车场',
+		           			callback:function(){
+		           				alert(self.position.lng + "add park" + self.position.lat);
+		           			}
+		           		},
+		           	];
+		for(var i=0; i < txtMenuItem.length; i++){
+			menu.addItem(new BMap.MenuItem(txtMenuItem[i].text,txtMenuItem[i].callback,100));
+		}
+		map.addContextMenu(menu);
+		
+	}
 	
 	
 	_initMap(){
 		let self = this;
-		let map = new BMap.Map("swuMap");
+		let map = self.map;
 		let point = new BMap.Point(106.428907,29.826584);
 		map.centerAndZoom(point, 16);
 		map.addControl(new BMap.MapTypeControl());   //添加地图类型控件
@@ -27,6 +55,11 @@ class HomePage{
 		
 		//坐标拾取
 		map.addEventListener("click",function(e){
+			$('#coordinate').html(e.point.lng + ' , ' + e.point.lat);
+			self.position = e.point;
+			//alert(e.point.lng + "," + e.point.lat);
+		});
+		map.addEventListener("rightclick",function(e){
 			$('#coordinate').html(e.point.lng + ' , ' + e.point.lat);
 			//alert(e.point.lng + "," + e.point.lat);
 		});
@@ -37,9 +70,12 @@ class HomePage{
 		map.addOverlay(entrance1);              // 将标注添加到地图中
 		entrance1.setAnimation(BMAP_ANIMATION_BOUNCE);
 		entrance1.addEventListener("click",function showWindow(){
-			let p = entrance1.getPosition();       //获取marker的位置
-			alert("centerLib的位置是" + p.lng + "," + p.lat);  
-			self.hpservice._setMsgWindow(map,"","","").open(new BMap.Point(106.435303000 , 29.827845000)); ;
+			//let p = entrance1.getPosition();       //获取marker的位置
+			//alert("centerLib的位置是" + p.lng + "," + p.lat);  
+			let img = '<img src="http://pic34.photophoto.cn/20150330/0007019952833279_b.jpg" alt="" style="width:100%;height:100px;"/>';
+			let msg = '地址：北碚天生街道xx号西南大学一号门<br/>简介：西南大学一号门。';
+			let title = "一号门";
+			self.hpservice._setMsgWindow(map,img,msg,title).open(new BMap.Point(106.435303000 , 29.827845000)); ;
 		});//绑定监听器
 //		function showWindow(){
 //			let p = entrance1.getPosition();       //获取marker的位置
