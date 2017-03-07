@@ -13,7 +13,7 @@ class ChartData{
 		direction = 'IN';
 		$.ajax({
 			type : "POST",
-			url : "/gd/chartdata/add",
+			url : "/gd/chartdata/update",
 			traditional : true,
 			//我们用text格式接收  
 			//dataType: "text",   

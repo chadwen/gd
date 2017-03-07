@@ -1,4 +1,4 @@
-/*! // gd Version 1.0  3/3/2017, 5:16:56 AM --By wcy  */
+/*! // gd Version 1.0  3/7/2017, 6:18:08 AM --By wcy  */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -64,18 +64,18 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 11);
+/******/ 	return __webpack_require__(__webpack_require__.s = 12);
 /******/ })
 /************************************************************************/
 /******/ ({
 
-/***/ 11:
+/***/ 12:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var echarts = __webpack_require__(3);
+var echarts = __webpack_require__(4);
 
 var option = {
 	title: {
@@ -126,7 +126,7 @@ chart1.setOption(option);
 
 /***/ }),
 
-/***/ 3:
+/***/ 4:
 /***/ (function(module, exports, __webpack_require__) {
 
 (function webpackUniversalModuleDefinition(root, factory) {

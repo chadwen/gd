@@ -16,5 +16,15 @@ public class ChartDataServiceImpl implements ChartDataService{
 		// TODO Auto-generated method stub
 		chartDataDAO.addChartData(chartData);
 	}
+	@Override
+	public void updateChartData(ChartDataEntity chartData) {
+		// TODO Auto-generated method stub
+		chartDataDAO.updateChartData(chartData);
+	}
+	@Override
+	public ChartDataEntity getEntityById(int id) {
+		// TODO Auto-generated method stub
+		return chartDataDAO.getEntityById(id);
+	}
 
 }

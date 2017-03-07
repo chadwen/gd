@@ -1,6 +1,6 @@
 package gd.web.util;
 
-public enum Enmu {
+public enum Enum {
 
 	ADMINISTRATOR,
 	OPERATOR,

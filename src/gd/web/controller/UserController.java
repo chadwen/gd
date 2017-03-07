@@ -1,5 +1,6 @@
 package gd.web.controller;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -14,8 +15,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 
 import gd.web.entity.ChartDataEntity;
+import gd.web.entity.StationEntity;
 import gd.web.entity.User;
 import gd.web.service.ChartDataService;
+import gd.web.service.StationService;
 import gd.web.service.UserService;
 
 @Controller
@@ -23,6 +26,9 @@ import gd.web.service.UserService;
 public class UserController {
 	@Autowired
 	private UserService userService;
+	
+	@Autowired
+	private StationService stationService;
 	
 	//@Autowired
 	//private ChartDataService chartDataService;
@@ -87,6 +93,32 @@ public class UserController {
 		
 		
 		return "jsp/hello";
+	}
+	@ResponseBody
+	@RequestMapping(value="test",method=RequestMethod.POST)
+	public List<StationEntity> testMethod(){
+
+		/*StationEntity se1 = new StationEntity();
+		se1.setAddr("addr1");
+		se1.setBrief("brief1");
+		se1.setId(100);
+		se1.setImgPath("http://pic34.photophoto.cn/20150330/0007019952833279_b.jpg");
+		se1.setStaFullName("title1");
+		se1.setPosx("106.435303000");
+		se1.setPosy("29.827845000");
+		StationEntity se2 = new StationEntity();
+		se2.setAddr("addr2");
+		se2.setBrief("brief2");
+		se2.setId(101);
+		se2.setImgPath("http://pic34.photophoto.cn/20150330/0007019952833279_b.jpg");
+		se2.setStaFullName("title2");
+		se2.setPosx("106.432177");
+		se2.setPosy("29.824649");
+		List<StationEntity> list =  new ArrayList<StationEntity>();
+		list.add(se1);
+		list.add(se2);*/
+		
+		return stationService.getAllStationEntity();
 	}
 	
 	

@@ -1,10 +1,12 @@
 //WholeStateCtr.js
 import jq from '../unit/JQueryVendor';
 import echarts from '../unit/ECharts/echarts';
+import CommonService from '../services/CommonService';
 
 class WholeState{
 	constructor(){
 		//this.echarts = require('../unit/ECharts/echarts');
+		this.commonService = new CommonService();
 		this.myChart;
 		this.option;
 		
@@ -23,6 +25,7 @@ class WholeState{
 			var data = self.option.series[0].data;
 			++data[data.length-1];
 			self.myChart.setOption(self.option);
+			self.commonService.AlertMessage("message");
 		});
 	}
 //---------------------------------------------------------------------------

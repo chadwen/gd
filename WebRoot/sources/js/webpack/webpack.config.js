@@ -26,7 +26,8 @@ module.exports = {
 	                    path.join(__dirname, 'appConfig'),
 	                    path.join(__dirname, 'controller'),
 	                    path.join(__dirname, 'model'),
-	                    path.join(__dirname, 'services')],
+	                    path.join(__dirname, 'services'),
+	                    ],
 	                query: {
 	                    presets: 'es2015',
 	                },
@@ -70,7 +71,51 @@ module.exports = {
 		},
 		// Create Sourcemaps for the bundle
 		devtool: 'source-map',
-		
+//		resolve: {
+//	        modulesDirectories: ['node_modules'],
+//	        alias: {
+//	            jquery: "../jquery-3.1.1.min",
+//	            /*jqueryui: '../plugins/jQueryUI/jquery-ui.min',
+//	            jqueryform: "../plugins/JQuery/jquery.unobtrusive-ajax.min",
+//	            jqueryval: "../plugins/JQuery/jquery.validate",
+//	            jqueryvalunobtrusive: "../plugins/JQuery/jquery.validate.unobtrusive.min",*/
+//	            jqlayer: './unit/JqLayer/layer/layer',
+//	            /*jqUeditor: '../plugins/Ueditor/ueditor.all',
+//	            jqTmpl: '../plugins/jQTmpl/jquery.tmpl.min',
+//	            jqPage: '../plugins/jQPage/jquery.twbsPagination',
+//	            jqSelect: '../plugins/JQbootstrap-select/bootstrap-select',
+//	            jqTagsinput: '../plugins/Bootstrap-tagsinput/bootstrap-tagsinput',
+//	            //angular
+//	            'angular': '../node_modules/angular/angular.min',
+//	            'angular-ui-router': '../node_modules/angular-ui-router/release/angular-ui-router.min',
+//	            'angular.animate': '../node_modules/angular-animate/angular-animate.min',
+//	            'ng.ueditor': "../plugins/Ueditor/angular-ueditor",
+//	            'ng.treeView': '../plugins/NgTreeView/abn_tree_directive',
+//	            'ng.contextmenu': '../plugins/NgContextMenu/contextMenu'*/
+//	        },
+//	        module: {
+//	            loaders: [
+//	                { test: /jquery/, loader: 'expose?jQuery!expose?$' },//The jquery   must firstly
+//	                /*{ test: /jqueryui/, loader: 'exports?jqueryui!imports?jQuery' },
+//	                { test: /jqueryform/, loader: 'exports?jqueryform!imports?jQuery' },
+//	                { test: /jqueryval/, loader: 'exports?jqueryval!imports?jQuery' },
+//	                { test: /jqueryvalunobtrusive/, loader: 'exports?jqueryvalunobtrusive!imports?jQuery' },*/
+//	                { test: /jqlayer/, loader: 'exports?jqlayer!imports?jQuery' },
+//	                /*{ test: /jqUeditor/, loader: 'exports?jqUeditor!imports?jQuery' },
+//	                { test: /jqTmpl/, loader: 'exports?jqTmpl!imports?jQuery' },
+//	                { test: /jqPage/, loader: 'exports?jqPage!imports?jQuery' },
+//	                { test: /jqSelect/, loader: 'exports?jqSelect!imports?jQuery' },
+//	                { test: /jqTagsinput/, loader: 'exports?jqTagsinput!imports?jQuery' },
+//	                //angular
+//	                { test: /angular/, loader: 'expose?angular!expose?Angular' }, //Angular
+//	                { test: /angular-ui-router/, loader: 'exports?angular-ui-router!imports?angular' },
+//	                { test: /ng.ueditor/, loader: 'exports?ng.ueditor!imports?angular' },
+//	                { test: /angular.animate/, loader: 'exports?angular.animate!imports?angular' },
+//	                { test: /ng.treeView/, loader: 'exports?ng.treeView!imports?angular' },
+//	                { test: /ng.contextmenu/, loader: 'exports?ng.treeView!imports?angular' },*/
+//	            ]
+//	        }
+//	    },
      
 };
 		

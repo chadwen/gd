@@ -1,9 +1,11 @@
 //HomePageCtr.js
 
 import hpService from '../services/HomePageService';
+import CommonService from '../services/CommonService';
 
 class HomePage{
 	constructor(){
+		this.commonService = new CommonService();
 		this.hpservice = new hpService();
 		this.position = null;
 		
@@ -14,57 +16,14 @@ class HomePage{
 		let self = this;
 		let map = this.map;
 		self._initMap();
-		self._addPoint();
-		
-		self._testAjax([],"OUT");
-		self._testAjax([],"IN");
-	}
-	
-	_testAjax(dataArr,direction){
-		dataArr = [0,0,0,0,0,0,0,0,0,0,0,0,0,5,3,8,2,12,9,5,4,9,6,9];
-		//direction = 'IN';
-		$.ajax({
-			type : "POST",
-			url : "/gd/chartdata/add",
-			traditional : true,
-			//我们用text格式接收  
-			//dataType: "text",   
-			//json格式接收数据  
-			dataType : "json",
-			data : {"dataArr":dataArr,"direction":direction},
-			success : function(jsonStr) {
-			},
-			error : function(xhr, ajaxOptions, thrownError) {
+		//self._initAjax();
 
-			}
-		});
-	}
-	
-	_addPoint(){
-		let self = this;
-		let map = self.map;
-		let menu = new BMap.ContextMenu();
-		let txtMenuItem = [
-		           		{
-		           			text:'添加站点',
-		           			callback:function(){
-		           				alert(self.position.lng + "add entrance" + self.position.lat);
-		           			}
-		           		},
-		           		{
-		           			text:'添加停车场',
-		           			callback:function(){
-		           				alert(self.position.lng + "add park" + self.position.lat);
-		           			}
-		           		},
-		           	];
-		for(var i=0; i < txtMenuItem.length; i++){
-			menu.addItem(new BMap.MenuItem(txtMenuItem[i].text,txtMenuItem[i].callback,100));
-		}
-		map.addContextMenu(menu);
+		//self.hpservice._testAjax([],1);
+		//self.hpservice._testAjax([],2);
+
+		self._initAjax();
 		
 	}
-	
 	
 	_initMap(){
 		let self = this;
@@ -78,16 +37,93 @@ class HomePage{
 		//坐标拾取
 		map.addEventListener("click",function(e){
 			$('#coordinate').html(e.point.lng + ' , ' + e.point.lat);
-			self.position = e.point;
+			
 			//alert(e.point.lng + "," + e.point.lat);
 		});
 		map.addEventListener("rightclick",function(e){
+			let id = 3;
 			$('#coordinate').html(e.point.lng + ' , ' + e.point.lat);
+			self.hpservice._addMapMenu(map,e.point.lng,e.point.lat,id);
+			self.position = e.point;
 			//alert(e.point.lng + "," + e.point.lat);
 		});
+	}
+	
+	_setPoint(data){
+		let self = this;
+		let map = this.map;
+		$.each(data,function(index,obj){
+			console.log(obj.id);
+			
+			let point1 = new BMap.Point(parseFloat(obj.posx) , parseFloat(obj.posy));
+			let entrance1 = new BMap.Marker(point1);  // 创建标注
+			map.addOverlay(entrance1);              // 将标注添加到地图中
+			//entrance1.setAnimation(BMAP_ANIMATION_BOUNCE);
+			entrance1.addEventListener("click",function showWindow(){
+				//let p = entrance1.getPosition();       //获取marker的位置
+				//alert("centerLib的位置是" + p.lng + "," + p.lat);  
+				let imgPath = obj.imgPath;//'http://pic34.photophoto.cn/20150330/0007019952833279_b.jpg';//
+				let addr = obj.addr;//'北碚天生街道xx号西南大学一号门';//
+				let brief = obj.brief;//'西南大学一号门。';//obj.brief;
+				let title = obj.staFullName;//"一号门";//
+				self.hpservice._setMsgWindow(map,imgPath,addr,brief,title).open(point1); ;
+			});//绑定监听器
+			entrance1.addEventListener("rightclick",function showWindow(){
+				let id = 2;
+				self.hpservice._addPointMenu(entrance1,obj.id);
+			});
+		});
+	}
+	
+	_initAjax(){
+		let self = this;
+		$.ajax({
+			type : "POST",
+			url : "/gd/user/test",
+			traditional : true,
+			dataType : "json",
+			data : {},
+			success : function(data) {
+				console.log('data.length:'+data.length);
+				self._setPoint(data);
+			},
+			error : function(xhr, ajaxOptions, thrownError) {
+
+			},
+			complete:function(data){
+				console.log('data.length:'+data.length);
+				//self._initMap();
+			}
+		});
+	}
+	
+	_initMapOld(){
+		let self = this;
+		let map = self.map;
+		
+/*		let point = new BMap.Point(106.428907,29.826584);
+		map.centerAndZoom(point, 16);
+		map.addControl(new BMap.MapTypeControl());   //添加地图类型控件
+		map.setCurrentCity("cq");          // 设置地图显示的城市 此项是必须设置的。没看出来
+		map.enableScrollWheelZoom(true);     //开启鼠标滚轮缩放
+		
+		//坐标拾取
+		map.addEventListener("click",function(e){
+			$('#coordinate').html(e.point.lng + ' , ' + e.point.lat);
+			
+			//alert(e.point.lng + "," + e.point.lat);
+		});
+		map.addEventListener("rightclick",function(e){
+			let id = 3;
+			$('#coordinate').html(e.point.lng + ' , ' + e.point.lat);
+			self.hpservice._addMapMenu(map,e.point.lng,e.point.lat,id);
+			self.position = e.point;
+			//alert(e.point.lng + "," + e.point.lat);
+		});*/
 		
 		//一号门 _setMsgWindow
-		let point1 = new BMap.Point(106.435303000 , 29.827845000);
+		let posx = 106.435303000;
+		let point1 = new BMap.Point(parseFloat(posx) , 29.827845000);
 		let entrance1 = new BMap.Marker(point1);  // 创建标注
 		map.addOverlay(entrance1);              // 将标注添加到地图中
 		entrance1.setAnimation(BMAP_ANIMATION_BOUNCE);
@@ -97,8 +133,12 @@ class HomePage{
 			let img = '<img src="http://pic34.photophoto.cn/20150330/0007019952833279_b.jpg" alt="" style="width:100%;height:100px;"/>';
 			let msg = '地址：北碚天生街道xx号西南大学一号门<br/>简介：西南大学一号门。';
 			let title = "一号门";
-			self.hpservice._setMsgWindow(map,img,msg,title).open(new BMap.Point(106.435303000 , 29.827845000)); ;
+			self.hpservice._setMsgWindow(map,img,msg,title).open(point1); ;
 		});//绑定监听器
+		entrance1.addEventListener("rightclick",function showWindow(){
+			let id = 2;
+			self.hpservice._addPointMenu(entrance1,id);
+		});
 //		function showWindow(){
 //			let p = entrance1.getPosition();       //获取marker的位置
 //			//alert("centerLib的位置是" + p.lng + "," + p.lat);  
@@ -106,7 +146,7 @@ class HomePage{
 //		}
 		//七号门
 		let entrance7 = new BMap.Marker(new BMap.Point(106.437998 , 29.837017));  // 创建标注
-		map.addOverlay(entrance7);              // 将标注添加到地图中
+		map.addOverlay(entrance7);// 将标注添加到地图中
 		entrance7.setAnimation(BMAP_ANIMATION_BOUNCE);
 		//五号门
 		let entrance5 = new BMap.Marker(new BMap.Point(106.440639 , 29.835051));  // 创建标注

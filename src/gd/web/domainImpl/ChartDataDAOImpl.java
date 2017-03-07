@@ -16,5 +16,17 @@ public class ChartDataDAOImpl implements ChartDataDAO {
 		// TODO Auto-generated method stub
 		sessionFactory.getCurrentSession().save(chartData);		
 	}
+	@Override
+	public void updateChartData(ChartDataEntity chartData) {
+		// TODO Auto-generated method stub
+		sessionFactory.getCurrentSession().update(chartData);
+		
+		
+	}
+	@Override
+	public ChartDataEntity getEntityById(int id) {
+		// TODO Auto-generated method stub
+		return (ChartDataEntity)sessionFactory.getCurrentSession().get(ChartDataEntity.class, id);
+	}
 
 }
