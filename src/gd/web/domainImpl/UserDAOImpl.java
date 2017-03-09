@@ -6,7 +6,7 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import gd.web.entity.User;
+import gd.web.entity.UserEntity;
 
 import gd.web.domain.UserDAO;
 
@@ -17,7 +17,7 @@ public class UserDAOImpl implements UserDAO{
 	private SessionFactory sessionFactory;
 	
 	@Override
-	public User getUserByName(String userName){
+	public UserEntity getUserByName(String userName){
 		
 		//it work?
 		String queryStr = "from User where userName =  ?";
@@ -27,7 +27,7 @@ public class UserDAOImpl implements UserDAO{
 
 		
 		
-		List<User> ur = query.list();
+		List<UserEntity> ur = query.list();
 		
 
 		//String queryStr = "from  User WHERE userName =  '"+ userName +"'";
@@ -40,30 +40,34 @@ public class UserDAOImpl implements UserDAO{
 		}
 		return null;
 	}
+	
 	@Override
-	public User getUserById(int id){
+	public UserEntity getUserById(int id){
 		String queryStr = "from User where id = ?";
 		Query query = sessionFactory.getCurrentSession().createQuery(queryStr);
 		query.setInteger(0, id);
-		List<User> uList = query.list();
+		List<UserEntity> uList = query.list();
 		if(uList.size() != 0){
 			return uList.get(0);
 		}
 		return null;
 	}
+	
 	@Override
-	public void addUser(User user){
-		sessionFactory.getCurrentSession().save(user);
+	public void addUser(UserEntity userEntity){
+		sessionFactory.getCurrentSession().save(userEntity);
 	}
+	
 	@Override
-	public void deleteUser(User user){
-		if(null!=user){
-			sessionFactory.getCurrentSession().delete(user);
+	public void deleteUser(UserEntity userEntity){
+		if(null!=userEntity){
+			sessionFactory.getCurrentSession().delete(userEntity);
 		}
 	}
+	
 	@Override
-	public void updateUser(User user) {
-		sessionFactory.getCurrentSession().update(user);
+	public void updateUser(UserEntity userEntity) {
+		sessionFactory.getCurrentSession().update(userEntity);
 		
 	}
 }

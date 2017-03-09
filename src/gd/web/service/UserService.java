@@ -1,17 +1,17 @@
 package gd.web.service;
 
-import gd.web.entity.User;
+import gd.web.entity.UserEntity;
 
 
 public interface UserService {
 	
-	User getUserByName(String userName);
+	UserEntity getUserByName(String userName);
 	
-	User getUserById(int id);
+	UserEntity getUserById(int id);
 	
-	void addUser(User user);
+	void addUser(UserEntity userEntity);
 	
-	void deleteUser(User user);
+	void deleteUser(UserEntity userEntity);
 	
-	void updateUser(User user);
+	void updateUser(UserEntity userEntity);
 }

@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import gd.web.entity.ChartDataEntity;
 import gd.web.entity.ParkEntity;
 import gd.web.entity.StationEntity;
-import gd.web.entity.User;
+import gd.web.entity.UserEntity;
 import gd.web.service.ChartDataService;
 import gd.web.service.ParkService;
 import gd.web.service.StationService;
@@ -40,7 +40,7 @@ public class UserController {
 	//private ChartDataService chartDataService;
 	
 	@Autowired
-	private User user;
+	private UserEntity userEntity;
 	
 	
 	// what' that????????????????
@@ -59,25 +59,25 @@ public class UserController {
 	}
 	@RequestMapping(value="/entry",method = RequestMethod.GET)
 	public String entry(){
-		user = userService.getUserByName("admin");
-		if(user == null){
-			user.setUserName("admin");
-			user.setPassword("admin");
-			user.setPriv("admin");
-			user.setPhone("1021");
-			user.setStaId(1);
-			userService.addUser(user);
+		userEntity = userService.getUserByName("admin");
+		if(userEntity == null){
+			userEntity.setUserName("admin");
+			userEntity.setPassword("admin");
+			userEntity.setPriv("admin");
+			userEntity.setPhone("1021");
+			userEntity.setStaId(1);
+			userService.addUser(userEntity);
 		}
 		return "jsp/map";
 	}
 	//search user
 	@RequestMapping(value="/search",method = RequestMethod.GET)
 	public String searchUser(String userName){
-		User user = userService.getUserByName(userName);
+		UserEntity userEntity = userService.getUserByName(userName);
 		System.out.println("\n\nnow run the system!");
-		if(user!=null){
-			System.out.println(user.getUserName());
-			System.out.println(user.getPassword());
+		if(userEntity!=null){
+			System.out.println(userEntity.getUserName());
+			System.out.println(userEntity.getPassword());
 		}else{
 			System.out.println("no result");			
 		}
@@ -88,13 +88,13 @@ public class UserController {
 	@RequestMapping(value="add",method=RequestMethod.GET)
 	public String addUser(){
 		logger.info("go into addUser");
-		User u1 = new User();
-		u1.setUserName("admin");
-		u1.setPassword("admin");
-		u1.setPriv("admin");
-		u1.setPhone("1021");
-		u1.setStaId(1);
-		userService.addUser(u1);
+		UserEntity userEntity = new UserEntity();
+		userEntity.setUserName("admin");
+		userEntity.setPassword("admin");
+		userEntity.setPriv("admin");
+		userEntity.setPhone("1021");
+		userEntity.setStaId(1);
+		userService.addUser(userEntity);
 		//searchUser("admin");
 		
 		ChartDataEntity cde = new ChartDataEntity();

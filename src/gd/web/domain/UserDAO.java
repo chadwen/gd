@@ -2,18 +2,18 @@ package gd.web.domain;
 
 import org.springframework.transaction.annotation.Transactional;
 
-import gd.web.entity.User;
+import gd.web.entity.UserEntity;
 
 public interface UserDAO {
 	@Transactional
-	User getUserByName(String userName);
+	UserEntity getUserByName(String userName);
 	@Transactional
-	User getUserById(int id);
+	UserEntity getUserById(int id);
 	@Transactional
-	void addUser(User user);
+	void addUser(UserEntity userEntity);
 	@Transactional
-	void deleteUser(User user);
+	void deleteUser(UserEntity userEntity);
 	@Transactional
-	void updateUser(User user);
+	void updateUser(UserEntity userEntity);
 	
 }

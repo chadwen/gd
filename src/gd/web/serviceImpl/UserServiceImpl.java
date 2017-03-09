@@ -3,7 +3,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import gd.web.domain.UserDAO;
-import gd.web.entity.User;
+import gd.web.entity.UserEntity;
 import gd.web.service.UserService;
 
 @Service
@@ -13,29 +13,29 @@ public class UserServiceImpl implements UserService{
 	private UserDAO userDAO;
 	
 	@Override
-	public User getUserByName(String userName) {
+	public UserEntity getUserByName(String userName) {
 		return userDAO.getUserByName(userName);
 	}
 
 	@Override
-	public User getUserById(int id) {
+	public UserEntity getUserById(int id) {
 		return userDAO.getUserById(id);
 	}
 
 	@Override
-	public void addUser(User user) {
-		userDAO.addUser(user);
+	public void addUser(UserEntity userEntity) {
+		userDAO.addUser(userEntity);
 	}
 
 	@Override
-	public void deleteUser(User user) {
-		userDAO.deleteUser(user);
+	public void deleteUser(UserEntity userEntity) {
+		userDAO.deleteUser(userEntity);
 		
 	}
 
 	@Override
-	public void updateUser(User user) {
-		userDAO.updateUser(user);
+	public void updateUser(UserEntity userEntity) {
+		userDAO.updateUser(userEntity);
 		
 	}
 	
