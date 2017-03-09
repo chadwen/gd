@@ -1,4 +1,4 @@
-/*! // gd Version 1.0  3/7/2017, 6:18:08 AM --By wcy  */
+/*! // gd Version 1.0  3/8/2017, 9:22:54 AM --By wcy  */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -140,9 +140,9 @@ var CommonService = function () {
             self.options.content = self.options.content || '';
             self.options.footer = self.options.footer || '';
             self.options.endFunction = self.options.endFunction || function () {};
-            top.layer.open({
+            layer.open({
                 id: 1,
-                offset: '20%', //坐标
+                //offset: '20%',//坐标
                 anim: 0, //动画
                 title: false, //标题
                 type: 1, //页面层
@@ -166,14 +166,14 @@ var CommonService = function () {
             self.options.content = self.options.content || '';
             self.options.footer = self.options.footer || '';
             self.options.endFunction = self.options.endFunction || function () {};
-            top.layer.open({
+            layer.open({
                 id: 1,
-                offset: '20%', //坐标
-                anim: 0, //动画
+                offset: ['10%', '33%'], //坐标
+                anim: 3, //动画
                 title: false, //标题
                 type: 1, //页面层
                 closeBtn: 0, //关闭按钮
-                area: '600px', //宽高
+                area: '33%', //宽高
                 skin: 'layui-layer-rim', //风格
                 shade: 0.6, //遮罩层透明度
                 shadeClose: true, //点击遮罩关闭
@@ -193,9 +193,9 @@ var CommonService = function () {
             self.options.content = self.options.content || '';
             self.options.footer = self.options.footer || '';
             self.options.endFunction = self.options.endFunction || function () {};
-            top.layer.open({
+            layer.open({
                 id: 1,
-                offset: '20%', //坐标
+                //offset: '20%',//坐标
                 anim: 0, //动画
                 title: false, //标题
                 type: 1, //页面层
@@ -221,7 +221,7 @@ var CommonService = function () {
             self.options.content = self.options.content || '';
             parent.layer.open({
                 id: 1,
-                offset: '20%',
+                //offset: '20%',
                 anim: 0, //动画
                 title: false, //标题
                 type: 1, //页面层
@@ -363,12 +363,11 @@ var HomePage = function () {
 			var self = this;
 			var map = this.map;
 			self._initMap();
-			//self._initAjax();
 
 			//self.hpservice._testAjax([],1);
 			//self.hpservice._testAjax([],2);
 
-			self._initAjax();
+			self._initPoint();
 		}
 	}, {
 		key: '_initMap',
@@ -395,9 +394,52 @@ var HomePage = function () {
 				//alert(e.point.lng + "," + e.point.lat);
 			});
 		}
+
+		//Ajax initialize the points in the map
+
+	}, {
+		key: '_initPoint',
+		value: function _initPoint() {
+			var self = this;
+			$.ajax({
+				type: "POST",
+				url: "/gd/map/initStation",
+				traditional: true,
+				dataType: "json",
+				data: {},
+				success: function success(data) {
+					console.log('data.length:' + data.length);
+					self._setPoint(data, 'G');
+				},
+				error: function error(xhr, ajaxOptions, thrownError) {},
+				complete: function complete(data) {
+					//console.log('data.length:'+data.length);
+					//self._initMap();
+				}
+			});
+			$.ajax({
+				type: "POST",
+				url: "/gd/map/initPark",
+				traditional: true,
+				dataType: "json",
+				data: {},
+				success: function success(data) {
+					console.log('data.length:' + data.length);
+					self._setPoint(data, 'P');
+				},
+				error: function error(xhr, ajaxOptions, thrownError) {},
+				complete: function complete(data) {
+					//console.log('data.length:'+data.length);
+					//self._initMap();
+				}
+			});
+		}
+
+		//for _initAjax()
+
 	}, {
 		key: '_setPoint',
-		value: function _setPoint(data) {
+		value: function _setPoint(data, type) {
 			var self = this;
 			var map = this.map;
 			$.each(data, function (index, obj) {
@@ -407,42 +449,27 @@ var HomePage = function () {
 				var entrance1 = new BMap.Marker(point1); // 创建标注
 				map.addOverlay(entrance1); // 将标注添加到地图中
 				//entrance1.setAnimation(BMAP_ANIMATION_BOUNCE);
+				//if(type=='G'){
 				entrance1.addEventListener("click", function showWindow() {
 					//let p = entrance1.getPosition();       //获取marker的位置
 					//alert("centerLib的位置是" + p.lng + "," + p.lat);  
 					var imgPath = obj.imgPath; //'http://pic34.photophoto.cn/20150330/0007019952833279_b.jpg';//
 					var addr = obj.addr; //'北碚天生街道xx号西南大学一号门';//
 					var brief = obj.brief; //'西南大学一号门。';//obj.brief;
-					var title = obj.staFullName; //"一号门";//
-					self.hpservice._setMsgWindow(map, imgPath, addr, brief, title).open(point1);;
+					var title = obj.fullName; //"一号门";//
+					var alias = obj.alias;
+					self.hpservice._setMsgWindow(map, imgPath, addr, brief, title, alias).open(point1);;
 				}); //绑定监听器
 				entrance1.addEventListener("rightclick", function showWindow() {
 					var id = 2;
-					self.hpservice._addPointMenu(entrance1, obj.id);
+					self.hpservice._addPointMenu(entrance1, obj.id, type);
 				});
+				//}
 			});
 		}
-	}, {
-		key: '_initAjax',
-		value: function _initAjax() {
-			var self = this;
-			$.ajax({
-				type: "POST",
-				url: "/gd/user/test",
-				traditional: true,
-				dataType: "json",
-				data: {},
-				success: function success(data) {
-					console.log('data.length:' + data.length);
-					self._setPoint(data);
-				},
-				error: function error(xhr, ajaxOptions, thrownError) {},
-				complete: function complete(data) {
-					console.log('data.length:' + data.length);
-					//self._initMap();
-				}
-			});
-		}
+
+		//useless
+
 	}, {
 		key: '_initMapOld',
 		value: function _initMapOld() {
@@ -594,32 +621,40 @@ var HomePageService = function () {
 			var txtMenuItem = [{
 				text: '添加站点',
 				callback: function callback() {
-					//alert(self.position.lng + "add entrance" + self.position.lat);
-					//self._preAddStation(self.position.lng+"",self.position.lat+"");
-					//location.href = "/gd/station/preAdd?posx="+posx+"&posy=" + posy;//
-					/*layer.msg("this is the message!!!!!!!");
-     layer.open({
-       type: 2,
-       title: 'iframe父子操作',
-       maxmin: true,
-       shadeClose: true, //点击遮罩关闭层
-       area : ['800px' , '520px'],
-       content: 'http://layer.layui.com/mobile/' //iframe的url
-       });*/
-					//self.commonService.AlertMessage("未选择任何文件");//弹窗提示
 					self.commonService.options = {
-						header: '添加文件头 文件尾',
-						content: '<form role="form" id="ExcelForm" action="/Admin_Areas/Document/getDesc">' + ' <div class="form-group">' + ' <label for="inputfile">添加</label></br>' + ' <input type="file" id="inputfile" >' + '<div id="DivDescrip" style="display:none"><label for="description">描述 </label>' + '<input type="text" class="form-control" id="description" name="description" placeholder=默认为>' + '<label style="display:none" for="endPart" >尾端</label>' + '<input style="display:none" type="text" class="form-control" id="endPart" name="endPart" ></div>' + '<input type="hidden" id="FileID" name="FileID" />' + '<input name="IsHead" id="IsHead" value="" type="hidden"/>' + ' </form>',
-						footer: '<div> <input type="hidden" id="url" />' + '<button type="button" class="btn btn-default btncancel">取消</button>' + '<a class="btn btn-primary btnsubmit" data-dismiss="modal">' + '<span class="glyphicon glyphicon-cloud-upload" id="uploadtitle">提交</span> </a>' + '</div>'
+						header: '添加站点',
+						content: '<form role="form" id="addStation" method="POST" action="/gd/station/add">' + '<div class="form-group">' + '<label for="name">站点名称</label>' + '<input type="text" class="form-control" id="fullName" name="fullName" placeholder="一号门">' + '<label for="name">站点代号</label>' + '<input type="text" class="form-control" id="alias" name="alias" placeholder="G1">' + '<label for="name">站点地址</label>' + '<input type="text" class="form-control" id="addr" name="addr" placeholder="北碚天生街道xx号西南大学一号门">' + '<label for="name">站点简介</label>' + '<input type="text" class="form-control" id="brief" name="brief" placeholder="默认为站点名称">' + '<input type="hidden" class="form-control" id="imgPath" value="http://pic34.photophoto.cn/20150330/0007019952833279_b.jpg" name="imgPath">' + '<input type="hidden" id="posx" name="posx" value="' + posx + '"/>' + '<input type="hidden" id="posy" name="posy" value="' + posy + '"/>' + '</div>' + ' </form>',
+						footer: '<button type="button" class="btn btn-default stacancel">取消</button>' + '<button type="button" class="btn btn-primary stasubmit"><span class="glyphicon glyphicon-cloud-upload" id="uploadtitle">添加</span></button>'
+
 					};
 					self.commonService.OpenParentModalLayer();
+					$('.stasubmit').click(function () {
+						$('#addStation').submit();
+						console.log("submit now");
+						self.commonService.CloseLayer();
+					});
+					$('.stacancel').click(function () {
+						self.commonService.CloseLayer();
+					});
 				}
 			}, {
-				text: '添加停车场',
+				text: '添加停车点',
 				callback: function callback() {
-					alert("not implement yet");
-					//self._preAddStation(self.position.lng,self.position.lat);
-					location.href = "/gd/station/preAdd?posx=" + posx + "&posy=" + posy; //
+					self.commonService.options = {
+						header: '添加停车点',
+						content: '<form role="form" id="addPark" method="POST" action="/gd/park/add">' + '<div class="form-group">' + '<label for="name">停车点名称</label>' + '<input type="text" class="form-control" id="fullName" name="fullName" placeholder="一号停车点">' + '<label for="name">停车点代号</label>' + '<input type="text" class="form-control" id="alias" name="alias" placeholder="P1">' + '<label for="name">停车点地址</label>' + '<input type="text" class="form-control" id="addr" name="addr" placeholder="北碚天生街道xx号西南大学一号停车点">' + '<label for="name">停车点简介</label>' + '<input type="text" class="form-control" id="brief" name="brief" placeholder="默认为停车点名称">' + '<label for="name">停车点车位总量</label>' + '<input type="text" class="form-control" id="totalLot" name="totalLot" placeholder="停车点车位总量">' + '<input type="hidden" class="form-control" id="imgPath" value="http://pic34.photophoto.cn/20150330/0007019952833279_b.jpg" name="imgPath">' + '<input type="hidden" id="posx" name="posx" value="' + posx + '"/>' + '<input type="hidden" id="posy" name="posy" value="' + posy + '"/>' + '</div>' + ' </form>',
+						footer: '<button type="button" class="btn btn-default parkcancel">取消</button>' + '<button type="button" class="btn btn-primary parksubmit"><span class="glyphicon glyphicon-cloud-upload" id="uploadtitle">添加</span></button>'
+
+					};
+					self.commonService.OpenParentModalLayer();
+					$('.parksubmit').click(function () {
+						$('#addPark').submit();
+						console.log("submit now");
+						self.commonService.CloseLayer();
+					});
+					$('.parkcancel').click(function () {
+						self.commonService.CloseLayer();
+					});
 				}
 			}];
 			for (var i = 0; i < txtMenuItem.length; i++) {
@@ -629,31 +664,131 @@ var HomePageService = function () {
 		}
 	}, {
 		key: '_addPointMenu',
-		value: function _addPointMenu(point, id) {
+		value: function _addPointMenu(point, id, type) {
 			var self = this;
 			var menu = new BMap.ContextMenu();
-			var txtMenuItem = [{
-				text: '修改站点',
-				callback: function callback() {
-					//alert(self.position.lng + "add entrance" + self.position.lat);
-					location.href = "/gd/station/update?id=" + id; //
-					alert("not implement yet!id:" + id);
+			var txtMenuItem = [];
+			if (type == 'G') {
+				txtMenuItem = [{
+					text: '修改站点',
+					callback: function callback() {
+						//alert(self.position.lng + "add entrance" + self.position.lat);
+						//location.href = "/gd/station/update/"+id//
+						//alert("not implement yet!id:"+id);
+						//let data = self._getPoint(type,id);
+						$.ajax({
+							type: "POST",
+							url: "/gd/station/get/" + id,
+							traditional: true,
+							//我们用text格式接收  
+							//dataType: "text",   
+							//json格式接收数据  
+							dataType: "json",
+							data: {},
+							success: function success(data) {
+								self.commonService.options = {
+									header: '修改站点',
+									content: '<form role="form" id="updateStation" method="POST" action="/gd/station/update">' + '<div class="form-group">' + '<input type="hidden" id="id" name="id" value="' + data.id + '"/>' + '<label for="name">站点名称</label>' + '<input type="text" class="form-control" id="fullName" name="fullName" value="' + data.fullName + '">' + '<label for="name">站点代号</label>' + '<input type="text" class="form-control" id="alias" name="alias" value="' + data.alias + '">' + '<label for="name">站点地址</label>' + '<input type="text" class="form-control" id="addr" name="addr" value="' + data.addr + '">' + '<label for="name">站点简介</label>' + '<input type="text" class="form-control" id="brief" name="brief" value="' + data.brief + '">' + '</div>' + ' </form>',
+									footer: '<button type="button" class="btn btn-default stacancel">取消</button>' + '<button type="button" class="btn btn-primary stasubmit"><span class="glyphicon glyphicon-cloud-upload" id="uploadtitle">添加</span></button>'
 
-					//Ajax here
-				}
-			}, {
-				text: '删除站点',
-				callback: function callback() {
-					location.href = "/gd/station/delete?id=" + id; //
-					alert("not implement yet!id:" + id);
-					//Ajax here
-				}
-			}];
+								};
+								self.commonService.OpenParentModalLayer();
+								$('.stasubmit').click(function () {
+									$('#updateStation').submit();
+									console.log("submit now");
+									self.commonService.CloseLayer();
+								});
+								$('.stacancel').click(function () {
+									self.commonService.CloseLayer();
+								});
+							},
+							error: function error(xhr, ajaxOptions, thrownError) {}
+						});
+					}
+				}, {
+					text: '删除站点',
+					callback: function callback() {
+						location.href = "/gd/station/delete" + id; //
+						console.log('delete station id:' + id);
+						//Ajax here
+					}
+				}];
+			}
+			if (type == 'P') {
+				txtMenuItem = [{
+					text: '修改停车点',
+					callback: function callback() {
+						//let data = self._getPoint(type,id);
+						$.ajax({
+							type: "POST",
+							url: "/gd/park/get/" + id,
+							traditional: true,
+							//我们用text格式接收  
+							//dataType: "text",   
+							//json格式接收数据  
+							dataType: "json",
+							data: {},
+							success: function success(data) {
+								self.commonService.options = {
+									header: '修改停车点',
+									content: '<form role="form" id="updatePark" method="POST" action="/gd/park/update">' + '<div class="form-group">' + '<input type="hidden" id="id" name="id" value="' + data.id + '"/>' + '<label for="name">停车点名称</label>' + '<input type="text" class="form-control" id="fullName" name="fullName" value="' + data.fullName + '">' + '<label for="name">停车点代号</label>' + '<input type="text" class="form-control" id="alias" name="alias" value="' + data.alias + '">' + '<label for="name">停车点地址</label>' + '<input type="text" class="form-control" id="addr" name="addr" value="' + data.addr + '">' + '<label for="name">停车点简介</label>' + '<input type="text" class="form-control" id="brief" name="brief" value="' + data.brief + '">' + '<label for="name">停车点车位总量</label>' + '<input type="text" class="form-control" id="totalLot" name="totalLot" value="' + data.totalLot + '">' + '</div>' + ' </form>',
+									footer: '<button type="button" class="btn btn-default parkcancel">取消</button>' + '<button type="button" class="btn btn-primary parksubmit"><span class="glyphicon glyphicon-cloud-upload" id="uploadtitle">添加</span></button>'
+
+								};
+								self.commonService.OpenParentModalLayer();
+								$('.parksubmit').click(function () {
+									$('#updatePark').submit();
+									console.log("submit now");
+									self.commonService.CloseLayer();
+								});
+								$('.parkcancel').click(function () {
+									self.commonService.CloseLayer();
+								});
+							},
+							error: function error(xhr, ajaxOptions, thrownError) {}
+						});
+					}
+				}, {
+					text: '删除停车点',
+					callback: function callback() {
+						location.href = "/gd/park/delete/" + id;
+						console.log('delete park id:' + id);
+						//Ajax here
+					}
+				}];
+			}
 			for (var i = 0; i < txtMenuItem.length; i++) {
 				menu.addItem(new BMap.MenuItem(txtMenuItem[i].text, txtMenuItem[i].callback, 100));
 			}
 			point.addContextMenu(menu);
 		}
+	}, {
+		key: '_getPoint',
+		value: function _getPoint(pointType, id) {
+			var pointData = void 0;
+			var url = "/gd/" + pointType == "P" ? "park" : "station" + "/get/" + id;
+			url = "/gd/park/get/1";
+			$.ajax({
+				type: "POST",
+				url: url,
+				//url : "/gd/"+pointType=="P"?"park":"station"+"/get/"+id,
+				traditional: true,
+				//我们用text格式接收  
+				//dataType: "text",   
+				//json格式接收数据  
+				dataType: "json",
+				data: {},
+				success: function success(data) {
+					//return data;
+					pointData = data;
+				},
+				error: function error(xhr, ajaxOptions, thrownError) {}
+			});
+			return pointData;
+		}
+
+		//useless
+
 	}, {
 		key: '_testAjax',
 		value: function _testAjax(dataArr, id) {
@@ -675,10 +810,13 @@ var HomePageService = function () {
 				error: function error(xhr, ajaxOptions, thrownError) {}
 			});
 		}
+
+		//when click the point then show the message about the point
+
 	}, {
 		key: '_setMsgWindow',
-		value: function _setMsgWindow(map, imgPath, addr, brief, title) {
-			var content = '<div style="margin:0;line-height:20px;padding:2px;width:380px;">' + '<img src="' + imgPath + '" alt="" style="width:100%;height:100px;"/>' + '地址：' + addr + '<br/>简介：' + brief + '</div>';
+		value: function _setMsgWindow(map, imgPath, addr, brief, title, alias) {
+			var content = '<div style="margin:0;line-height:20px;padding:2px;width:380px;">' + '<img src="' + imgPath + '" alt="" style="width:100%;height:100px;"/>' + '地址：' + addr + '<br/>简介：' + brief + '<br/>代号：' + alias + '</div>';
 			var searchInfoWindow = null;
 			searchInfoWindow = new BMapLib.SearchInfoWindow(map, content, {
 				title: title, //标题

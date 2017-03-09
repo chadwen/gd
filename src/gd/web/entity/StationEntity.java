@@ -16,14 +16,14 @@ import org.springframework.stereotype.Component;
 public class StationEntity {
 	@Id
     @GeneratedValue
-    @Column(name="out_id")
+    @Column(name="sta_id")
     private int id;
 	
 	@Column(name="sta_alias",nullable=false)
-	private String staAlias;
+	private String alias;
 	
 	@Column(name="sta_fullname",nullable=false)
-	private String staFullName;
+	private String fullName;
 	
 	@Column(name="position_x",nullable=false)
 	private String posx;
@@ -65,20 +65,20 @@ public class StationEntity {
 		this.id = id;
 	}
 
-	public String getStaAlias() {
-		return staAlias;
+	public String getAlias() {
+		return alias;
 	}
 
-	public void setStaAlias(String staAlias) {
-		this.staAlias = staAlias;
+	public void setAlias(String alias) {
+		this.alias = alias;
 	}
 
-	public String getStaFullName() {
-		return staFullName;
+	public String getFullName() {
+		return fullName;
 	}
 
-	public void setStaFullName(String staFullName) {
-		this.staFullName = staFullName;
+	public void setFullName(String fullName) {
+		this.fullName = fullName;
 	}
 
 	public String getPosx() {

@@ -1,4 +1,4 @@
-/*! // gd Version 1.0  3/7/2017, 6:18:08 AM --By wcy  */
+/*! // gd Version 1.0  3/8/2017, 9:22:54 AM --By wcy  */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -140,9 +140,9 @@ var CommonService = function () {
             self.options.content = self.options.content || '';
             self.options.footer = self.options.footer || '';
             self.options.endFunction = self.options.endFunction || function () {};
-            top.layer.open({
+            layer.open({
                 id: 1,
-                offset: '20%', //坐标
+                //offset: '20%',//坐标
                 anim: 0, //动画
                 title: false, //标题
                 type: 1, //页面层
@@ -166,14 +166,14 @@ var CommonService = function () {
             self.options.content = self.options.content || '';
             self.options.footer = self.options.footer || '';
             self.options.endFunction = self.options.endFunction || function () {};
-            top.layer.open({
+            layer.open({
                 id: 1,
-                offset: '20%', //坐标
-                anim: 0, //动画
+                offset: ['10%', '33%'], //坐标
+                anim: 3, //动画
                 title: false, //标题
                 type: 1, //页面层
                 closeBtn: 0, //关闭按钮
-                area: '600px', //宽高
+                area: '33%', //宽高
                 skin: 'layui-layer-rim', //风格
                 shade: 0.6, //遮罩层透明度
                 shadeClose: true, //点击遮罩关闭
@@ -193,9 +193,9 @@ var CommonService = function () {
             self.options.content = self.options.content || '';
             self.options.footer = self.options.footer || '';
             self.options.endFunction = self.options.endFunction || function () {};
-            top.layer.open({
+            layer.open({
                 id: 1,
-                offset: '20%', //坐标
+                //offset: '20%',//坐标
                 anim: 0, //动画
                 title: false, //标题
                 type: 1, //页面层
@@ -221,7 +221,7 @@ var CommonService = function () {
             self.options.content = self.options.content || '';
             parent.layer.open({
                 id: 1,
-                offset: '20%',
+                //offset: '20%',
                 anim: 0, //动画
                 title: false, //标题
                 type: 1, //页面层
@@ -65221,6 +65221,9 @@ var WholeState = function () {
 		this.commonService = new _CommonService2.default();
 		this.myChart;
 		this.option;
+		this.goEasy = new GoEasy({
+			appkey: 'bf8b21fc-dbde-4d1f-9fee-bd1f39641b73'
+		});
 
 		this.initEvent();
 	}
@@ -65233,6 +65236,14 @@ var WholeState = function () {
 			self._initChart();
 
 			self._setInterval();
+
+			self.goEasy.subscribe({
+				channel: 'demo_channel',
+				onMessage: function onMessage(message) {
+					alert('收到：' + message.content);
+					console.log(message.content);
+				}
+			});
 
 			//the same as ++1 at y-axis
 			$('#trig').on('click', function () {

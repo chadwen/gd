@@ -16,14 +16,29 @@ import org.springframework.stereotype.Component;
 public class ParkEntity {
 	@Id
     @GeneratedValue
-    @Column(name="out_id")
-    private Integer id;
+    @Column(name="park_id")
+    private int id;
+	
+	@Column(name="park_alias",nullable=false)
+	private String alias;
+	
+	@Column(name="park_fullname",nullable=false)
+	private String fullName;
 	
 	@Column(name="position_x",nullable=false)
 	private String posx;
 	
 	@Column(name="position_y",nullable=false)
 	private String posy;
+	
+	@Column(name="img_path",nullable=false)
+	private String imgPath = "http://pic34.photophoto.cn/20150330/0007019952833279_b.jpg";
+	
+	@Column(name="address",nullable=false,length=512)
+	private String addr;
+	
+	@Column(name="brief",nullable=false,length=512)
+	private String brief;
 	
 	@Column(name="total_lot",nullable=false)
 	private int totalLot;
@@ -48,12 +63,28 @@ public class ParkEntity {
 		this.isValid = isValid;
 	}
 
-	public Integer getId() {
+	public int getId() {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(int id) {
 		this.id = id;
+	}
+
+	public String getAlias() {
+		return alias;
+	}
+
+	public void setAlias(String alias) {
+		this.alias = alias;
+	}
+
+	public String getFullName() {
+		return fullName;
+	}
+
+	public void setFullName(String fullName) {
+		this.fullName = fullName;
 	}
 
 	public String getPosx() {
@@ -70,6 +101,30 @@ public class ParkEntity {
 
 	public void setPosy(String posy) {
 		this.posy = posy;
+	}
+
+	public String getImgPath() {
+		return imgPath;
+	}
+
+	public void setImgPath(String imgPath) {
+		this.imgPath = imgPath;
+	}
+
+	public String getAddr() {
+		return addr;
+	}
+
+	public void setAddr(String addr) {
+		this.addr = addr;
+	}
+
+	public String getBrief() {
+		return brief;
+	}
+
+	public void setBrief(String brief) {
+		this.brief = brief;
 	}
 
 	public int getTotalLot() {

@@ -39,9 +39,29 @@ public class StationDAOImpl implements StationDAO{
 	@Override
 	public List<StationEntity> getAllStationEntity() {
 		// TODO Auto-generated method stub
-		String hql = "from StationEntity";
+		String hql = "from StationEntity where isValid = ?";
 		Query query = sessionFactory.getCurrentSession().createQuery(hql);
+		query.setInteger(0, 1);
 		List<StationEntity> entities = query.list();
 		return entities;
+	}
+
+	@Override
+	public void updateStation(StationEntity stationEntity) {
+		// TODO Auto-generated method stub
+		sessionFactory.getCurrentSession().update(stationEntity);
+	}
+
+	@Override
+	public void deleteStation(int id) {
+		// TODO Auto-generated method stub
+		sessionFactory.getCurrentSession().delete(sessionFactory.getCurrentSession().get(StationEntity.class, id));
+		
+	}
+
+	@Override
+	public StationEntity getStationById(int id) {
+		// TODO Auto-generated method stub
+		return (StationEntity)sessionFactory.getCurrentSession().get(StationEntity.class, id);
 	}
 }

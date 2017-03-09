@@ -16,9 +16,9 @@ class CommonService{
         self.options.content = self.options.content || '';
         self.options.footer = self.options.footer || '';
         self.options.endFunction = self.options.endFunction || function () { };
-        top.layer.open({
+        layer.open({
             id: 1,
-            offset: '20%',//坐标
+            //offset: '20%',//坐标
             anim: 0,//动画
             title: false,//标题
             type: 1,//页面层
@@ -50,14 +50,14 @@ class CommonService{
         self.options.content = self.options.content || '';
         self.options.footer = self.options.footer || '';
         self.options.endFunction = self.options.endFunction || function () { };
-        top.layer.open({
+        layer.open({
             id: 1,
-            offset: '20%',//坐标
-            anim: 0,//动画
+            offset: ['10%', '33%'],//坐标
+            anim: 3,//动画
             title: false,//标题
             type: 1,//页面层
             closeBtn: 0,//关闭按钮
-            area: '600px',//宽高
+            area: '33%',//宽高
             skin: 'layui-layer-rim',//风格
             shade: 0.6,//遮罩层透明度
             shadeClose: true, //点击遮罩关闭
@@ -83,9 +83,9 @@ class CommonService{
         self.options.content = self.options.content || '';
         self.options.footer = self.options.footer || '';
         self.options.endFunction = self.options.endFunction || function () { };
-        top.layer.open({
+        layer.open({
             id: 1,
-            offset: '20%',//坐标
+            //offset: '20%',//坐标
             anim: 0,//动画
             title: false,//标题
             type: 1,//页面层
@@ -116,7 +116,7 @@ class CommonService{
         self.options.content = self.options.content || '';
         parent.layer.open({
             id: 1,
-            offset: '20%',
+            //offset: '20%',
             anim: 0,//动画
             title: false,//标题
             type: 1,//页面层

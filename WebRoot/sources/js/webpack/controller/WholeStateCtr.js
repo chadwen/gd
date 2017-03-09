@@ -9,7 +9,9 @@ class WholeState{
 		this.commonService = new CommonService();
 		this.myChart;
 		this.option;
-		
+		this.goEasy = new GoEasy({
+            appkey: 'bf8b21fc-dbde-4d1f-9fee-bd1f39641b73'
+        });
 		
 		this.initEvent();
 	}
@@ -19,6 +21,15 @@ class WholeState{
 		self._initChart();
 		
 		self._setInterval();
+		
+		
+		self.goEasy.subscribe({
+	        channel: 'demo_channel',
+	        onMessage: function(message){
+	          alert('收到：'+message.content);
+	          console.log(message.content);
+	        }
+		});
 		
 		//the same as ++1 at y-axis
 		$('#trig').on('click',function(){

@@ -43,6 +43,7 @@ module.exports = {
 	                exclude: /Scripts/, // excluding .spec files
 	                loader: "uglify"
 	            },
+	            
 	        ]
 	    },
 		
@@ -74,7 +75,7 @@ module.exports = {
 //		resolve: {
 //	        modulesDirectories: ['node_modules'],
 //	        alias: {
-//	            jquery: "../jquery-3.1.1.min",
+//	            'jquery': "../jquery-3.1.1.min",
 //	            /*jqueryui: '../plugins/jQueryUI/jquery-ui.min',
 //	            jqueryform: "../plugins/JQuery/jquery.unobtrusive-ajax.min",
 //	            jqueryval: "../plugins/JQuery/jquery.validate",
@@ -116,6 +117,7 @@ module.exports = {
 //	            ]
 //	        }
 //	    },
+
      
 };
 		

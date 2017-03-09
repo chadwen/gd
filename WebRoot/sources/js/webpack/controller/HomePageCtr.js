@@ -16,12 +16,12 @@ class HomePage{
 		let self = this;
 		let map = this.map;
 		self._initMap();
-		//self._initAjax();
 
 		//self.hpservice._testAjax([],1);
 		//self.hpservice._testAjax([],2);
 
-		self._initAjax();
+		self._initPoint();
+		
 		
 	}
 	
@@ -49,7 +49,49 @@ class HomePage{
 		});
 	}
 	
-	_setPoint(data){
+	//Ajax initialize the points in the map
+	_initPoint(){
+		let self = this;
+		$.ajax({
+			type : "POST",
+			url : "/gd/map/initStation",
+			traditional : true,
+			dataType : "json",
+			data : {},
+			success : function(data) {
+				console.log('data.length:'+data.length);
+				self._setPoint(data,'G');
+			},
+			error : function(xhr, ajaxOptions, thrownError) {
+
+			},
+			complete:function(data){
+				//console.log('data.length:'+data.length);
+				//self._initMap();
+			}
+		});
+		$.ajax({
+			type : "POST",
+			url : "/gd/map/initPark",
+			traditional : true,
+			dataType : "json",
+			data : {},
+			success : function(data) {
+				console.log('data.length:'+data.length);
+				self._setPoint(data,'P');
+			},
+			error : function(xhr, ajaxOptions, thrownError) {
+
+			},
+			complete:function(data){
+				//console.log('data.length:'+data.length);
+				//self._initMap();
+			}
+		});
+	}
+	
+	//for _initAjax()
+	_setPoint(data,type){
 		let self = this;
 		let map = this.map;
 		$.each(data,function(index,obj){
@@ -59,44 +101,29 @@ class HomePage{
 			let entrance1 = new BMap.Marker(point1);  // 创建标注
 			map.addOverlay(entrance1);              // 将标注添加到地图中
 			//entrance1.setAnimation(BMAP_ANIMATION_BOUNCE);
-			entrance1.addEventListener("click",function showWindow(){
-				//let p = entrance1.getPosition();       //获取marker的位置
-				//alert("centerLib的位置是" + p.lng + "," + p.lat);  
-				let imgPath = obj.imgPath;//'http://pic34.photophoto.cn/20150330/0007019952833279_b.jpg';//
-				let addr = obj.addr;//'北碚天生街道xx号西南大学一号门';//
-				let brief = obj.brief;//'西南大学一号门。';//obj.brief;
-				let title = obj.staFullName;//"一号门";//
-				self.hpservice._setMsgWindow(map,imgPath,addr,brief,title).open(point1); ;
-			});//绑定监听器
-			entrance1.addEventListener("rightclick",function showWindow(){
-				let id = 2;
-				self.hpservice._addPointMenu(entrance1,obj.id);
-			});
+			//if(type=='G'){
+				entrance1.addEventListener("click",function showWindow(){
+					//let p = entrance1.getPosition();       //获取marker的位置
+					//alert("centerLib的位置是" + p.lng + "," + p.lat);  
+					let imgPath = obj.imgPath;//'http://pic34.photophoto.cn/20150330/0007019952833279_b.jpg';//
+					let addr = obj.addr;//'北碚天生街道xx号西南大学一号门';//
+					let brief = obj.brief;//'西南大学一号门。';//obj.brief;
+					let title = obj.fullName;//"一号门";//
+					let alias = obj.alias;
+					self.hpservice._setMsgWindow(map,imgPath,addr,brief,title,alias).open(point1); ;
+				});//绑定监听器
+				entrance1.addEventListener("rightclick",function showWindow(){
+					let id = 2;
+					self.hpservice._addPointMenu(entrance1,obj.id,type);
+				});
+			//}
 		});
 	}
 	
-	_initAjax(){
-		let self = this;
-		$.ajax({
-			type : "POST",
-			url : "/gd/user/test",
-			traditional : true,
-			dataType : "json",
-			data : {},
-			success : function(data) {
-				console.log('data.length:'+data.length);
-				self._setPoint(data);
-			},
-			error : function(xhr, ajaxOptions, thrownError) {
-
-			},
-			complete:function(data){
-				console.log('data.length:'+data.length);
-				//self._initMap();
-			}
-		});
-	}
 	
+	
+	
+	//useless
 	_initMapOld(){
 		let self = this;
 		let map = self.map;
@@ -194,6 +221,5 @@ class HomePage{
 		map.addOverlay(park4);              // 将标注添加到地图中
 	}
 
-	
 }
 export default HomePage
