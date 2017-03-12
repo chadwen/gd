@@ -19,8 +19,8 @@ public class UserDAOImpl implements UserDAO{
 	@Override
 	public UserEntity getUserByName(String userName){
 		
-		//it work?
-		String queryStr = "from User where userName =  ?";
+		//it work? yes
+		String queryStr = "from UserEntity where userName =  ?";
 		Query query = sessionFactory.getCurrentSession().createQuery(queryStr);
 		query.setString(0, userName);
 		
@@ -30,7 +30,7 @@ public class UserDAOImpl implements UserDAO{
 		List<UserEntity> ur = query.list();
 		
 
-		//String queryStr = "from  User WHERE userName =  '"+ userName +"'";
+		//String queryStr = "from  UserEntity WHERE userName =  '"+ userName +"'";
 		//List<User> ur = sessionFactory.getCurrentSession().createQuery(queryStr).list();
 		
 		
@@ -43,7 +43,7 @@ public class UserDAOImpl implements UserDAO{
 	
 	@Override
 	public UserEntity getUserById(int id){
-		String queryStr = "from User where id = ?";
+		String queryStr = "from UserEntity where id = ?";
 		Query query = sessionFactory.getCurrentSession().createQuery(queryStr);
 		query.setInteger(0, id);
 		List<UserEntity> uList = query.list();

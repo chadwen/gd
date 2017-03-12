@@ -29,7 +29,7 @@ public class UserEntity{
 	private String priv;
 	
 	@Column(name="phone",nullable=false)
-	private String phone;
+	private String phone="00000000";
 	
 	@Column(name="sta_id",nullable=false)
 	private int staId;

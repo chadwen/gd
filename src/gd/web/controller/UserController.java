@@ -36,7 +36,7 @@ public class UserController {
 	
 	
 	
-	// what' that????????????????
+	// what's that????????????????
 	//@RequestMapping(value="detail/{id}",method=RequestMethod.GET)
 	//public String detail(@PathVariable int id,Model model){
 	//public @ResponseBody List<Goods> testAjax(@RequestParam String types){}
@@ -54,9 +54,10 @@ public class UserController {
 	public String entry(){
 		UserEntity userEntity = userService.getUserByName("admin");
 		if(userEntity == null){
+			userEntity = new UserEntity();
 			userEntity.setUserName("admin");
 			userEntity.setPassword("admin");
-			userEntity.setPriv("admin");
+			userEntity.setPriv(Enum.ADMINISTRATOR.toString());
 			userEntity.setPhone("1021");
 			userEntity.setStaId(1);
 			userService.addUser(userEntity);
