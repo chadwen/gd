@@ -28,15 +28,23 @@ public class ChartDataController {
 	
 	
 
+	/**
+	 *  when this method will be called? 
+	 *  	when OPERATOR sign in, Ajax nothing to return.
+	 *  	when ADMINISTRATOR want to watch the data of the station, Ajax nothing to return.
+	 *  	when 
+	 * @param staId
+	 * @param currHour
+	 */
 	@RequestMapping(value="/init/{staId}",method = RequestMethod.POST)
 	public void initChart(@PathVariable int staId,int currHour){
 		ChartDataEntity chartDataEntity = chartDataService.getEntityByStaId(staId,Enum.IN.toString());
 		if(chartDataEntity == null){
 			
 		}
-		int mis = currHour+24-chartDataEntity.getCurrHour();
-		if(mis>0){
-			chartDataService.resetChart(mis,staId);
+		int missHour = currHour+24-chartDataEntity.getCurrHour();
+		if(missHour>0){
+			chartDataService.resetChart(missHour,staId);
 		}
 		
 	}

@@ -13,5 +13,5 @@ public interface ChartDataService {
 
 	ChartDataEntity getEntityByStaId(int staId, String direction);
 
-	void resetChart(int mis,int staId);
+	void resetChart(int missHour,int staId);
 }

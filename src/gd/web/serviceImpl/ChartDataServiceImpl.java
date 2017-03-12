@@ -62,11 +62,11 @@ public class ChartDataServiceImpl implements ChartDataService{
 		return chartDataDAO.getEntityByStaId(staId,direction);
 	}
 	@Override
-	public void resetChart(int mis,int staId) {
+	public void resetChart(int missHour,int staId) {
 		// TODO Auto-generated method stub
 		ChartDataEntity chartDataEntity = getEntityByStaId(staId,Enum.IN.toString());
 		ArrayList<String> dataList = (ArrayList<String>) Arrays.asList(chartDataEntity.getDatas().split(","));
-		for (int i = 0; i <mis ; i++) {
+		for (int i = 0; i <missHour ; i++) {
 			dataList.remove(i);
 			dataList.add("0");
 		}
