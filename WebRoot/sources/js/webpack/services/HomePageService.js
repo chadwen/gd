@@ -104,19 +104,19 @@ class HomePageService{
 		if(type=='G'){
 			txtMenuItem = [
 			           		{
+			           			text:'查看数据动态',
+			           			callback:function(){
+			           				alert('not implement yet!!!');
+			           				//location.href = "/gd/chartdata/get/"+id;
+			           			}
+			           		},
+			           		{
 			           			text:'修改站点',
 			           			callback:function(){
-			           				//alert(self.position.lng + "add entrance" + self.position.lat);
-			           				//location.href = "/gd/station/update/"+id//
-			           				//alert("not implement yet!id:"+id);
-			           				//let data = self._getPoint(type,id);
 			           				$.ajax({
 			           					type : "POST",
 			           					url : "/gd/station/get/"+id,
 			           					traditional : true,
-			           					//我们用text格式接收  
-			           					//dataType: "text",   
-			           					//json格式接收数据  
 			           					dataType : "json",
 			           					data : {},
 			           					success : function(data) {
@@ -160,9 +160,8 @@ class HomePageService{
 			           		{
 			           			text:'删除站点',
 			           			callback:function(){
-			           				location.href = "/gd/station/delete"+id//
+			           				location.href = "/gd/station/delete/"+id;
 			           				console.log('delete station id:'+id);
-			           				//Ajax here
 			           			}
 			           		},
 			           	];
@@ -172,14 +171,10 @@ class HomePageService{
         		{
         			text:'修改停车点',
         			callback:function(){
-        				//let data = self._getPoint(type,id);
         				$.ajax({
            					type : "POST",
            					url : "/gd/park/get/"+id,
            					traditional : true,
-           					//我们用text格式接收  
-           					//dataType: "text",   
-           					//json格式接收数据  
            					dataType : "json",
            					data : {},
            					success : function(data) {
@@ -227,7 +222,6 @@ class HomePageService{
         			callback:function(){
         				location.href = "/gd/park/delete/"+id;
            				console.log('delete park id:'+id);
-        				//Ajax here
         			}
         		},
         	];
@@ -237,10 +231,39 @@ class HomePageService{
 		}
 		point.addContextMenu(menu);
 	}
+	
+	//used by HomePageCtr.js
+	//when click the point then show the message about the point
+	_setMsgWindow(map,imgPath,addr,brief,title,alias){
+	    let content = '<div style="margin:0;line-height:20px;padding:2px;width:380px;">' 
+	    	+'<img src="'
+	    	+imgPath
+	    	+'" alt="" style="width:100%;height:100px;"/>'
+	    	+'地址：'+addr
+	    	+'<br/>简介：'+brief
+	    	+'<br/>代号：'+alias
+	    	+'</div>';
+	    let searchInfoWindow = null;
+		searchInfoWindow = new BMapLib.SearchInfoWindow(map, content, {
+				title  : title,      //标题
+				//width  : 290,             //宽度
+				//height : 105,              //高度
+				panel  : "panel",         //检索结果面板
+				enableAutoPan : true,     //自动平移
+				searchTypes   :[
+					BMAPLIB_TAB_SEARCH,   //周边检索
+					BMAPLIB_TAB_TO_HERE,  //到这里去
+					BMAPLIB_TAB_FROM_HERE //从这里出发
+				]
+			});
+		return searchInfoWindow;
+	}
 
+	//useless
 	_getPoint(pointType,id){
 		let pointData;
-		let url = "/gd/"+pointType=="P"?"park":"station"+"/get/"+id;
+		//error
+		//let url = "/gd/"+pointType=="P"?"park":"station"+"/get/"+id;
 		url = "/gd/park/get/1";
 		$.ajax({
 			type : "POST",
@@ -283,34 +306,9 @@ class HomePageService{
 			},
 			error : function(xhr, ajaxOptions, thrownError) {
 
-			}
+			},
+			complete:function(){},
 		});
-	}
-	
-	//when click the point then show the message about the point
-	_setMsgWindow(map,imgPath,addr,brief,title,alias){
-	    let content = '<div style="margin:0;line-height:20px;padding:2px;width:380px;">' 
-	    	+'<img src="'
-	    	+imgPath
-	    	+'" alt="" style="width:100%;height:100px;"/>'
-	    	+'地址：'+addr
-	    	+'<br/>简介：'+brief
-	    	+'<br/>代号：'+alias
-	    	+'</div>';
-	    let searchInfoWindow = null;
-		searchInfoWindow = new BMapLib.SearchInfoWindow(map, content, {
-				title  : title,      //标题
-				//width  : 290,             //宽度
-				//height : 105,              //高度
-				panel  : "panel",         //检索结果面板
-				enableAutoPan : true,     //自动平移
-				searchTypes   :[
-					BMAPLIB_TAB_SEARCH,   //周边检索
-					BMAPLIB_TAB_TO_HERE,  //到这里去
-					BMAPLIB_TAB_FROM_HERE //从这里出发
-				]
-			});
-		return searchInfoWindow;
 	}
 }
 export default HomePageService;

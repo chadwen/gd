@@ -7,23 +7,23 @@ class HomePage{
 	constructor(){
 		this.commonService = new CommonService();
 		this.hpservice = new hpService();
-		this.position = null;
 		
+		this.position = null;		
 		this.map = new BMap.Map("swuMap");
+		
+		
 		this.initEvent();
 	}
 	initEvent(){
 		let self = this;
 		let map = this.map;
+		
 		self._initMap();
-
-		//self.hpservice._testAjax([],1);
-		//self.hpservice._testAjax([],2);
-
 		self._initPoint();
 		
-		
 	}
+	
+	//*****************************************************************
 	
 	_initMap(){
 		let self = this;

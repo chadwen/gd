@@ -12,16 +12,21 @@ class WholeState{
 		this.goEasy = new GoEasy({
             appkey: 'bf8b21fc-dbde-4d1f-9fee-bd1f39641b73'
         });
+		this.inId;
+		this.outId;
+		
 		
 		this.initEvent();
 	}
 	initEvent(){
 		let self = this;
+		
+		//need to get user id and check privilege.as well as staId
+		self.inId = 1;
+		self.outId = 2;
 		//initialize chart
 		self._initChart();
-		
-		self._setInterval();
-		
+		self._setTimeout();
 		
 		self.goEasy.subscribe({
 	        channel: 'demo_channel',
@@ -31,78 +36,58 @@ class WholeState{
 	        }
 		});
 		
-		//the same as ++1 at y-axis
+		//++1 at y-axis, when click
+		
 		$('#trig').on('click',function(){
-			var data = self.option.series[0].data;
-			++data[data.length-1];
+			let dataOut = self.option.series[0].data;
+			++dataOut[dataOut.length-1];
+			console.log(dataOut);
+			console.log(dataOut.toString());
+
 			self.myChart.setOption(self.option);
-			self.commonService.AlertMessage("message");
+			//self.commonService.AlertMessage("message");
+		});
+		$('#testbtn').on('click',function(){
+			console.log(self._getSeconds());
+			alert(self._getSeconds());
+			location.href = "/gd/user/test";
+		});
+		$('#chartOut').on('click',function(){
+			let dataOut = self.option.series[0].data;
+			++dataOut[dataOut.length-1];
+			console.log(dataOut);
+			console.log(dataOut.toString());
+			//let id = 2;
+			self._pushData(dataOut.toString(),self.outId);
+			self.myChart.setOption(self.option);
+		});
+		$('#chartIn').on('click',function(){
+			let dataIn = self.option.series[1].data;
+			++dataIn[dataIn.length-1];
+			console.log(dataIn);
+			console.log(dataIn.toString());
+			//let id = 1;
+			self._pushData(dataOut.toString(),self.inId);
+			self.myChart.setOption(self.option);
 		});
 	}
 //---------------------------------------------------------------------------
-	
 	//_someFunc(){};
-	_setInterval(){
-		let self = this;
-		let option = self.option;
-		let num = 24;
-		setInterval(function(){
-			var data0 = option.series[0].data;
-		    var data1 = option.series[1].data;
-		    //var data2 = option.series[2].data;
-			if(data0.length >= num){
-				data0.shift();//delete first number
-				}
-			if(data1.length >= num){
-				data1.shift();
-				}
-			
-			data0.push(Math.round((Math.random() * 10 + 5)));
-			data1.push(Math.round((Math.random() * 10 + 5)));
-			//data2.push(Math.round((Math.random() * 10 + 5)));
-			
-			if(option.xAxis[0].data.length >= num){
-				option.xAxis[0].data.shift(); 	
-			}
-			//if(option.xAxis[1].data.length >= 10){
-			//	option.xAxis[1].data.shift();
-			//}
-			option.xAxis[0].data.push(self._getNowFormatDate());
-			
-			//option.xAxis[1].data.push(count++);
-			self.myChart.setOption(option);
-		},1000*60*60*24);
-		
-	}	
-	_getNowFormatDate(){
-		let date = new Date();
-		let seperator1 = "-";
-		let seperator2 = ":";
-		let month = date.getMonth() + 1;
-		let strDate = date.getDate();
-	    if (month >= 1 && month <= 9) {
-	        month = "0" + month;
-	    }
-	    if (strDate >= 0 && strDate <= 9) {
-	        strDate = "0" + strDate;
-	    }
-	    let currentdate = date.getFullYear() + seperator1 + month + seperator1 + strDate
-	            + " " + date.getHours() + seperator2 + date.getMinutes()
-	            + seperator2 + date.getSeconds();
-	    let dateandtime = strDate+"-" +((date.getHours()>=0&&date.getHours()<=9)?"0"+date.getHours():date.getHours());
-	    let times = ((date.getHours()>=0&&date.getHours()<=9)?"0"+date.getHours():date.getHours());
-	    return times;
-	    //return date.getMinutes();
-	}
-
+	//when initialize the chart, the id must be the id of chartdata record, instead of station
+	//so when initialize, check the direction is needed.
 	_initChart(){
 		let self = this;
 		let domm = $('#main');//why can't use '$' to get the dom?
 		self.myChart = echarts.init(document.getElementById('main'));
 		self._initChartOption();
-		self.myChart.setOption(self.option);
+		//ajax here
+//			self.option.series[0].data = dataOut;
+//			self.option.series[1].data = dataIn;
+//			self.option.xAxis[0].data = dataX;
+//			self.myChart.setOption(self.option);
+		//
 	}
-	
+	// used by _initChart
 	_initChartOption(){
 		let self = this;
 		self.option = {
@@ -111,8 +96,6 @@ class WholeState{
 				},
 				tooltip: {
 					trigger: 'axis',
-					 
-					
 				},
 				toolbox:{
 					show: true,
@@ -187,6 +170,8 @@ class WholeState{
 					
 					]
 			};
+		
+		// will be useless
 		let demoData = [5,3,8,10,5,3,8,18,54,26,45,38,58,67,66,70,80,26,90,43,78,99,100,35];
 		let demoData2 = [];
 		let demoDataX = [];
@@ -197,6 +182,96 @@ class WholeState{
 		self.option.series[0].data = demoData;
 		self.option.series[1].data = demoData2;
 		self.option.xAxis[0].data = demoDataX;
+	}
+	
+	
+	
+	_setTimeout(){
+		let self = this;
+		let seconds = self._getSeconds();
+		console.log(seconds);
+		setTimeout(function(){
+			self._setTimeoutSub();
+			self._setInterval();
+		},seconds*1000);
+	}
+	//used by _setTimeout
+	_setInterval(){
+		let self = this;
+		setInterval(function(){
+			self._setTimeoutSub();
+		},1000*60*60);
+	}
+	// every hour. used by _setInterval and _setTimeout
+	_setTimeoutSub(){
+		let self = this;
+		let option = self.option;
+		let num = 24;
+		let dataOut = option.series[0].data;
+	    let dataIn = option.series[1].data;
+		if(dataOut.length >= num){
+			dataOut.shift();//delete first number
+			}
+		if(dataIn.length >= num){
+			dataIn.shift();
+			}
+		
+		dataOut.push(Math.round((Math.random() * 10 + 5)));
+		dataIn.push(Math.round((Math.random() * 10 + 5)));
+		
+		if(option.xAxis[0].data.length >= num){
+			option.xAxis[0].data.shift(); 	
+		}
+		option.xAxis[0].data.push(self._getNowFormatDate());
+		self.myChart.setOption(option);
+		self._pushData(dataOut.toString(),self.outId);
+		self._pushData(dataIn.toString(), self.inId);
+	}
+	//10 seconds delay used by _setTimeout
+	_getSeconds(){
+		let second = 0;
+		let date = new Date();
+		second = 3600-(date.getMinutes()*60+date.getSeconds());
+		return second+10;
+	}
+	//push data to server.
+	_pushData(datas,id){
+		let self = this;
+		let date = new Date();
+		let currHour = date.getHours()
+		$.ajax({
+			type:"POST",
+			url:"/gd/chartdata/update/"+id,
+			dataType:"json",
+			data:{"datas":datas,"currHour":currHour},
+			success:function(data){},
+			error:function(){},
+			complete:function(){},
+		});
+	}
+	
+
+	
+	//return hour number, used by _setInterval and _initChartOption
+	_getNowFormatDate(){
+		let date = new Date();
+		let seperator1 = "-";
+		let seperator2 = ":";
+		let month = date.getMonth() + 1;
+		let strDate = date.getDate();
+	    if (month >= 1 && month <= 9) {
+	        month = "0" + month;
+	    }
+	    if (strDate >= 0 && strDate <= 9) {
+	        strDate = "0" + strDate;
+	    }
+	    let currentdate = date.getFullYear() + seperator1 + month + seperator1 + strDate
+	            + " " + date.getHours() + seperator2 + date.getMinutes()
+	            + seperator2 + date.getSeconds();
+	    let dateandtime = strDate+"-" +((date.getHours()>=0&&date.getHours()<=9)?"0"+date.getHours():date.getHours());
+	    let times = ((date.getHours()>=0&&date.getHours()<=9)?"0"+date.getHours():date.getHours());
+	    return times;
+	    //return date.getMinutes();
 	}
 	
 }

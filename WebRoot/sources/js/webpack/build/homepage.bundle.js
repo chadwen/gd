@@ -1,4 +1,4 @@
-/*! // gd Version 1.0  3/8/2017, 9:22:54 AM --By wcy  */
+/*! // gd Version 1.0  3/9/2017, 9:31:44 AM --By wcy  */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -157,6 +157,9 @@ var CommonService = function () {
                 end: self.options.endFunction
             });
         }
+
+        //be using
+
     }, {
         key: 'OpenParentModalLayer',
         value: function OpenParentModalLayer() {
@@ -351,9 +354,10 @@ var HomePage = function () {
 
 		this.commonService = new _CommonService2.default();
 		this.hpservice = new _HomePageService2.default();
-		this.position = null;
 
+		this.position = null;
 		this.map = new BMap.Map("swuMap");
+
 		this.initEvent();
 	}
 
@@ -362,13 +366,13 @@ var HomePage = function () {
 		value: function initEvent() {
 			var self = this;
 			var map = this.map;
+
 			self._initMap();
-
-			//self.hpservice._testAjax([],1);
-			//self.hpservice._testAjax([],2);
-
 			self._initPoint();
 		}
+
+		//*****************************************************************
+
 	}, {
 		key: '_initMap',
 		value: function _initMap() {
@@ -670,19 +674,18 @@ var HomePageService = function () {
 			var txtMenuItem = [];
 			if (type == 'G') {
 				txtMenuItem = [{
+					text: '查看数据动态',
+					callback: function callback() {
+						alert('not implement yet!!!');
+						//location.href = "/gd/chartdata/get/"+id;
+					}
+				}, {
 					text: '修改站点',
 					callback: function callback() {
-						//alert(self.position.lng + "add entrance" + self.position.lat);
-						//location.href = "/gd/station/update/"+id//
-						//alert("not implement yet!id:"+id);
-						//let data = self._getPoint(type,id);
 						$.ajax({
 							type: "POST",
 							url: "/gd/station/get/" + id,
 							traditional: true,
-							//我们用text格式接收  
-							//dataType: "text",   
-							//json格式接收数据  
 							dataType: "json",
 							data: {},
 							success: function success(data) {
@@ -708,9 +711,8 @@ var HomePageService = function () {
 				}, {
 					text: '删除站点',
 					callback: function callback() {
-						location.href = "/gd/station/delete" + id; //
+						location.href = "/gd/station/delete/" + id;
 						console.log('delete station id:' + id);
-						//Ajax here
 					}
 				}];
 			}
@@ -718,14 +720,10 @@ var HomePageService = function () {
 				txtMenuItem = [{
 					text: '修改停车点',
 					callback: function callback() {
-						//let data = self._getPoint(type,id);
 						$.ajax({
 							type: "POST",
 							url: "/gd/park/get/" + id,
 							traditional: true,
-							//我们用text格式接收  
-							//dataType: "text",   
-							//json格式接收数据  
 							dataType: "json",
 							data: {},
 							success: function success(data) {
@@ -753,7 +751,6 @@ var HomePageService = function () {
 					callback: function callback() {
 						location.href = "/gd/park/delete/" + id;
 						console.log('delete park id:' + id);
-						//Ajax here
 					}
 				}];
 			}
@@ -762,11 +759,37 @@ var HomePageService = function () {
 			}
 			point.addContextMenu(menu);
 		}
+
+		//used by HomePageCtr.js
+		//when click the point then show the message about the point
+
+	}, {
+		key: '_setMsgWindow',
+		value: function _setMsgWindow(map, imgPath, addr, brief, title, alias) {
+			var content = '<div style="margin:0;line-height:20px;padding:2px;width:380px;">' + '<img src="' + imgPath + '" alt="" style="width:100%;height:100px;"/>' + '地址：' + addr + '<br/>简介：' + brief + '<br/>代号：' + alias + '</div>';
+			var searchInfoWindow = null;
+			searchInfoWindow = new BMapLib.SearchInfoWindow(map, content, {
+				title: title, //标题
+				//width  : 290,             //宽度
+				//height : 105,              //高度
+				panel: "panel", //检索结果面板
+				enableAutoPan: true, //自动平移
+				searchTypes: [BMAPLIB_TAB_SEARCH, //周边检索
+				BMAPLIB_TAB_TO_HERE, //到这里去
+				BMAPLIB_TAB_FROM_HERE //从这里出发
+				]
+			});
+			return searchInfoWindow;
+		}
+
+		//useless
+
 	}, {
 		key: '_getPoint',
 		value: function _getPoint(pointType, id) {
 			var pointData = void 0;
-			var url = "/gd/" + pointType == "P" ? "park" : "station" + "/get/" + id;
+			//error
+			//let url = "/gd/"+pointType=="P"?"park":"station"+"/get/"+id;
 			url = "/gd/park/get/1";
 			$.ajax({
 				type: "POST",
@@ -807,29 +830,9 @@ var HomePageService = function () {
 				dataType: "json",
 				data: { "dataArr": dataArr, "id": id },
 				success: function success(data) {},
-				error: function error(xhr, ajaxOptions, thrownError) {}
+				error: function error(xhr, ajaxOptions, thrownError) {},
+				complete: function complete() {}
 			});
-		}
-
-		//when click the point then show the message about the point
-
-	}, {
-		key: '_setMsgWindow',
-		value: function _setMsgWindow(map, imgPath, addr, brief, title, alias) {
-			var content = '<div style="margin:0;line-height:20px;padding:2px;width:380px;">' + '<img src="' + imgPath + '" alt="" style="width:100%;height:100px;"/>' + '地址：' + addr + '<br/>简介：' + brief + '<br/>代号：' + alias + '</div>';
-			var searchInfoWindow = null;
-			searchInfoWindow = new BMapLib.SearchInfoWindow(map, content, {
-				title: title, //标题
-				//width  : 290,             //宽度
-				//height : 105,              //高度
-				panel: "panel", //检索结果面板
-				enableAutoPan: true, //自动平移
-				searchTypes: [BMAPLIB_TAB_SEARCH, //周边检索
-				BMAPLIB_TAB_TO_HERE, //到这里去
-				BMAPLIB_TAB_FROM_HERE //从这里出发
-				]
-			});
-			return searchInfoWindow;
 		}
 	}]);
 

@@ -7,4 +7,13 @@ import gd.web.entity.OutStreamEntity;
 public interface OutStreamDAO {
 	@Transactional
 	void addOutStream(OutStreamEntity outStreamEntity);
+
+	@Transactional
+	void inactivate();
+	
+	@Transactional
+	void updateOutStream (OutStreamEntity outStreamEntity);
+
+	@Transactional
+	OutStreamEntity getActiveRecord();
 }

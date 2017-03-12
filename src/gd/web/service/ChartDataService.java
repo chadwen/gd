@@ -8,4 +8,10 @@ public interface ChartDataService {
 	void updateChartData(ChartDataEntity chartData);
 	
 	ChartDataEntity getEntityById(int id);
+
+	void processStreamTable(String direction,int staId,String datas);
+
+	ChartDataEntity getEntityByStaId(int staId, String direction);
+
+	void resetChart(int mis,int staId);
 }

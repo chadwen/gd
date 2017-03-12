@@ -43,6 +43,7 @@ class CommonService{
         });
     }
 
+    //be using
     OpenParentModalLayer() {
         let self = this;
         //参数默认值
@@ -76,6 +77,7 @@ class CommonService{
             end: self.options.endFunction
         });
     }
+    
     OpenParentModalLayerForDocIndexCtr() {//与 OpenParentModalLayer 只有一个属性值不同：shadeClose: false, 禁止点击空白处关闭
         let self = this;
         //参数默认值
@@ -109,6 +111,7 @@ class CommonService{
             end: self.options.endFunction
         });
     }
+    
     OpenSaveModalLayer() {
         let self = this;
         //参数默认值
@@ -182,6 +185,7 @@ class CommonService{
                 self.options.Confirm.call(this);
         });
     }
+    
     Loading() {
         let self = this;
         self.index = parent.layer.load(1, {

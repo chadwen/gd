@@ -17,12 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 
 import gd.web.entity.ChartDataEntity;
-import gd.web.entity.ParkEntity;
-import gd.web.entity.StationEntity;
 import gd.web.entity.UserEntity;
-import gd.web.service.ChartDataService;
-import gd.web.service.ParkService;
-import gd.web.service.StationService;
 import gd.web.service.UserService;
 import gd.web.util.Enum;
 import io.goeasy.GoEasy;
@@ -39,8 +34,6 @@ public class UserController {
 	//@Autowired
 	//private ChartDataService chartDataService;
 	
-	@Autowired
-	private UserEntity userEntity;
 	
 	
 	// what' that????????????????
@@ -59,7 +52,7 @@ public class UserController {
 	}
 	@RequestMapping(value="/entry",method = RequestMethod.GET)
 	public String entry(){
-		userEntity = userService.getUserByName("admin");
+		UserEntity userEntity = userService.getUserByName("admin");
 		if(userEntity == null){
 			userEntity.setUserName("admin");
 			userEntity.setPassword("admin");

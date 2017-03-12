@@ -37,6 +37,9 @@ public class OutStreamEntity{
 	@Column(name="modifytime",nullable=false)  
     private Date modifyTime = new Date();
 	
+	@Column(name="active",nullable=false)  
+    private int active = 1;
+	
 	@Column(name="isvalid",nullable=false)  
     private int isValid = 1;
 	
@@ -54,6 +57,14 @@ public class OutStreamEntity{
 
 	public void setId(Integer id) {
 		this.id = id;
+	}
+
+	public String getDatas() {
+		return datas;
+	}
+
+	public void setDatas(String datas) {
+		this.datas = datas;
 	}
 
 	public Integer getTotal() {
@@ -94,6 +105,14 @@ public class OutStreamEntity{
 
 	public void setModifyTime(Date modifyTime) {
 		this.modifyTime = modifyTime;
+	}
+
+	public int getActive() {
+		return active;
+	}
+
+	public void setActive(int active) {
+		this.active = active;
 	}
 
 

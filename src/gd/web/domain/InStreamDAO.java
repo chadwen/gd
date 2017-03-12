@@ -6,4 +6,13 @@ import gd.web.entity.InStreamEntity;
 public interface InStreamDAO {
 	@Transactional
 	void addInStream(InStreamEntity inStreamEntity);
+
+	@Transactional
+	void inactivate();
+	
+	@Transactional
+	void updateInStream (InStreamEntity inStreamEntity);
+
+	@Transactional
+	InStreamEntity getActiveRecord();
 }
