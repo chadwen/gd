@@ -7,8 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import gd.web.domain.StationDAO;
-import gd.web.entity.PointCommon;
 import gd.web.entity.StationEntity;
+import gd.web.entity.viewModel.PointCommon;
 import gd.web.service.StationService;
 
 @Service

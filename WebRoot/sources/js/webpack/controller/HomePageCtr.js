@@ -10,21 +10,41 @@ class HomePage{
 		
 		this.position = null;		
 		this.map = new BMap.Map("swuMap");
-		
-		
+		this.priv = 'NULLPRIV';
+		this.active = ['class="active"','','',''];
+		this.userInfo = null;
 		this.initEvent();
 	}
 	initEvent(){
 		let self = this;
 		let map = this.map;
-		
-		self._initMap();
-		self._initPoint();
+		self._initPriv();
 		
 	}
 	
 	//*****************************************************************
-	
+	_initPriv(){
+		let self = this;
+		$.ajax({
+			type:"POST",
+			url:"/gd/user/getUserInfo",
+			//dataType:"json",
+			data:{},
+			success:function(userInfo){
+				console.log(userInfo);
+				self.priv=userInfo.priv;
+				self.userInfo = userInfo;
+				if(self.priv!='NULLPRIV'){
+					self.commonService._generateNavi(userInfo,self.active);		
+				}
+				self._initMap();
+				self._initPoint();
+			},
+			error:function(){
+				console.log("something wrong!!!!!!!!!!");
+			},
+		});
+	}
 	_initMap(){
 		let self = this;
 		let map = self.map;
@@ -40,13 +60,14 @@ class HomePage{
 			
 			//alert(e.point.lng + "," + e.point.lat);
 		});
-		map.addEventListener("rightclick",function(e){
-			let id = 3;
-			$('#coordinate').html(e.point.lng + ' , ' + e.point.lat);
-			self.hpservice._addMapMenu(map,e.point.lng,e.point.lat,id);
-			self.position = e.point;
-			//alert(e.point.lng + "," + e.point.lat);
-		});
+		if(self.priv=="ADMINISTRATOR"){
+			map.addEventListener("rightclick",function(e){
+				$('#coordinate').html(e.point.lng + ' , ' + e.point.lat);
+				self.hpservice._addMapMenu(map,e.point.lng,e.point.lat);
+				self.position = e.point;
+				//alert(e.point.lng + "," + e.point.lat);
+			});
+		}
 	}
 	
 	//Ajax initialize the points in the map
@@ -112,15 +133,23 @@ class HomePage{
 					let alias = obj.alias;
 					self.hpservice._setMsgWindow(map,imgPath,addr,brief,title,alias).open(point1); ;
 				});//绑定监听器
-				entrance1.addEventListener("rightclick",function showWindow(){
-					let id = 2;
-					self.hpservice._addPointMenu(entrance1,obj.id,type);
-				});
+				if(self.priv=="ADMINISTRATOR"){
+
+					entrance1.addEventListener("rightclick",function showWindow(){
+						let id = 2;
+						self.hpservice._addPointMenuAdmin(entrance1,obj.id,type);
+					});
+				}else{
+					entrance1.addEventListener("rightclick",function showWindow(){
+						let id = 2;
+						self.hpservice._addPointMenuNormal(entrance1,obj.id,type);
+					});
+				}
 			//}
 		});
 	}
 	
-	
+
 	
 	
 	//useless

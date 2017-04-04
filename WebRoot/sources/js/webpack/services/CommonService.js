@@ -9,6 +9,8 @@ class CommonService{
         window.layer = layer;
     }
 
+    
+    
     OpenModalLayer() {
         let self = this;
         //参数默认值
@@ -223,5 +225,81 @@ class CommonService{
         parent.layer.closeAll();
     }
 	
+    _generateNavi(userInfo,active){
+    	if(userInfo.priv!="ADMINISTRATOR" && userInfo.priv!="OPERATOR"){
+    		return;
+    	}
+    	let self = this;
+
+    	let html = '	<!--nav-->'
+		+'<nav class="navbar navbar-default" role="navigation">'
+			+'<div class="container-fluid">'
+			+'<div class="navbar-header">'
+				+'<a class="navbar-brand" href="/gd">车流监控系统</a>'
+			+'</div>'
+			+'<div>'
+				+'<ul class="nav navbar-nav">'
+					+'<li '
+					+ active[0]
+					+' ><a  href="/gd">地图</a></li>'
+					
+/*					+'<li class="dropdown">'
+						+'<a href="#" class="dropdown-toggle" data-toggle="dropdown">'
+							+'动态'
+							+'<b class="caret"></b>'
+						+'</a>'
+						+'<ul class="dropdown-menu">'*/
+							if(userInfo.priv=="OPERATOR"){
+								html += '<li '
+									+active[1]
+									+' ><a  href="/gd/chartdata/wholeState">本站点动态</a></li>'
+							}
+    						html += '<li '
+    							+active[2]
+								+' ><a href="/gd/chartdata/wholeWholeState">全局动态</a></li>'
+							
+							
+    	
+/*						html += '</ul>'
+					+'</li>'*/
+					
+					if(userInfo.priv=="ADMINISTRATOR"){
+						html +='<li '
+							+active[3]
+							+' ><a  href="/gd/user/export">数据导出</a></li>'
+					}
+				html +='</ul>'
+					+'<ul class="nav navbar-nav navbar-right">'
+					+'<li class="dropdown" >'
+					+'<a href="#" class="dropdown-toggle" data-toggle="dropdown">'
+					+ userInfo.userName
+					+'<b class="caret"></b>'
+	                +'</a>'
+	                +'<ul class="dropdown-menu">'
+	                +'<li><a style="cursor:pointer" id="accountinfo">账号信息</a></li>'
+	                +'<li class="divider"></li>'
+	                +'<li><a style="cursor:pointer" id="logout">退出登录</a></li>'
+	                    +'<li class="divider"></li>'
+	                    +'<li><a style="cursor:pointer" id="changepwd">修改密码</a></li>'
+	                    +'</ul>'
+	                +'</li>'
+	            +'</ul>'
+			+'</div>'
+			+'</div>'
+		+'</nav><!--nav-->'
+    	$("#navi").html(html);
+		
+		$("#accountinfo").bind("click",function(){
+			alert("not implement yet");
+		});	
+		$("#logout").bind("click",function(){
+			alert("not implement yet");
+			window.location.href = "/gd/user/logout";			
+		});	
+		$("#changepwd").bind("click",function(){
+			alert("not implement yet");
+		});	
+				
+    }
 }
 export default CommonService;

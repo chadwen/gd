@@ -1,4 +1,4 @@
-/*! // gd Version 1.0  3/9/2017, 9:31:44 AM --By wcy  */
+/*! // gd Version 1.0  3/27/2017, 5:22:46 AM --By wcy  */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -64,12 +64,12 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 12);
+/******/ 	return __webpack_require__(__webpack_require__.s = 14);
 /******/ })
 /************************************************************************/
 /******/ ({
 
-/***/ 12:
+/***/ 14:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";

@@ -6,6 +6,7 @@ public enum Enum {
 	ADMINISTRATOR,
 	OPERATOR,
 	GENERAL,
+	NULLPRIV,
 	//stream type IN OUT
 	IN,
 	OUT,

@@ -34,10 +34,11 @@ public class ChartDataDAOImpl implements ChartDataDAO {
 	@Override
 	public ChartDataEntity getEntityByStaId(int staId,String direction) {
 		// TODO Auto-generated method stub
-		String hql = "from ChartDataEntity where staId = ? and direction = ?";
+		String hql = "from ChartDataEntity where staId = ? and direction = ? and isValid = ?";
 		Query query = sessionFactory.getCurrentSession().createQuery(hql);
 		query.setInteger(0, staId);
 		query.setString(1, direction);
+		query.setInteger(2, 1);
 		
 		List<ChartDataEntity> chartDataEntityList = query.list();
 		if(chartDataEntityList.size()>0){
@@ -45,6 +46,15 @@ public class ChartDataDAOImpl implements ChartDataDAO {
 		}
 		
 		return null;
+	}
+	@Override
+	public List<ChartDataEntity> getChartDataByDirection(String direction) {
+		String hql = "from ChartDataEntity where direction = ? and isValid = ?";
+		Query query = sessionFactory.getCurrentSession().createQuery(hql);
+		query.setString(0, direction);
+		query.setInteger(1, 1);
+		List<ChartDataEntity> chartDataEntityList = query.list();
+		return chartDataEntityList;
 	}
 
 }

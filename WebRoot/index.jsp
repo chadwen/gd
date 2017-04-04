@@ -24,6 +24,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   
   <body>
     This is my JSP page.---wencgd <br>
-    <c:redirect url="/user/entry" />
+    
+    <jsp:forward page="/user/entry"/>
   </body>
 </html>

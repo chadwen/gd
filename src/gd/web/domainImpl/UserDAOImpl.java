@@ -20,10 +20,10 @@ public class UserDAOImpl implements UserDAO{
 	public UserEntity getUserByName(String userName){
 		
 		//it work? yes
-		String queryStr = "from UserEntity where userName =  ?";
+		String queryStr = "from UserEntity where userName =  ? and isValid = ?";
 		Query query = sessionFactory.getCurrentSession().createQuery(queryStr);
 		query.setString(0, userName);
-		
+		query.setInteger(1, 1);
 
 		
 		
@@ -69,5 +69,20 @@ public class UserDAOImpl implements UserDAO{
 	public void updateUser(UserEntity userEntity) {
 		sessionFactory.getCurrentSession().update(userEntity);
 		
+	}
+
+	@Override
+	public UserEntity login(UserEntity userEntity) {
+		// TODO Auto-generated method stub
+		String queryStr = "from UserEntity where userName = ? and password = ? and isValid = ?";
+		Query query = sessionFactory.getCurrentSession().createQuery(queryStr);
+		query.setString(0, userEntity.getUserName());
+		query.setString(1, userEntity.getPassword());
+		query.setInteger(2, 1);
+		List<UserEntity> uList = query.list();
+		if(uList.size() != 0){
+			return uList.get(0);
+		}
+		return null;
 	}
 }

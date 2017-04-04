@@ -2,10 +2,17 @@ package gd.web.controller;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,12 +21,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-
+import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import gd.web.entity.ChartDataEntity;
 import gd.web.entity.UserEntity;
+import gd.web.entity.viewModel.UserInfo;
 import gd.web.service.UserService;
 import gd.web.util.Enum;
+import gd.web.util.Util;
 import io.goeasy.GoEasy;
 
 @Controller
@@ -35,20 +44,87 @@ public class UserController {
 	//private ChartDataService chartDataService;
 	
 	
-	
+	@RequestMapping(value="/get/session",method = RequestMethod.GET)
+	public String getSession(Model model,HttpSession session){
+		
+		UserInfo userInfo = new UserInfo();
+		userInfo.setPriv((String)session.getAttribute("priv"));
+		userInfo.setUserId((Integer)session.getAttribute("userMap"));
+		userInfo.setUserName((String)session.getAttribute("xde"));
+		userInfo.setStaId((Integer)session.getAttribute("xde"));
+		
+		System.out.println(userInfo.getPriv());
+		System.out.println(userInfo.getUserName());
+		System.out.println(userInfo.getUserId());
+		System.out.println(userInfo.getStaId());
+		
+		ServletContext context = session.getServletContext();
+		Map<Integer,String> userMap ;
+		userMap = (Map<Integer, String>) context.getAttribute("user_map");
+
+		if(userMap==null){
+			userMap = new HashMap<Integer,String>();
+			context.setAttribute("user_map", userMap);
+		}
+		System.out.println("\n\nhere is the userId");
+		for(int item : userMap.keySet()){
+			System.out.println(item+":"+userMap.get(item));
+			
+		}
+		userMap.keySet();
+		model.addAttribute("userMap", userMap);
+		return "jsp/getSession";
+	}
 	// what's that????????????????
 	//@RequestMapping(value="detail/{id}",method=RequestMethod.GET)
 	//public String detail(@PathVariable int id,Model model){
 	//public @ResponseBody List<Goods> testAjax(@RequestParam String types){}
-	@RequestMapping(value="/test",method = RequestMethod.GET)
-	public void testMthod(){
+	@RequestMapping(value="/test/{userName}/{id}",method = RequestMethod.POST)
+	public void testMthod(@PathVariable String userName,@PathVariable int id,HttpSession session){
+		if(session==null){
+			return;
+		}
+		System.out.println(id);
+		System.out.println(userName);
+		System.out.println(session.getId());
+		System.out.println(session.getCreationTime());
+		Date date= new Date(session.getCreationTime());
+		System.out.println(date);
+		System.out.println(session.getAttribute("userName"));
+		System.out.println(session.getAttribute("userId"));
+		System.out.println(session.getAttribute("priv"));
+		System.out.println(session.getAttribute("staId"));
 		
+		
+		/*HttpSession session = new HttpSession();
+		System.out.println(session==null);
+		System.out.println(session.getId());
+		//test single point load
+		//HttpSession session =request.getSession();
+		ServletContext context = session.getServletContext(); 
+		//ApplicationContext acx = WebApplicationContextUtils.getWebApplicationContext(context);
+		Map<Integer,String> userMap ;
+		userMap = (Map<Integer, String>) context.getAttribute("user_map");
+		if(userMap==null){
+			userMap = new HashMap<Integer,String>();
+			context.setAttribute("user_map", userMap);
+		}
+		userMap.put(id, userName);
+		String usrName = userMap.get(2);
+		if(usrName!=null){
+			userMap.remove(2);
+		}
+		for(int item : userMap.keySet()){
+			System.out.println(item);
+		}*/
+		/*//test goEasy
 		GoEasy goEasy = new GoEasy("bf8b21fc-dbde-4d1f-9fee-bd1f39641b73");
-		//String msgs[] = {"msg1","msg2","msg3","msg4"};
+		//String msgs[] = {"msg1","msg2","msg3","msg4"};//error
 		goEasy.publish("demo_channel", "Hello world!");
 		
+		//test Calendar
 		Calendar cal = Calendar.getInstance();
-		System.out.println(cal.get(Calendar.HOUR_OF_DAY));
+		System.out.println(cal.get(Calendar.HOUR_OF_DAY));*/
 	}
 	@RequestMapping(value="/entry",method = RequestMethod.GET)
 	public String entry(){
@@ -59,11 +135,90 @@ public class UserController {
 			userEntity.setPassword("admin");
 			userEntity.setPriv(Enum.ADMINISTRATOR.toString());
 			userEntity.setPhone("1021");
-			userEntity.setStaId(1);
+			userEntity.setStaId(0);
 			userService.addUser(userEntity);
 		}
 		return "jsp/map";
 	}
+	@RequestMapping(value="/export",method = RequestMethod.GET)
+	public String export(){
+		return "jsp/export";
+	}
+	@RequestMapping(value="/login",method = RequestMethod.GET)
+	public String loginGet(){
+		return "jsp/login";
+	}
+	@RequestMapping(value="/login",method = RequestMethod.POST)
+	public String loginPost(UserEntity userEntity,HttpSession session){
+		
+		userEntity = userService.login(userEntity);
+		if(userEntity==null){
+			// no user
+			return "jsp/error";
+		}
+		
+		ServletContext context = session.getServletContext(); 
+		Map<Integer,String> userMap ;
+		userMap = (Map<Integer, String>) context.getAttribute("user_map");
+		if(userMap==null){
+			userMap = new HashMap<Integer,String>();
+			context.setAttribute("user_map", userMap);
+		}
+		if(userMap.containsKey(userEntity.getId())){
+			return "had_loaded";
+		}
+		userMap.put(userEntity.getId(), userEntity.getUserName());
+		
+		
+		session.setAttribute("userName", userEntity.getUserName());
+		session.setAttribute("userId", userEntity.getId());
+		session.setAttribute("priv", userEntity.getPriv());
+		session.setAttribute("staId", userEntity.getStaId());
+		for(int item : userMap.keySet()){
+			System.out.println(item);
+		}
+		
+		
+		userService.initStreamTable(userEntity.getStaId());
+		return "redirect:/";
+	}
+	@RequestMapping(value="/logout",method = RequestMethod.GET)
+	public String logOut(HttpSession session){
+		ServletContext context = session.getServletContext(); 
+		Map<Integer,String> userMap = (Map<Integer, String>) context.getAttribute("user_map");
+		Object id = session.getAttribute("userId");
+		session.setAttribute("priv",Enum.NULLPRIV.toString());
+		session.removeAttribute("userName");
+		session.removeAttribute("userId");
+		session.removeAttribute("staId");
+		if(userMap==null){
+			return "redirect:/";
+		}
+		userMap.remove(id);
+		
+		//test
+		userMap.get(id);//session id
+		session.getSessionContext().getSession("jis");
+		//sessionMap.get("jis");
+		
+		
+		return "redirect:/";
+	}
+	@RequestMapping(value="/getUserInfo",method = RequestMethod.POST)
+	public @ResponseBody UserInfo getPriv(HttpSession session){
+		/*if(session.getAttribute("priv")==null){
+			return null;
+		}*/
+
+		UserInfo userInfo = new UserInfo();
+		userInfo.setPriv((String)session.getAttribute("priv"));
+		userInfo.setUserId((Integer)session.getAttribute("userId"));
+		userInfo.setUserName((String)session.getAttribute("userName"));
+		userInfo.setStaId((Integer)session.getAttribute("staId"));
+		return userInfo;
+	}
+	
+	//uesless
 	//search user
 	@RequestMapping(value="/search",method = RequestMethod.GET)
 	public String searchUser(String userName){

@@ -1,5 +1,7 @@
 package gd.web.domain;
 
+import java.util.List;
+
 import org.springframework.transaction.annotation.Transactional;
 
 import gd.web.entity.ChartDataEntity;
@@ -16,4 +18,7 @@ public interface ChartDataDAO {
 
 	@Transactional
 	ChartDataEntity getEntityByStaId(int staId, String direction);
+
+	@Transactional
+	List<ChartDataEntity> getChartDataByDirection(String direction);
 }

@@ -14,4 +14,8 @@ public interface UserService {
 	void deleteUser(UserEntity userEntity);
 	
 	void updateUser(UserEntity userEntity);
+
+	UserEntity login(UserEntity userEntity);
+	
+	void initStreamTable(int staId);
 }

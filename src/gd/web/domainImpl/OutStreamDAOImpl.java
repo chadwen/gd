@@ -23,12 +23,14 @@ public class OutStreamDAOImpl implements OutStreamDAO{
 	}
 
 	@Override
-	public void inactivate() {
+	public void inactivate(int staId) {
 		// TODO Auto-generated method stub
 
-		String hql = "from OutStreamEntity where active = ?";
+		String hql = "from OutStreamEntity where active = ? and staId = ? and isValid = ?";
 		Query query = sessionFactory.getCurrentSession().createQuery(hql);
 		query.setInteger(0, 1);
+		query.setInteger(1, staId);
+		query.setInteger(2, 1);
 		List<OutStreamEntity> outStreamEntityList = query.list();
 		if(outStreamEntityList.size()>0){
 			OutStreamEntity outStreamEntity = outStreamEntityList.get(0);
@@ -45,14 +47,15 @@ public class OutStreamDAOImpl implements OutStreamDAO{
 	}
 
 	@Override
-	public OutStreamEntity getActiveRecord() {
+	public OutStreamEntity getActiveRecord(int staId) {
 		// TODO Auto-generated method stub
 
 
-		String hql = "from InStreamEntity where active = ? and direction = ?";
+		String hql = "from OutStreamEntity where active = ? and staId = ? and isValid = ?";
 		Query query = sessionFactory.getCurrentSession().createQuery(hql);
-		query.setInteger(0, 0);
-		query.setString(1, "OUT");
+		query.setInteger(0, 1);
+		query.setInteger(1, staId);
+		query.setInteger(2, 1);
 		List<OutStreamEntity> outStreamEntityList = query.list();
 		if(outStreamEntityList.size()>0){
 			return outStreamEntityList.get(0);			

@@ -22,12 +22,14 @@ public class InStreamDAOImpl implements InStreamDAO{
 	}
 
 	@Override
-	public void inactivate() {
+	public void inactivate(int staId) {
 		// TODO Auto-generated method stub
 		
-		String hql = "from InStreamEntity where active = ?";
+		String hql = "from InStreamEntity where active = ? and staId = ? and isValid = ?";
 		Query query = sessionFactory.getCurrentSession().createQuery(hql);
 		query.setInteger(0, 1);
+		query.setInteger(1, staId);
+		query.setInteger(2, 1);
 
 		List<InStreamEntity> inStreamEntityList = query.list();
 		if(inStreamEntityList.size()>0){
@@ -44,12 +46,13 @@ public class InStreamDAOImpl implements InStreamDAO{
 	}
 
 	@Override
-	public InStreamEntity getActiveRecord() {
+	public InStreamEntity getActiveRecord(int staId) {
 		// TODO Auto-generated method stub
-		String hql = "from InStreamEntity where active = ? and direction = ?";
+		String hql = "from InStreamEntity where active = ? and staId = ? and isValid = ?";
 		Query query = sessionFactory.getCurrentSession().createQuery(hql);
-		query.setInteger(0, 0);
-		query.setString(1, "IN");
+		query.setInteger(0, 1);
+		query.setInteger(1, staId);
+		query.setInteger(2, 1);
 
 		List<InStreamEntity> inStreamEntityList = query.list();
 		if(inStreamEntityList.size()>0){

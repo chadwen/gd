@@ -9,11 +9,11 @@ public interface OutStreamDAO {
 	void addOutStream(OutStreamEntity outStreamEntity);
 
 	@Transactional
-	void inactivate();
+	void inactivate(int staId);
 	
 	@Transactional
 	void updateOutStream (OutStreamEntity outStreamEntity);
 
 	@Transactional
-	OutStreamEntity getActiveRecord();
+	OutStreamEntity getActiveRecord(int staId);
 }

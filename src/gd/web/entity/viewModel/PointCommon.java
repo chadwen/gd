@@ -1,4 +1,4 @@
-package gd.web.entity;
+package gd.web.entity.viewModel;
 
 public class PointCommon {
 	

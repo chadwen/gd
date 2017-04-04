@@ -1,4 +1,4 @@
-/*! // gd Version 1.0  3/9/2017, 9:31:44 AM --By wcy  */
+/*! // gd Version 1.0  3/27/2017, 5:22:46 AM --By wcy  */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -64,7 +64,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 10);
+/******/ 	return __webpack_require__(__webpack_require__.s = 11);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -314,6 +314,47 @@ var CommonService = function () {
         value: function CloseLayer() {
             parent.layer.closeAll();
         }
+    }, {
+        key: '_generateNavi',
+        value: function _generateNavi(userInfo, active) {
+            if (userInfo.priv != "ADMINISTRATOR" && userInfo.priv != "OPERATOR") {
+                return;
+            }
+            var self = this;
+
+            var html = '	<!--nav-->' + '<nav class="navbar navbar-default" role="navigation">' + '<div class="container-fluid">' + '<div class="navbar-header">' + '<a class="navbar-brand" href="/gd">车流监控系统</a>' + '</div>' + '<div>' + '<ul class="nav navbar-nav">' + '<li ' + active[0] + ' ><a  href="/gd">地图</a></li>';
+
+            /*					+'<li class="dropdown">'
+            						+'<a href="#" class="dropdown-toggle" data-toggle="dropdown">'
+            							+'动态'
+            							+'<b class="caret"></b>'
+            						+'</a>'
+            						+'<ul class="dropdown-menu">'*/
+            if (userInfo.priv == "OPERATOR") {
+                html += '<li ' + active[1] + ' ><a  href="/gd/chartdata/wholeState">本站点动态</a></li>';
+            }
+            html += '<li ' + active[2] + ' ><a href="/gd/chartdata/wholeWholeState">全局动态</a></li>';
+
+            /*						html += '</ul>'
+            					+'</li>'*/
+
+            if (userInfo.priv == "ADMINISTRATOR") {
+                html += '<li ' + active[3] + ' ><a  href="/gd/user/export">数据导出</a></li>';
+            }
+            html += '</ul>' + '<ul class="nav navbar-nav navbar-right">' + '<li class="dropdown" >' + '<a href="#" class="dropdown-toggle" data-toggle="dropdown">' + userInfo.userName + '<b class="caret"></b>' + '</a>' + '<ul class="dropdown-menu">' + '<li><a style="cursor:pointer" id="accountinfo">账号信息</a></li>' + '<li class="divider"></li>' + '<li><a style="cursor:pointer" id="logout">退出登录</a></li>' + '<li class="divider"></li>' + '<li><a style="cursor:pointer" id="changepwd">修改密码</a></li>' + '</ul>' + '</li>' + '</ul>' + '</div>' + '</div>' + '</nav><!--nav-->';
+            (0, _JQueryVendor2.default)("#navi").html(html);
+
+            (0, _JQueryVendor2.default)("#accountinfo").bind("click", function () {
+                alert("not implement yet");
+            });
+            (0, _JQueryVendor2.default)("#logout").bind("click", function () {
+                alert("not implement yet");
+                window.location.href = "/gd/user/logout";
+            });
+            (0, _JQueryVendor2.default)("#changepwd").bind("click", function () {
+                alert("not implement yet");
+            });
+        }
     }]);
 
     return CommonService;
@@ -336,7 +377,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }(); //HomePageCtr.js
 
-var _HomePageService = __webpack_require__(8);
+var _HomePageService = __webpack_require__(9);
 
 var _HomePageService2 = _interopRequireDefault(_HomePageService);
 
@@ -357,7 +398,9 @@ var HomePage = function () {
 
 		this.position = null;
 		this.map = new BMap.Map("swuMap");
-
+		this.priv = 'NULLPRIV';
+		this.active = ['class="active"', '', '', ''];
+		this.userInfo = null;
 		this.initEvent();
 	}
 
@@ -366,13 +409,35 @@ var HomePage = function () {
 		value: function initEvent() {
 			var self = this;
 			var map = this.map;
-
-			self._initMap();
-			self._initPoint();
+			self._initPriv();
 		}
 
 		//*****************************************************************
 
+	}, {
+		key: '_initPriv',
+		value: function _initPriv() {
+			var self = this;
+			$.ajax({
+				type: "POST",
+				url: "/gd/user/getUserInfo",
+				//dataType:"json",
+				data: {},
+				success: function success(userInfo) {
+					console.log(userInfo);
+					self.priv = userInfo.priv;
+					self.userInfo = userInfo;
+					if (self.priv != 'NULLPRIV') {
+						self.commonService._generateNavi(userInfo, self.active);
+					}
+					self._initMap();
+					self._initPoint();
+				},
+				error: function error() {
+					console.log("something wrong!!!!!!!!!!");
+				}
+			});
+		}
 	}, {
 		key: '_initMap',
 		value: function _initMap() {
@@ -390,13 +455,14 @@ var HomePage = function () {
 
 				//alert(e.point.lng + "," + e.point.lat);
 			});
-			map.addEventListener("rightclick", function (e) {
-				var id = 3;
-				$('#coordinate').html(e.point.lng + ' , ' + e.point.lat);
-				self.hpservice._addMapMenu(map, e.point.lng, e.point.lat, id);
-				self.position = e.point;
-				//alert(e.point.lng + "," + e.point.lat);
-			});
+			if (self.priv == "ADMINISTRATOR") {
+				map.addEventListener("rightclick", function (e) {
+					$('#coordinate').html(e.point.lng + ' , ' + e.point.lat);
+					self.hpservice._addMapMenu(map, e.point.lng, e.point.lat);
+					self.position = e.point;
+					//alert(e.point.lng + "," + e.point.lat);
+				});
+			}
 		}
 
 		//Ajax initialize the points in the map
@@ -464,10 +530,18 @@ var HomePage = function () {
 					var alias = obj.alias;
 					self.hpservice._setMsgWindow(map, imgPath, addr, brief, title, alias).open(point1);;
 				}); //绑定监听器
-				entrance1.addEventListener("rightclick", function showWindow() {
-					var id = 2;
-					self.hpservice._addPointMenu(entrance1, obj.id, type);
-				});
+				if (self.priv == "ADMINISTRATOR") {
+
+					entrance1.addEventListener("rightclick", function showWindow() {
+						var id = 2;
+						self.hpservice._addPointMenuAdmin(entrance1, obj.id, type);
+					});
+				} else {
+					entrance1.addEventListener("rightclick", function showWindow() {
+						var id = 2;
+						self.hpservice._addPointMenuNormal(entrance1, obj.id, type);
+					});
+				}
 				//}
 			});
 		}
@@ -581,7 +655,8 @@ exports.default = HomePage;
 
 /***/ }),
 /* 7 */,
-/* 8 */
+/* 8 */,
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -619,16 +694,16 @@ var HomePageService = function () {
 
 	_createClass(HomePageService, [{
 		key: '_addMapMenu',
-		value: function _addMapMenu(map, posx, posy, id) {
+		value: function _addMapMenu(map, posx, posy) {
 			var self = this;
 			var menu = new BMap.ContextMenu();
 			var txtMenuItem = [{
-				text: '添加站点',
+				text: '添加出入站点',
 				callback: function callback() {
 					self.commonService.options = {
-						header: '添加站点',
-						content: '<form role="form" id="addStation" method="POST" action="/gd/station/add">' + '<div class="form-group">' + '<label for="name">站点名称</label>' + '<input type="text" class="form-control" id="fullName" name="fullName" placeholder="一号门">' + '<label for="name">站点代号</label>' + '<input type="text" class="form-control" id="alias" name="alias" placeholder="G1">' + '<label for="name">站点地址</label>' + '<input type="text" class="form-control" id="addr" name="addr" placeholder="北碚天生街道xx号西南大学一号门">' + '<label for="name">站点简介</label>' + '<input type="text" class="form-control" id="brief" name="brief" placeholder="默认为站点名称">' + '<input type="hidden" class="form-control" id="imgPath" value="http://pic34.photophoto.cn/20150330/0007019952833279_b.jpg" name="imgPath">' + '<input type="hidden" id="posx" name="posx" value="' + posx + '"/>' + '<input type="hidden" id="posy" name="posy" value="' + posy + '"/>' + '</div>' + ' </form>',
-						footer: '<button type="button" class="btn btn-default stacancel">取消</button>' + '<button type="button" class="btn btn-primary stasubmit"><span class="glyphicon glyphicon-cloud-upload" id="uploadtitle">添加</span></button>'
+						header: '添加出入站点',
+						content: '<form role="form" id="addStation" method="POST" action="/gd/station/add">' + '<div class="form-group">' + '<label for="name">出入站点名称</label>' + '<input type="text" class="form-control" id="fullName" name="fullName" placeholder="一号门">' + '<label for="name">出入站点代号</label>' + '<input type="text" class="form-control" id="alias" name="alias" placeholder="G1">' + '<label for="name">出入站点地址</label>' + '<input type="text" class="form-control" id="addr" name="addr" placeholder="北碚天生街道xx号西南大学一号门">' + '<label for="name">出入站点简介</label>' + '<input type="text" class="form-control" id="brief" name="brief" placeholder="默认为站点名称">' + '<input type="hidden" class="form-control" id="imgPath" value="http://pic34.photophoto.cn/20150330/0007019952833279_b.jpg" name="imgPath">' + '<input type="hidden" id="posx" name="posx" value="' + posx + '"/>' + '<input type="hidden" id="posy" name="posy" value="' + posy + '"/>' + '</div>' + ' </form>',
+						footer: '<button type="button" class="btn btn-default stacancel">取消</button>' + '<button type="button" class="btn btn-primary stasubmit"><span class="glyphicon glyphicon-cloud-upload">添加</span></button>'
 
 					};
 					self.commonService.OpenParentModalLayer();
@@ -642,12 +717,12 @@ var HomePageService = function () {
 					});
 				}
 			}, {
-				text: '添加停车点',
+				text: '添加停车站点',
 				callback: function callback() {
 					self.commonService.options = {
-						header: '添加停车点',
-						content: '<form role="form" id="addPark" method="POST" action="/gd/park/add">' + '<div class="form-group">' + '<label for="name">停车点名称</label>' + '<input type="text" class="form-control" id="fullName" name="fullName" placeholder="一号停车点">' + '<label for="name">停车点代号</label>' + '<input type="text" class="form-control" id="alias" name="alias" placeholder="P1">' + '<label for="name">停车点地址</label>' + '<input type="text" class="form-control" id="addr" name="addr" placeholder="北碚天生街道xx号西南大学一号停车点">' + '<label for="name">停车点简介</label>' + '<input type="text" class="form-control" id="brief" name="brief" placeholder="默认为停车点名称">' + '<label for="name">停车点车位总量</label>' + '<input type="text" class="form-control" id="totalLot" name="totalLot" placeholder="停车点车位总量">' + '<input type="hidden" class="form-control" id="imgPath" value="http://pic34.photophoto.cn/20150330/0007019952833279_b.jpg" name="imgPath">' + '<input type="hidden" id="posx" name="posx" value="' + posx + '"/>' + '<input type="hidden" id="posy" name="posy" value="' + posy + '"/>' + '</div>' + ' </form>',
-						footer: '<button type="button" class="btn btn-default parkcancel">取消</button>' + '<button type="button" class="btn btn-primary parksubmit"><span class="glyphicon glyphicon-cloud-upload" id="uploadtitle">添加</span></button>'
+						header: '添加停车站点',
+						content: '<form role="form" id="addPark" method="POST" action="/gd/park/add">' + '<div class="form-group">' + '<label for="name">停车站点名称</label>' + '<input type="text" class="form-control" id="fullName" name="fullName" placeholder="一号停车点">' + '<label for="name">停车站点代号</label>' + '<input type="text" class="form-control" id="alias" name="alias" placeholder="P1">' + '<label for="name">停车站点地址</label>' + '<input type="text" class="form-control" id="addr" name="addr" placeholder="北碚天生街道xx号西南大学一号停车点">' + '<label for="name">停车站点简介</label>' + '<input type="text" class="form-control" id="brief" name="brief" placeholder="默认为停车点名称">' + '<label for="name">停车站点车位总量</label>' + '<input type="text" class="form-control" id="totalLot" name="totalLot" placeholder="停车点车位总量">' + '<input type="hidden" class="form-control" id="imgPath" value="http://pic34.photophoto.cn/20150330/0007019952833279_b.jpg" name="imgPath">' + '<input type="hidden" id="posx" name="posx" value="' + posx + '"/>' + '<input type="hidden" id="posy" name="posy" value="' + posy + '"/>' + '</div>' + ' </form>',
+						footer: '<button type="button" class="btn btn-default parkcancel">取消</button>' + '<button type="button" class="btn btn-primary parksubmit"><span class="glyphicon glyphicon-cloud-upload">添加</span></button>'
 
 					};
 					self.commonService.OpenParentModalLayer();
@@ -667,8 +742,8 @@ var HomePageService = function () {
 			map.addContextMenu(menu);
 		}
 	}, {
-		key: '_addPointMenu',
-		value: function _addPointMenu(point, id, type) {
+		key: '_addPointMenuAdmin',
+		value: function _addPointMenuAdmin(point, id, type) {
 			var self = this;
 			var menu = new BMap.ContextMenu();
 			var txtMenuItem = [];
@@ -680,7 +755,7 @@ var HomePageService = function () {
 						//location.href = "/gd/chartdata/get/"+id;
 					}
 				}, {
-					text: '修改站点',
+					text: '修改出入站点',
 					callback: function callback() {
 						$.ajax({
 							type: "POST",
@@ -690,8 +765,8 @@ var HomePageService = function () {
 							data: {},
 							success: function success(data) {
 								self.commonService.options = {
-									header: '修改站点',
-									content: '<form role="form" id="updateStation" method="POST" action="/gd/station/update">' + '<div class="form-group">' + '<input type="hidden" id="id" name="id" value="' + data.id + '"/>' + '<label for="name">站点名称</label>' + '<input type="text" class="form-control" id="fullName" name="fullName" value="' + data.fullName + '">' + '<label for="name">站点代号</label>' + '<input type="text" class="form-control" id="alias" name="alias" value="' + data.alias + '">' + '<label for="name">站点地址</label>' + '<input type="text" class="form-control" id="addr" name="addr" value="' + data.addr + '">' + '<label for="name">站点简介</label>' + '<input type="text" class="form-control" id="brief" name="brief" value="' + data.brief + '">' + '</div>' + ' </form>',
+									header: '修改出入站点',
+									content: '<form role="form" id="updateStation" method="POST" action="/gd/station/update">' + '<div class="form-group">' + '<input type="hidden" id="id" name="id" value="' + data.id + '"/>' + '<label for="name">出入站点名称</label>' + '<input type="text" class="form-control" id="fullName" name="fullName" value="' + data.fullName + '">' + '<label for="name">出入站点代号</label>' + '<input type="text" class="form-control" id="alias" name="alias" value="' + data.alias + '">' + '<label for="name">出入站点地址</label>' + '<input type="text" class="form-control" id="addr" name="addr" value="' + data.addr + '">' + '<label for="name">出入站点简介</label>' + '<input type="text" class="form-control" id="brief" name="brief" value="' + data.brief + '">' + '</div>' + ' </form>',
 									footer: '<button type="button" class="btn btn-default stacancel">取消</button>' + '<button type="button" class="btn btn-primary stasubmit"><span class="glyphicon glyphicon-cloud-upload" id="uploadtitle">添加</span></button>'
 
 								};
@@ -709,7 +784,7 @@ var HomePageService = function () {
 						});
 					}
 				}, {
-					text: '删除站点',
+					text: '删除出入站点',
 					callback: function callback() {
 						location.href = "/gd/station/delete/" + id;
 						console.log('delete station id:' + id);
@@ -718,7 +793,7 @@ var HomePageService = function () {
 			}
 			if (type == 'P') {
 				txtMenuItem = [{
-					text: '修改停车点',
+					text: '修改停车站点',
 					callback: function callback() {
 						$.ajax({
 							type: "POST",
@@ -728,8 +803,8 @@ var HomePageService = function () {
 							data: {},
 							success: function success(data) {
 								self.commonService.options = {
-									header: '修改停车点',
-									content: '<form role="form" id="updatePark" method="POST" action="/gd/park/update">' + '<div class="form-group">' + '<input type="hidden" id="id" name="id" value="' + data.id + '"/>' + '<label for="name">停车点名称</label>' + '<input type="text" class="form-control" id="fullName" name="fullName" value="' + data.fullName + '">' + '<label for="name">停车点代号</label>' + '<input type="text" class="form-control" id="alias" name="alias" value="' + data.alias + '">' + '<label for="name">停车点地址</label>' + '<input type="text" class="form-control" id="addr" name="addr" value="' + data.addr + '">' + '<label for="name">停车点简介</label>' + '<input type="text" class="form-control" id="brief" name="brief" value="' + data.brief + '">' + '<label for="name">停车点车位总量</label>' + '<input type="text" class="form-control" id="totalLot" name="totalLot" value="' + data.totalLot + '">' + '</div>' + ' </form>',
+									header: '修改停车站点',
+									content: '<form role="form" id="updatePark" method="POST" action="/gd/park/update">' + '<div class="form-group">' + '<input type="hidden" id="id" name="id" value="' + data.id + '"/>' + '<label for="name">停车站点名称</label>' + '<input type="text" class="form-control" id="fullName" name="fullName" value="' + data.fullName + '">' + '<label for="name">停车站点代号</label>' + '<input type="text" class="form-control" id="alias" name="alias" value="' + data.alias + '">' + '<label for="name">停车站点地址</label>' + '<input type="text" class="form-control" id="addr" name="addr" value="' + data.addr + '">' + '<label for="name">停车站点简介</label>' + '<input type="text" class="form-control" id="brief" name="brief" value="' + data.brief + '">' + '<label for="name">停车站点车位总量</label>' + '<input type="text" class="form-control" id="totalLot" name="totalLot" value="' + data.totalLot + '">' + '</div>' + ' </form>',
 									footer: '<button type="button" class="btn btn-default parkcancel">取消</button>' + '<button type="button" class="btn btn-primary parksubmit"><span class="glyphicon glyphicon-cloud-upload" id="uploadtitle">添加</span></button>'
 
 								};
@@ -747,10 +822,30 @@ var HomePageService = function () {
 						});
 					}
 				}, {
-					text: '删除停车点',
+					text: '删除停车站点',
 					callback: function callback() {
 						location.href = "/gd/park/delete/" + id;
 						console.log('delete park id:' + id);
+					}
+				}];
+			}
+			for (var i = 0; i < txtMenuItem.length; i++) {
+				menu.addItem(new BMap.MenuItem(txtMenuItem[i].text, txtMenuItem[i].callback, 100));
+			}
+			point.addContextMenu(menu);
+		}
+	}, {
+		key: '_addPointMenuNormal',
+		value: function _addPointMenuNormal(point, id, type) {
+			var self = this;
+			var menu = new BMap.ContextMenu();
+			var txtMenuItem = [];
+			if (type == 'G') {
+				txtMenuItem = [{
+					text: '查看数据动态',
+					callback: function callback() {
+						alert('not implement yet!!!');
+						//window.location.open("/gd/chartdata/get/"+id);
 					}
 				}];
 			}
@@ -842,8 +937,8 @@ var HomePageService = function () {
 exports.default = HomePageService;
 
 /***/ }),
-/* 9 */,
-/* 10 */
+/* 10 */,
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";

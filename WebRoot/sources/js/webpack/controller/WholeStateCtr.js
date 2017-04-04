@@ -14,6 +14,9 @@ class WholeState{
         });
 		this.inId;
 		this.outId;
+		this.priv='NULLPRIV';
+		this.userInfo = null;
+		this.active = ['','class="active"','',''];
 		
 		
 		this.initEvent();
@@ -25,6 +28,7 @@ class WholeState{
 		self.inId = 1;
 		self.outId = 2;
 		//initialize chart
+		self._initPriv();
 		self._initChart();
 		self._setTimeout();
 		
@@ -39,12 +43,10 @@ class WholeState{
 		//++1 at y-axis, when click
 		
 		$('#trig').on('click',function(){
-			let dataOut = self.option.series[0].data;
-			++dataOut[dataOut.length-1];
-			console.log(dataOut);
-			console.log(dataOut.toString());
+			
+			self._tesajax();
 
-			self.myChart.setOption(self.option);
+
 			//self.commonService.AlertMessage("message");
 		});
 		$('#testbtn').on('click',function(){
@@ -67,32 +69,91 @@ class WholeState{
 			console.log(dataIn);
 			console.log(dataIn.toString());
 			//let id = 1;
-			self._pushData(dataOut.toString(),self.inId);
+			self._pushData(dataIn.toString(),self.inId);
 			self.myChart.setOption(self.option);
 		});
 	}
 //---------------------------------------------------------------------------
 	//_someFunc(){};
+	
+	_initPriv(){
+		let self = this;
+		$.ajax({
+			type:"POST",
+			url:"/gd/user/getUserInfo",
+			//dataType:"json",
+			data:{},
+			success:function(userInfo){
+				console.log(userInfo);
+				self.priv=userInfo.priv;
+				self.userInfo = userInfo;
+				self.commonService._generateNavi(userInfo,self.active);		
+				
+			},
+			error:function(){
+				console.log("something wrong!!!!!!!!!!");				
+			},
+		});
+	}
+	
 	//when initialize the chart, the id must be the id of chartdata record, instead of station
 	//so when initialize, check the direction is needed.
 	_initChart(){
 		let self = this;
+		let date = new Date();
+		let clientHour = date.getHours();
+		
 		let domm = $('#main');//why can't use '$' to get the dom?
 		self.myChart = echarts.init(document.getElementById('main'));
 		self._initChartOption();
-		//ajax here
-//			self.option.series[0].data = dataOut;
-//			self.option.series[1].data = dataIn;
-//			self.option.xAxis[0].data = dataX;
-//			self.myChart.setOption(self.option);
-		//
+
+		$.ajax({
+			type:"POST",
+			//async:false,
+			url:"/gd/chartdata/wholeState",
+			dataType:"json",
+			data:{"clientHour":clientHour},
+			success:function(data){
+				if(data!=null){
+					console.log("success!");
+					/*console.log(data[0]);
+					console.log(data[1]);
+					console.log(data[2]);*/
+					self.option.series[0].data = data.outDataList;
+					self.option.series[1].data = data.inDataList;
+					let xdata = [];
+					for(let i = 0 ; i<24;i++){
+						
+						if(data.hourList[i]<10){
+							xdata.push("0"+data.hourList[i]);
+						}else{
+							xdata.push(""+data.hourList[i]);
+						}
+					}
+					self.option.xAxis[0].data = xdata;
+					self.myChart.setOption(self.option);
+					self.outId = data.ids[0];
+					self.inId = data.ids[1];
+				}else{
+					location.href="/gd/user/login";
+				}
+			},
+			error:function(){
+				console.log("error!");
+				location.href="/gd/user/login";
+			},
+			complete:function(){
+				console.log("complete!");
+			},
+		
+		});
 	}
 	// used by _initChart
 	_initChartOption(){
 		let self = this;
 		self.option = {
 				title: {
-					text: '全局动态'
+					text: '本站点动态'
 				},
 				tooltip: {
 					trigger: 'axis',
@@ -172,7 +233,7 @@ class WholeState{
 			};
 		
 		// will be useless
-		let demoData = [5,3,8,10,5,3,8,18,54,26,45,38,58,67,66,70,80,26,90,43,78,99,100,35];
+		/*let demoData = [5,3,8,10,5,3,8,18,54,26,45,38,58,67,66,70,80,26,90,43,78,99,100,35];
 		let demoData2 = [];
 		let demoDataX = [];
 		for(let i = 0 ; i < 24 ; i++){
@@ -182,6 +243,7 @@ class WholeState{
 		self.option.series[0].data = demoData;
 		self.option.series[1].data = demoData2;
 		self.option.xAxis[0].data = demoDataX;
+		self.myChart.setOption(self.option);*/
 	}
 	
 	
@@ -273,6 +335,31 @@ class WholeState{
 	    return times;
 	    //return date.getMinutes();
 	}
+
 	
+	//test method useless now
+	_tesajax(){
+		let self = this;
+		$.ajax({
+			type:"POST",
+			url:"/gd/chartdata/wholeState",
+			dataType:"json",
+			data:{},
+			success:function(data){
+				console.log("success!");
+				console.log(data[0]);
+				console.log(data[1]);
+				console.log(data[2]);
+				
+			},
+			error:function(){
+				console.log("error!");
+			},
+			complete:function(){
+				console.log("complete!");
+			},
+		
+		});
+	}
 }
 export default WholeState

@@ -23,8 +23,13 @@ id="WebApp_ID" version="2.5">
 	<!-- 配置Spring监听 -->  
 	<listener>
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+	</listener>  
+	<listener>
+		<listener-class>gd.web.serviceImpl.listener.SessionListener</listener-class>
 	</listener>
-	
+	<session-config>  
+        <session-timeout>66</session-timeout>
+    </session-config>  
 	<context-param>
 		<param-name>log4jConfigLocation</param-name>
 		<param-value>classpath:config/spring/log4j.properties</param-value>
@@ -82,10 +87,10 @@ id="WebApp_ID" version="2.5">
 	    <servlet-name>gd</servlet-name>  
 	    <url-pattern>/</url-pattern>  
 	</servlet-mapping>
-    <error-page>
+    <!-- <error-page>
     	<error-code>404</error-code>
-    	<location>/error.jsp</location>
-    </error-page>
+    	<location>/WEB-INF/jsp/error.jsp</location>
+    </error-page> -->
     <error-page>
     	<error-code>500</error-code>
     	<location>/WEB-INF/jsp/error.jsp</location>

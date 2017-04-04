@@ -1,4 +1,4 @@
-/*! // gd Version 1.0  3/9/2017, 9:31:44 AM --By wcy  */
+/*! // gd Version 1.0  3/27/2017, 5:22:46 AM --By wcy  */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -64,7 +64,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 11);
+/******/ 	return __webpack_require__(__webpack_require__.s = 12);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -313,6 +313,47 @@ var CommonService = function () {
         key: 'CloseLayer',
         value: function CloseLayer() {
             parent.layer.closeAll();
+        }
+    }, {
+        key: '_generateNavi',
+        value: function _generateNavi(userInfo, active) {
+            if (userInfo.priv != "ADMINISTRATOR" && userInfo.priv != "OPERATOR") {
+                return;
+            }
+            var self = this;
+
+            var html = '	<!--nav-->' + '<nav class="navbar navbar-default" role="navigation">' + '<div class="container-fluid">' + '<div class="navbar-header">' + '<a class="navbar-brand" href="/gd">车流监控系统</a>' + '</div>' + '<div>' + '<ul class="nav navbar-nav">' + '<li ' + active[0] + ' ><a  href="/gd">地图</a></li>';
+
+            /*					+'<li class="dropdown">'
+            						+'<a href="#" class="dropdown-toggle" data-toggle="dropdown">'
+            							+'动态'
+            							+'<b class="caret"></b>'
+            						+'</a>'
+            						+'<ul class="dropdown-menu">'*/
+            if (userInfo.priv == "OPERATOR") {
+                html += '<li ' + active[1] + ' ><a  href="/gd/chartdata/wholeState">本站点动态</a></li>';
+            }
+            html += '<li ' + active[2] + ' ><a href="/gd/chartdata/wholeWholeState">全局动态</a></li>';
+
+            /*						html += '</ul>'
+            					+'</li>'*/
+
+            if (userInfo.priv == "ADMINISTRATOR") {
+                html += '<li ' + active[3] + ' ><a  href="/gd/user/export">数据导出</a></li>';
+            }
+            html += '</ul>' + '<ul class="nav navbar-nav navbar-right">' + '<li class="dropdown" >' + '<a href="#" class="dropdown-toggle" data-toggle="dropdown">' + userInfo.userName + '<b class="caret"></b>' + '</a>' + '<ul class="dropdown-menu">' + '<li><a style="cursor:pointer" id="accountinfo">账号信息</a></li>' + '<li class="divider"></li>' + '<li><a style="cursor:pointer" id="logout">退出登录</a></li>' + '<li class="divider"></li>' + '<li><a style="cursor:pointer" id="changepwd">修改密码</a></li>' + '</ul>' + '</li>' + '</ul>' + '</div>' + '</div>' + '</nav><!--nav-->';
+            (0, _JQueryVendor2.default)("#navi").html(html);
+
+            (0, _JQueryVendor2.default)("#accountinfo").bind("click", function () {
+                alert("not implement yet");
+            });
+            (0, _JQueryVendor2.default)("#logout").bind("click", function () {
+                alert("not implement yet");
+                window.location.href = "/gd/user/logout";
+            });
+            (0, _JQueryVendor2.default)("#changepwd").bind("click", function () {
+                alert("not implement yet");
+            });
         }
     }]);
 
@@ -65229,6 +65270,9 @@ var WholeState = function () {
 		});
 		this.inId;
 		this.outId;
+		this.priv = 'NULLPRIV';
+		this.userInfo = null;
+		this.active = ['', 'class="active"', '', ''];
 
 		this.initEvent();
 	}
@@ -65242,6 +65286,7 @@ var WholeState = function () {
 			self.inId = 1;
 			self.outId = 2;
 			//initialize chart
+			self._initPriv();
 			self._initChart();
 			self._setTimeout();
 
@@ -65256,12 +65301,9 @@ var WholeState = function () {
 			//++1 at y-axis, when click
 
 			$('#trig').on('click', function () {
-				var dataOut = self.option.series[0].data;
-				++dataOut[dataOut.length - 1];
-				console.log(dataOut);
-				console.log(dataOut.toString());
 
-				self.myChart.setOption(self.option);
+				self._tesajax();
+
 				//self.commonService.AlertMessage("message");
 			});
 			$('#testbtn').on('click', function () {
@@ -65284,12 +65326,34 @@ var WholeState = function () {
 				console.log(dataIn);
 				console.log(dataIn.toString());
 				//let id = 1;
-				self._pushData(dataOut.toString(), self.inId);
+				self._pushData(dataIn.toString(), self.inId);
 				self.myChart.setOption(self.option);
 			});
 		}
 		//---------------------------------------------------------------------------
 		//_someFunc(){};
+
+	}, {
+		key: '_initPriv',
+		value: function _initPriv() {
+			var self = this;
+			$.ajax({
+				type: "POST",
+				url: "/gd/user/getUserInfo",
+				//dataType:"json",
+				data: {},
+				success: function success(userInfo) {
+					console.log(userInfo);
+					self.priv = userInfo.priv;
+					self.userInfo = userInfo;
+					self.commonService._generateNavi(userInfo, self.active);
+				},
+				error: function error() {
+					console.log("something wrong!!!!!!!!!!");
+				}
+			});
+		}
+
 		//when initialize the chart, the id must be the id of chartdata record, instead of station
 		//so when initialize, check the direction is needed.
 
@@ -65297,15 +65361,53 @@ var WholeState = function () {
 		key: '_initChart',
 		value: function _initChart() {
 			var self = this;
+			var date = new Date();
+			var clientHour = date.getHours();
+
 			var domm = $('#main'); //why can't use '$' to get the dom?
 			self.myChart = _echarts2.default.init(document.getElementById('main'));
 			self._initChartOption();
-			//ajax here
-			//			self.option.series[0].data = dataOut;
-			//			self.option.series[1].data = dataIn;
-			//			self.option.xAxis[0].data = dataX;
-			//			self.myChart.setOption(self.option);
-			//
+
+			$.ajax({
+				type: "POST",
+				//async:false,
+				url: "/gd/chartdata/wholeState",
+				dataType: "json",
+				data: { "clientHour": clientHour },
+				success: function success(data) {
+					if (data != null) {
+						console.log("success!");
+						/*console.log(data[0]);
+      console.log(data[1]);
+      console.log(data[2]);*/
+						self.option.series[0].data = data.outDataList;
+						self.option.series[1].data = data.inDataList;
+						var xdata = [];
+						for (var i = 0; i < 24; i++) {
+
+							if (data.hourList[i] < 10) {
+								xdata.push("0" + data.hourList[i]);
+							} else {
+								xdata.push("" + data.hourList[i]);
+							}
+						}
+						self.option.xAxis[0].data = xdata;
+						self.myChart.setOption(self.option);
+						self.outId = data.ids[0];
+						self.inId = data.ids[1];
+					} else {
+						location.href = "/gd/user/login";
+					}
+				},
+				error: function error() {
+					console.log("error!");
+					location.href = "/gd/user/login";
+				},
+				complete: function complete() {
+					console.log("complete!");
+				}
+
+			});
 		}
 		// used by _initChart
 
@@ -65315,7 +65417,7 @@ var WholeState = function () {
 			var self = this;
 			self.option = {
 				title: {
-					text: '全局动态'
+					text: '本站点动态'
 				},
 				tooltip: {
 					trigger: 'axis'
@@ -65375,16 +65477,17 @@ var WholeState = function () {
 			};
 
 			// will be useless
-			var demoData = [5, 3, 8, 10, 5, 3, 8, 18, 54, 26, 45, 38, 58, 67, 66, 70, 80, 26, 90, 43, 78, 99, 100, 35];
-			var demoData2 = [];
-			var demoDataX = [];
-			for (var i = 0; i < 24; i++) {
-				demoDataX.push(self._getNowFormatDate());
-				demoData2.push(Math.round(Math.random() * 10 + 5));
-			}
-			self.option.series[0].data = demoData;
-			self.option.series[1].data = demoData2;
-			self.option.xAxis[0].data = demoDataX;
+			/*let demoData = [5,3,8,10,5,3,8,18,54,26,45,38,58,67,66,70,80,26,90,43,78,99,100,35];
+   let demoData2 = [];
+   let demoDataX = [];
+   for(let i = 0 ; i < 24 ; i++){
+   	demoDataX.push(self._getNowFormatDate());
+   	demoData2.push(Math.round((Math.random() * 10 + 5)));
+   }
+   self.option.series[0].data = demoData;
+   self.option.series[1].data = demoData2;
+   self.option.xAxis[0].data = demoDataX;
+   self.myChart.setOption(self.option);*/
 		}
 	}, {
 		key: '_setTimeout',
@@ -65486,6 +65589,33 @@ var WholeState = function () {
 			return times;
 			//return date.getMinutes();
 		}
+
+		//test method useless now
+
+	}, {
+		key: '_tesajax',
+		value: function _tesajax() {
+			var self = this;
+			$.ajax({
+				type: "POST",
+				url: "/gd/chartdata/wholeState",
+				dataType: "json",
+				data: {},
+				success: function success(data) {
+					console.log("success!");
+					console.log(data[0]);
+					console.log(data[1]);
+					console.log(data[2]);
+				},
+				error: function error() {
+					console.log("error!");
+				},
+				complete: function complete() {
+					console.log("complete!");
+				}
+
+			});
+		}
 	}]);
 
 	return WholeState;
@@ -65497,7 +65627,8 @@ exports.default = WholeState;
 /* 8 */,
 /* 9 */,
 /* 10 */,
-/* 11 */
+/* 11 */,
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";

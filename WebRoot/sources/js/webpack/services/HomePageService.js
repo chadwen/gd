@@ -10,25 +10,25 @@ class HomePageService{
 		this.commonService = new CommonService();		
 	}
 	
-	_addMapMenu(map,posx,posy,id){
+	_addMapMenu(map,posx,posy){
 		let self = this;
 		let menu = new BMap.ContextMenu();
 		let txtMenuItem = [
 		           		{
-		           			text:'添加站点',
+		           			text:'添加出入站点',
 		           			callback:function(){
 		           				self.commonService.options = {
-		           			            header: '添加站点',
+		           			            header: '添加出入站点',
 		           			            content:'<form role="form" id="addStation" method="POST" action="/gd/station/add">' +
 		           			                    '<div class="form-group">' +
 
-		           			                    '<label for="name">站点名称</label>' +
+		           			                    '<label for="name">出入站点名称</label>' +
 		           			                    '<input type="text" class="form-control" id="fullName" name="fullName" placeholder="一号门">' +
-		           			                    '<label for="name">站点代号</label>' +
+		           			                    '<label for="name">出入站点代号</label>' +
 		           			                    '<input type="text" class="form-control" id="alias" name="alias" placeholder="G1">' +
-		           			                    '<label for="name">站点地址</label>' +
+		           			                    '<label for="name">出入站点地址</label>' +
 		           			                    '<input type="text" class="form-control" id="addr" name="addr" placeholder="北碚天生街道xx号西南大学一号门">' +
-		           			                    '<label for="name">站点简介</label>' +
+		           			                    '<label for="name">出入站点简介</label>' +
 		           			                    '<input type="text" class="form-control" id="brief" name="brief" placeholder="默认为站点名称">' +
 		           			                    
 			           			                '<input type="hidden" class="form-control" id="imgPath" value="http://pic34.photophoto.cn/20150330/0007019952833279_b.jpg" name="imgPath">' +
@@ -37,7 +37,7 @@ class HomePageService{
 		           			                    '</div>'+
 		           			                    ' </form>',
 		           			            footer: '<button type="button" class="btn btn-default stacancel">取消</button>' +
-		           			                    '<button type="button" class="btn btn-primary stasubmit"><span class="glyphicon glyphicon-cloud-upload" id="uploadtitle">添加</span></button>' 
+		           			                    '<button type="button" class="btn btn-primary stasubmit"><span class="glyphicon glyphicon-cloud-upload">添加</span></button>' 
 		           			                    
 		           			        };
 		           			        self.commonService.OpenParentModalLayer();
@@ -52,22 +52,22 @@ class HomePageService{
 		           			}
 		           		},
 		           		{
-		           			text:'添加停车点',
+		           			text:'添加停车站点',
 		           			callback:function(){
 		           				self.commonService.options = {
-		           			            header: '添加停车点',
+		           			            header: '添加停车站点',
 		           			            content: '<form role="form" id="addPark" method="POST" action="/gd/park/add">' +
 		           			                    '<div class="form-group">' +
 
-		           			                    '<label for="name">停车点名称</label>' +
+		           			                    '<label for="name">停车站点名称</label>' +
 		           			                    '<input type="text" class="form-control" id="fullName" name="fullName" placeholder="一号停车点">' +
-		           			                    '<label for="name">停车点代号</label>' +
+		           			                    '<label for="name">停车站点代号</label>' +
 		           			                    '<input type="text" class="form-control" id="alias" name="alias" placeholder="P1">' +
-		           			                    '<label for="name">停车点地址</label>' +
+		           			                    '<label for="name">停车站点地址</label>' +
 		           			                    '<input type="text" class="form-control" id="addr" name="addr" placeholder="北碚天生街道xx号西南大学一号停车点">' +
-		           			                    '<label for="name">停车点简介</label>' +
+		           			                    '<label for="name">停车站点简介</label>' +
 		           			                    '<input type="text" class="form-control" id="brief" name="brief" placeholder="默认为停车点名称">' +
-		           			                    '<label for="name">停车点车位总量</label>' +
+		           			                    '<label for="name">停车站点车位总量</label>' +
 		           			                    '<input type="text" class="form-control" id="totalLot" name="totalLot" placeholder="停车点车位总量">' +
 
 			           			                '<input type="hidden" class="form-control" id="imgPath" value="http://pic34.photophoto.cn/20150330/0007019952833279_b.jpg" name="imgPath">' +
@@ -76,7 +76,7 @@ class HomePageService{
 		           			                    '</div>'+
 		           			                    ' </form>',
 		           			            footer: '<button type="button" class="btn btn-default parkcancel">取消</button>' +
-		           			                    '<button type="button" class="btn btn-primary parksubmit"><span class="glyphicon glyphicon-cloud-upload" id="uploadtitle">添加</span></button>' 
+		           			                    '<button type="button" class="btn btn-primary parksubmit"><span class="glyphicon glyphicon-cloud-upload">添加</span></button>' 
 		           			                    
 		           			        };
 		           			        self.commonService.OpenParentModalLayer();
@@ -97,7 +97,7 @@ class HomePageService{
 		map.addContextMenu(menu);
 	}
 	
-	_addPointMenu(point,id,type){
+	_addPointMenuAdmin(point,id,type){
 		let self = this;
 		let menu = new BMap.ContextMenu();
 		let txtMenuItem=[];
@@ -111,7 +111,7 @@ class HomePageService{
 			           			}
 			           		},
 			           		{
-			           			text:'修改站点',
+			           			text:'修改出入站点',
 			           			callback:function(){
 			           				$.ajax({
 			           					type : "POST",
@@ -121,18 +121,18 @@ class HomePageService{
 			           					data : {},
 			           					success : function(data) {
 			           						self.commonService.options = {
-					           			            header: '修改站点',
+					           			            header: '修改出入站点',
 					           			            content: '<form role="form" id="updateStation" method="POST" action="/gd/station/update">' +
 					           			                    '<div class="form-group">' +
 					           			                    
 					           			                    '<input type="hidden" id="id" name="id" value="'+data.id+'"/>' +
-					           			                    '<label for="name">站点名称</label>' +
+					           			                    '<label for="name">出入站点名称</label>' +
 					           			                    '<input type="text" class="form-control" id="fullName" name="fullName" value="'+ data.fullName +'">' +
-					           			                    '<label for="name">站点代号</label>' +
+					           			                    '<label for="name">出入站点代号</label>' +
 					           			                    '<input type="text" class="form-control" id="alias" name="alias" value="'+ data.alias +'">' +
-					           			                    '<label for="name">站点地址</label>' +
+					           			                    '<label for="name">出入站点地址</label>' +
 					           			                    '<input type="text" class="form-control" id="addr" name="addr" value="'+ data.addr +'">' +
-					           			                    '<label for="name">站点简介</label>' +
+					           			                    '<label for="name">出入站点简介</label>' +
 					           			                    '<input type="text" class="form-control" id="brief" name="brief" value="'+ data.brief +'">' +
 
 					           			                    '</div>'+
@@ -158,7 +158,7 @@ class HomePageService{
 			           			}
 			           		},
 			           		{
-			           			text:'删除站点',
+			           			text:'删除出入站点',
 			           			callback:function(){
 			           				location.href = "/gd/station/delete/"+id;
 			           				console.log('delete station id:'+id);
@@ -169,7 +169,7 @@ class HomePageService{
 		if(type=='P'){
 			txtMenuItem = [
         		{
-        			text:'修改停车点',
+        			text:'修改停车站点',
         			callback:function(){
         				$.ajax({
            					type : "POST",
@@ -179,20 +179,20 @@ class HomePageService{
            					data : {},
            					success : function(data) {
 		           				self.commonService.options = {
-		           			            header: '修改停车点',
+		           			            header: '修改停车站点',
 		           			            content: '<form role="form" id="updatePark" method="POST" action="/gd/park/update">' +
 		           			                    '<div class="form-group">' +
 		           			                    
 		           			                    '<input type="hidden" id="id" name="id" value="'+data.id+'"/>' +
-		           			                    '<label for="name">停车点名称</label>' +
+		           			                    '<label for="name">停车站点名称</label>' +
 		           			                    '<input type="text" class="form-control" id="fullName" name="fullName" value="'+ data.fullName +'">' +
-		           			                    '<label for="name">停车点代号</label>' +
+		           			                    '<label for="name">停车站点代号</label>' +
 		           			                    '<input type="text" class="form-control" id="alias" name="alias" value="'+ data.alias +'">' +
-		           			                    '<label for="name">停车点地址</label>' +
+		           			                    '<label for="name">停车站点地址</label>' +
 		           			                    '<input type="text" class="form-control" id="addr" name="addr" value="'+ data.addr +'">' +
-		           			                    '<label for="name">停车点简介</label>' +
+		           			                    '<label for="name">停车站点简介</label>' +
 		           			                    '<input type="text" class="form-control" id="brief" name="brief" value="'+ data.brief +'">' +
-		           			                    '<label for="name">停车点车位总量</label>' +
+		           			                    '<label for="name">停车站点车位总量</label>' +
 		           			                    '<input type="text" class="form-control" id="totalLot" name="totalLot" value="'+ data.totalLot +'">' +
 		           			               
 		           			                    '</div>'+
@@ -218,7 +218,7 @@ class HomePageService{
         			}
         		},
         		{
-        			text:'删除停车点',
+        			text:'删除停车站点',
         			callback:function(){
         				location.href = "/gd/park/delete/"+id;
            				console.log('delete park id:'+id);
@@ -230,6 +230,28 @@ class HomePageService{
 			menu.addItem(new BMap.MenuItem(txtMenuItem[i].text,txtMenuItem[i].callback,100));
 		}
 		point.addContextMenu(menu);
+	}
+	
+	_addPointMenuNormal(point,id,type){
+		let self = this;
+		let menu = new BMap.ContextMenu();
+		let txtMenuItem=[];
+		if(type=='G'){
+			txtMenuItem = [
+			           		{
+			           			text:'查看数据动态',
+			           			callback:function(){
+			           				alert('not implement yet!!!');
+			           				//window.location.open("/gd/chartdata/get/"+id);
+			           			}
+			           		},
+			           	];
+		}
+		for(var i=0; i < txtMenuItem.length; i++){
+			menu.addItem(new BMap.MenuItem(txtMenuItem[i].text,txtMenuItem[i].callback,100));
+		}
+		point.addContextMenu(menu);
+
 	}
 	
 	//used by HomePageCtr.js

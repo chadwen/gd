@@ -8,11 +8,11 @@ public interface InStreamDAO {
 	void addInStream(InStreamEntity inStreamEntity);
 
 	@Transactional
-	void inactivate();
+	void inactivate(int staId);
 	
 	@Transactional
 	void updateInStream (InStreamEntity inStreamEntity);
 
 	@Transactional
-	InStreamEntity getActiveRecord();
+	InStreamEntity getActiveRecord(int staId);
 }

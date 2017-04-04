@@ -7,6 +7,7 @@ module.exports = {
 		  entry:{
 			  demo : "./appConfig/DemoCfg.js",
 			  wholestate : "./appConfig/WholeStateCfg.js",
+			  wholewholestate:"./appConfig/WholeWholeStateCfg.js",
 			  echart : "./appConfig/echart.js",
 			  homepage : "./appConfig/HomePageCfg.js"
 		  },

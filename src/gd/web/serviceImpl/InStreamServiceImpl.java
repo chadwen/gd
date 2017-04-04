@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import gd.web.domain.InStreamDAO;
+import gd.web.entity.ChartDataEntity;
 import gd.web.entity.InStreamEntity;
 import gd.web.service.InStreamService;
 import gd.web.util.Util;
@@ -21,9 +22,9 @@ public class InStreamServiceImpl implements InStreamService{
 		inStreamDAO.addInStream(inStreamEntity);
 	}
 	@Override
-	public void inactivate() {
+	public void inactivate(int staId) {
 		// TODO Auto-generated method stub
-		inStreamDAO.inactivate();
+		inStreamDAO.inactivate(staId);
 	}
 	@Override
 	public void updateInStream(InStreamEntity inStreamEntity) {
@@ -31,27 +32,38 @@ public class InStreamServiceImpl implements InStreamService{
 		inStreamDAO.updateInStream(inStreamEntity);
 	}
 	@Override
-	public void updateInStreamDatas(int staId,String datas) {
+	public void updateInStreamDatas(ChartDataEntity chartDataEntity) {
 		// TODO Auto-generated method stub
-		InStreamEntity inStreamEntity = getActiveRecord();
+
+		String chartDatas = chartDataEntity.getDatas();
+		InStreamEntity inStreamEntity = getActiveRecord(chartDataEntity.getStaId());
 		if(inStreamEntity == null || Util.getFormatDate().compareTo(inStreamEntity.getCurrDate())>0){
-			createRecord(staId);
+			createRecord(chartDataEntity.getStaId());
 			return;
 		}
-		inStreamEntity.setDatas(datas);
+		String[] datas = inStreamEntity.getDatas().split(",");
+		int total = 0;
+		for(int i = 0 ; i < datas.length ; i++){
+			if(i==chartDataEntity.getCurrHour()){
+				datas[i]=chartDatas.substring(chartDatas.lastIndexOf(",")+1);
+			}
+			total += Integer.parseInt(datas[i]);
+		}
+		inStreamEntity.setDatas(Util.arrayToString(datas));
 		inStreamEntity.setModifyTime(new Date());
+		inStreamEntity.setTotal(total);
 		updateInStream(inStreamEntity);
 	}
 	@Override
-	public InStreamEntity getActiveRecord() {
+	public InStreamEntity getActiveRecord(int staId) {
 		// TODO Auto-generated method stub
-		return inStreamDAO.getActiveRecord();
+		return inStreamDAO.getActiveRecord(staId);
 	}
 	@Override
 	public void createRecord(int staId) {
 		// TODO Auto-generated method stub
 		//inactivate current active data
-		inactivate();
+		inactivate(staId);
 		// and then new a active data.
 		InStreamEntity inStreamEntity = new InStreamEntity();
 		inStreamEntity.setStaId(staId);
