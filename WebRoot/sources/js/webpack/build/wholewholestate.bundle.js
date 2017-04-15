@@ -1,4 +1,4 @@
-/*! // gd Version 1.0  3/27/2017, 5:22:46 AM --By wcy  */
+/*! // gd Version 1.0  4/14/2017, 7:21:58 AM --By wcy  */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -64,7 +64,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 13);
+/******/ 	return __webpack_require__(__webpack_require__.s = 15);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -331,7 +331,7 @@ var CommonService = function () {
             						+'</a>'
             						+'<ul class="dropdown-menu">'*/
             if (userInfo.priv == "OPERATOR") {
-                html += '<li ' + active[1] + ' ><a  href="/gd/chartdata/wholeState">本站点动态</a></li>';
+                html += '<li ' + active[1] + ' ><a  href="/gd/chartdata/wholeState">站点动态</a></li>';
             }
             html += '<li ' + active[2] + ' ><a href="/gd/chartdata/wholeWholeState">全局动态</a></li>';
 
@@ -341,14 +341,14 @@ var CommonService = function () {
             if (userInfo.priv == "ADMINISTRATOR") {
                 html += '<li ' + active[3] + ' ><a  href="/gd/user/export">数据导出</a></li>';
             }
-            html += '</ul>' + '<ul class="nav navbar-nav navbar-right">' + '<li class="dropdown" >' + '<a href="#" class="dropdown-toggle" data-toggle="dropdown">' + userInfo.userName + '<b class="caret"></b>' + '</a>' + '<ul class="dropdown-menu">' + '<li><a style="cursor:pointer" id="accountinfo">账号信息</a></li>' + '<li class="divider"></li>' + '<li><a style="cursor:pointer" id="logout">退出登录</a></li>' + '<li class="divider"></li>' + '<li><a style="cursor:pointer" id="changepwd">修改密码</a></li>' + '</ul>' + '</li>' + '</ul>' + '</div>' + '</div>' + '</nav><!--nav-->';
+            html += '</ul>' + '<ul class="nav navbar-nav navbar-right">' + '<li class="dropdown" >' + '<a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-user"></span>&nbsp;&nbsp;' + userInfo.userName + '<b class="caret"></b>' + '</a>' + '<ul class="dropdown-menu">' + '<li><a style="cursor:pointer" id="accountinfo"><span class="glyphicon glyphicon-info-sign"></span>&nbsp;&nbsp;账号信息</a></li>' + '<li class="divider"></li>' + '<li><a style="cursor:pointer" id="changepwd"><span class="glyphicon glyphicon-pencil"></span>&nbsp;&nbsp;修改密码</a></li>' + '<li class="divider"></li>' + '<li><a style="cursor:pointer" id="logout"><span class="glyphicon glyphicon-log-out"></span>&nbsp;&nbsp;退出登录</a></li>' + '</ul>' + '</li>' + '</ul>' + '</div>' + '</div>' + '</nav><!--nav-->';
             (0, _JQueryVendor2.default)("#navi").html(html);
 
             (0, _JQueryVendor2.default)("#accountinfo").bind("click", function () {
                 alert("not implement yet");
             });
             (0, _JQueryVendor2.default)("#logout").bind("click", function () {
-                alert("not implement yet");
+                //alert("not implement yet");
                 window.location.href = "/gd/user/logout";
             });
             (0, _JQueryVendor2.default)("#changepwd").bind("click", function () {
@@ -65229,7 +65229,8 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 5 */,
 /* 6 */,
 /* 7 */,
-/* 8 */
+/* 8 */,
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -65459,11 +65460,12 @@ var WholeWholeState = function () {
 exports.default = WholeWholeState;
 
 /***/ }),
-/* 9 */,
 /* 10 */,
 /* 11 */,
 /* 12 */,
-/* 13 */
+/* 13 */,
+/* 14 */,
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -65473,7 +65475,7 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _WholeWholeStateCtr = __webpack_require__(8);
+var _WholeWholeStateCtr = __webpack_require__(9);
 
 var _WholeWholeStateCtr2 = _interopRequireDefault(_WholeWholeStateCtr);
 

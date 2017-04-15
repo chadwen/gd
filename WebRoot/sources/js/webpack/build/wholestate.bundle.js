@@ -1,4 +1,4 @@
-/*! // gd Version 1.0  3/27/2017, 5:22:46 AM --By wcy  */
+/*! // gd Version 1.0  4/14/2017, 7:21:58 AM --By wcy  */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -64,7 +64,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 12);
+/******/ 	return __webpack_require__(__webpack_require__.s = 14);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -331,7 +331,7 @@ var CommonService = function () {
             						+'</a>'
             						+'<ul class="dropdown-menu">'*/
             if (userInfo.priv == "OPERATOR") {
-                html += '<li ' + active[1] + ' ><a  href="/gd/chartdata/wholeState">本站点动态</a></li>';
+                html += '<li ' + active[1] + ' ><a  href="/gd/chartdata/wholeState">站点动态</a></li>';
             }
             html += '<li ' + active[2] + ' ><a href="/gd/chartdata/wholeWholeState">全局动态</a></li>';
 
@@ -341,14 +341,14 @@ var CommonService = function () {
             if (userInfo.priv == "ADMINISTRATOR") {
                 html += '<li ' + active[3] + ' ><a  href="/gd/user/export">数据导出</a></li>';
             }
-            html += '</ul>' + '<ul class="nav navbar-nav navbar-right">' + '<li class="dropdown" >' + '<a href="#" class="dropdown-toggle" data-toggle="dropdown">' + userInfo.userName + '<b class="caret"></b>' + '</a>' + '<ul class="dropdown-menu">' + '<li><a style="cursor:pointer" id="accountinfo">账号信息</a></li>' + '<li class="divider"></li>' + '<li><a style="cursor:pointer" id="logout">退出登录</a></li>' + '<li class="divider"></li>' + '<li><a style="cursor:pointer" id="changepwd">修改密码</a></li>' + '</ul>' + '</li>' + '</ul>' + '</div>' + '</div>' + '</nav><!--nav-->';
+            html += '</ul>' + '<ul class="nav navbar-nav navbar-right">' + '<li class="dropdown" >' + '<a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-user"></span>&nbsp;&nbsp;' + userInfo.userName + '<b class="caret"></b>' + '</a>' + '<ul class="dropdown-menu">' + '<li><a style="cursor:pointer" id="accountinfo"><span class="glyphicon glyphicon-info-sign"></span>&nbsp;&nbsp;账号信息</a></li>' + '<li class="divider"></li>' + '<li><a style="cursor:pointer" id="changepwd"><span class="glyphicon glyphicon-pencil"></span>&nbsp;&nbsp;修改密码</a></li>' + '<li class="divider"></li>' + '<li><a style="cursor:pointer" id="logout"><span class="glyphicon glyphicon-log-out"></span>&nbsp;&nbsp;退出登录</a></li>' + '</ul>' + '</li>' + '</ul>' + '</div>' + '</div>' + '</nav><!--nav-->';
             (0, _JQueryVendor2.default)("#navi").html(html);
 
             (0, _JQueryVendor2.default)("#accountinfo").bind("click", function () {
                 alert("not implement yet");
             });
             (0, _JQueryVendor2.default)("#logout").bind("click", function () {
-                alert("not implement yet");
+                //alert("not implement yet");
                 window.location.href = "/gd/user/logout";
             });
             (0, _JQueryVendor2.default)("#changepwd").bind("click", function () {
@@ -65228,7 +65228,8 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ }),
 /* 5 */,
 /* 6 */,
-/* 7 */
+/* 7 */,
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -65265,11 +65266,16 @@ var WholeState = function () {
 		this.commonService = new _CommonService2.default();
 		this.myChart;
 		this.option;
+
 		this.goEasy = new GoEasy({
 			appkey: 'bf8b21fc-dbde-4d1f-9fee-bd1f39641b73'
 		});
+		this.channelIN = 'STATIONCHANNELIN';
+		this.channelOUT = 'STATIONCHANNELOUT';
+		this.timeChannel = 'TIMECHANNEL';
 		this.inId;
 		this.outId;
+		this.staId;
 		this.priv = 'NULLPRIV';
 		this.userInfo = null;
 		this.active = ['', 'class="active"', '', ''];
@@ -65285,10 +65291,12 @@ var WholeState = function () {
 			//need to get user id and check privilege.as well as staId
 			self.inId = 1;
 			self.outId = 2;
+			self.staId = 0;
+
+			self.staId = $("#saveStaId").text();
+			//alert(self.staId);
 			//initialize chart
 			self._initPriv();
-			self._initChart();
-			self._setTimeout();
 
 			self.goEasy.subscribe({
 				channel: 'demo_channel',
@@ -65311,24 +65319,6 @@ var WholeState = function () {
 				alert(self._getSeconds());
 				location.href = "/gd/user/test";
 			});
-			$('#chartOut').on('click', function () {
-				var dataOut = self.option.series[0].data;
-				++dataOut[dataOut.length - 1];
-				console.log(dataOut);
-				console.log(dataOut.toString());
-				//let id = 2;
-				self._pushData(dataOut.toString(), self.outId);
-				self.myChart.setOption(self.option);
-			});
-			$('#chartIn').on('click', function () {
-				var dataIn = self.option.series[1].data;
-				++dataIn[dataIn.length - 1];
-				console.log(dataIn);
-				console.log(dataIn.toString());
-				//let id = 1;
-				self._pushData(dataIn.toString(), self.inId);
-				self.myChart.setOption(self.option);
-			});
 		}
 		//---------------------------------------------------------------------------
 		//_someFunc(){};
@@ -65347,6 +65337,7 @@ var WholeState = function () {
 					self.priv = userInfo.priv;
 					self.userInfo = userInfo;
 					self.commonService._generateNavi(userInfo, self.active);
+					self._initChart();
 				},
 				error: function error() {
 					console.log("something wrong!!!!!!!!!!");
@@ -65356,6 +65347,7 @@ var WholeState = function () {
 
 		//when initialize the chart, the id must be the id of chartdata record, instead of station
 		//so when initialize, check the direction is needed.
+		// called in _initPriv()
 
 	}, {
 		key: '_initChart',
@@ -65373,13 +65365,14 @@ var WholeState = function () {
 				//async:false,
 				url: "/gd/chartdata/wholeState",
 				dataType: "json",
-				data: { "clientHour": clientHour },
+				data: { "clientHour": clientHour, "staId": self.staId },
 				success: function success(data) {
 					if (data != null) {
 						console.log("success!");
 						/*console.log(data[0]);
       console.log(data[1]);
       console.log(data[2]);*/
+						self.option.title.text = self.option.title.text + "(" + data.brief + ")";
 						self.option.series[0].data = data.outDataList;
 						self.option.series[1].data = data.inDataList;
 						var xdata = [];
@@ -65395,6 +65388,23 @@ var WholeState = function () {
 						self.myChart.setOption(self.option);
 						self.outId = data.ids[0];
 						self.inId = data.ids[1];
+						//self.staId = data.staId;
+						if (self.userInfo.staId != self.staId) {
+							//						$('#chartOut').remove();
+							//						$('#chartIn').remove();
+							//						$('#chartOut').css("style","display:none");
+							//						$('#chartIn').css("style","display:none");
+						} else {
+							$("#btnContain").append('<button class="btn" id="chartOut">OUT</button>&nbsp;&nbsp;');
+							$("#btnContain").append('<button class="btn" id="chartIn">IN</button>');
+							$("#btnContain").append();
+							self._initBtn();
+							self._setTimeout();
+						}
+						self.channelIN = self.channelIN + self.staId;
+						self.channelOUT = self.channelOUT + self.staId;
+						self.timeChannel = self.timeChannel + self.staId;
+						self._monitorChange();
 					} else {
 						location.href = "/gd/user/login";
 					}
@@ -65409,7 +65419,7 @@ var WholeState = function () {
 
 			});
 		}
-		// used by _initChart
+		// called in _initChart
 
 	}, {
 		key: '_initChartOption',
@@ -65417,7 +65427,7 @@ var WholeState = function () {
 			var self = this;
 			self.option = {
 				title: {
-					text: '本站点动态'
+					text: '站点动态'
 				},
 				tooltip: {
 					trigger: 'axis'
@@ -65489,6 +65499,123 @@ var WholeState = function () {
    self.option.xAxis[0].data = demoDataX;
    self.myChart.setOption(self.option);*/
 		}
+		// called in _initChart
+
+	}, {
+		key: '_initBtn',
+		value: function _initBtn() {
+			var self = this;
+			$('#chartOut').bind('click', function () {
+				var dataOut = self.option.series[0].data;
+				++dataOut[dataOut.length - 1];
+				console.log(dataOut);
+				console.log(dataOut.toString());
+				//let id = 2;
+				self._pushData(dataOut.toString(), self.outId);
+
+				self._publishGoEasy(self.channelOUT, self._arrayToString(dataOut, ","));
+				//self.myChart.setOption(self.option);
+			});
+			$('#chartIn').bind('click', function () {
+				var dataIn = self.option.series[1].data;
+				++dataIn[dataIn.length - 1];
+				console.log(dataIn);
+				console.log(dataIn.toString());
+				//let id = 1;
+				self._pushData(dataIn.toString(), self.inId);
+
+				self._publishGoEasy(self.channelIN, self._arrayToString(dataIn, ","));
+
+				//self.myChart.setOption(self.option);
+			});
+		}
+		//push data to server. called in _initBtn()
+
+	}, {
+		key: '_pushData',
+		value: function _pushData(datas, id) {
+			var self = this;
+			var date = new Date();
+			var currHour = date.getHours();
+			$.ajax({
+				type: "POST",
+				url: "/gd/chartdata/update/" + id,
+				dataType: "json",
+				data: { "datas": datas, "currHour": currHour },
+				success: function success(data) {},
+				error: function error() {},
+				complete: function complete() {}
+			});
+		}
+
+		// use goeasy to publish change data,called in _setTimeoutSub() and _initBtn()
+
+	}, {
+		key: '_publishGoEasy',
+		value: function _publishGoEasy(channel, data) {
+			var self = this;
+			self.goEasy.publish({
+				channel: channel,
+				message: data
+			});
+		}
+		// receive change from specific channel, called in _initChart()
+
+	}, {
+		key: '_monitorChange',
+		value: function _monitorChange() {
+			var self = this;
+			self.goEasy.subscribe({
+				channel: self.channelOUT,
+				onMessage: function onMessage(message) {
+					//alert('收到：'+message.content);
+					console.log(message.content);
+					var outData = self._stringToArray(message.content, ",");
+					self.option.series[0].data = outData;
+					self.myChart.setOption(self.option);
+				}
+			});
+			self.goEasy.subscribe({
+				channel: self.channelIN,
+				onMessage: function onMessage(message) {
+					//alert('收到：'+message.content);
+					console.log(message.content);
+					var inData = self._stringToArray(message.content, ",");
+					self.option.series[1].data = inData;
+					self.myChart.setOption(self.option);
+				}
+			});
+			//set xAxis data
+			self.goEasy.subscribe({
+				channel: self.timeChannel,
+				onMessage: function onMessage(message) {
+					//alert('收到：'+message.content);
+					console.log(message.content);
+					var timeData = self._stringToArray(message.content, ",");
+					self.option.xAxis[0].data = timeData;
+					self.myChart.setOption(self.option);
+				}
+			});
+		}
+		// transform string into array
+
+	}, {
+		key: '_stringToArray',
+		value: function _stringToArray(str, separator) {
+			var arr = str.split(separator);
+			return arr;
+		}
+		// transform array into string
+
+	}, {
+		key: '_arrayToString',
+		value: function _arrayToString(arr, separator) {
+			var str = arr.join(separator);
+			return str;
+		}
+
+		//called in _initChart
+
 	}, {
 		key: '_setTimeout',
 		value: function _setTimeout() {
@@ -65500,7 +65627,7 @@ var WholeState = function () {
 				self._setInterval();
 			}, seconds * 1000);
 		}
-		//used by _setTimeout
+		//called in _setTimeout
 
 	}, {
 		key: '_setInterval',
@@ -65510,7 +65637,7 @@ var WholeState = function () {
 				self._setTimeoutSub();
 			}, 1000 * 60 * 60);
 		}
-		// every hour. used by _setInterval and _setTimeout
+		// every hour. called in _setInterval and _setTimeout
 
 	}, {
 		key: '_setTimeoutSub',
@@ -65534,11 +65661,17 @@ var WholeState = function () {
 				option.xAxis[0].data.shift();
 			}
 			option.xAxis[0].data.push(self._getNowFormatDate());
-			self.myChart.setOption(option);
+
+			self._publishGoEasy(self.channelOUT, self._arrayToString(dataOut, ","));
+			self._publishGoEasy(self.channelIN, self._arrayToString(dataIn, ","));
+			self._publishGoEasy(self.timeChannel, self._arrayToString(option.xAxis[0].data, ","));
+			//self.myChart.setOption(option);
+
+
 			self._pushData(dataOut.toString(), self.outId);
 			self._pushData(dataIn.toString(), self.inId);
 		}
-		//10 seconds delay used by _setTimeout
+		//10 seconds delay called in _setTimeout
 
 	}, {
 		key: '_getSeconds',
@@ -65548,26 +65681,7 @@ var WholeState = function () {
 			second = 3600 - (date.getMinutes() * 60 + date.getSeconds());
 			return second + 10;
 		}
-		//push data to server.
-
-	}, {
-		key: '_pushData',
-		value: function _pushData(datas, id) {
-			var self = this;
-			var date = new Date();
-			var currHour = date.getHours();
-			$.ajax({
-				type: "POST",
-				url: "/gd/chartdata/update/" + id,
-				dataType: "json",
-				data: { "datas": datas, "currHour": currHour },
-				success: function success(data) {},
-				error: function error() {},
-				complete: function complete() {}
-			});
-		}
-
-		//return hour number, used by _setInterval and _initChartOption
+		//return hour number, called in _setInterval and _initChartOption
 
 	}, {
 		key: '_getNowFormatDate',
@@ -65590,6 +65704,7 @@ var WholeState = function () {
 			//return date.getMinutes();
 		}
 
+		//-----------------uesless-------------------------------------------------------
 		//test method useless now
 
 	}, {
@@ -65624,11 +65739,12 @@ var WholeState = function () {
 exports.default = WholeState;
 
 /***/ }),
-/* 8 */,
 /* 9 */,
 /* 10 */,
 /* 11 */,
-/* 12 */
+/* 12 */,
+/* 13 */,
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -65638,7 +65754,7 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _WholeStateCtr = __webpack_require__(7);
+var _WholeStateCtr = __webpack_require__(8);
 
 var _WholeStateCtr2 = _interopRequireDefault(_WholeStateCtr);
 

@@ -106,8 +106,10 @@ class HomePageService{
 			           		{
 			           			text:'查看数据动态',
 			           			callback:function(){
-			           				alert('not implement yet!!!');
+			           				//alert('not implement yet!!!');
 			           				//location.href = "/gd/chartdata/get/"+id;
+			           				//open a new tab
+			           				window.open("/gd/chartdata/get/"+id);
 			           			}
 			           		},
 			           		{
@@ -241,8 +243,12 @@ class HomePageService{
 			           		{
 			           			text:'查看数据动态',
 			           			callback:function(){
-			           				alert('not implement yet!!!');
-			           				//window.location.open("/gd/chartdata/get/"+id);
+			           				//alert('not implement yet!!!');
+			           				//open a new tab
+			           				let url = "/gd/chartdata/get/"+id;
+			           				window.open("/gd/chartdata/get/"+id);
+			           				console.log(url);
+			           				
 			           			}
 			           		},
 			           	];

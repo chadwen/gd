@@ -198,7 +198,6 @@ public class UserController {
 		
 		//test
 		userMap.get(id);//session id
-		session.getSessionContext().getSession("jis");
 		//sessionMap.get("jis");
 		
 		

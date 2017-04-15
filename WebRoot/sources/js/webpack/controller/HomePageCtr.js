@@ -135,15 +135,16 @@ class HomePage{
 				});//绑定监听器
 				if(self.priv=="ADMINISTRATOR"){
 
-					entrance1.addEventListener("rightclick",function showWindow(){
+					//entrance1.addEventListener("rightclick",function showWindow(){
 						let id = 2;
 						self.hpservice._addPointMenuAdmin(entrance1,obj.id,type);
-					});
+					//});
 				}else{
-					entrance1.addEventListener("rightclick",function showWindow(){
+					//entrance1.addEventListener("rightclick",function showWindow(){
 						let id = 2;
 						self.hpservice._addPointMenuNormal(entrance1,obj.id,type);
-					});
+					//});
+					//entrance1.addEventListener("mouseover",function allls(){alert("allls func")});
 				}
 			//}
 		});

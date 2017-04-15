@@ -62,4 +62,11 @@ public class OutStreamDAOImpl implements OutStreamDAO{
 		}
 		return null;
 	}
+
+	@Override
+	public List<OutStreamEntity> getEntityByDate(String startDate, String endDate, int staId) {
+		// TODO Auto-generated method stub
+		xx
+		return null;
+	}
 }

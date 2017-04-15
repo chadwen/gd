@@ -1,5 +1,7 @@
 package gd.web.domain;
 
+import java.util.List;
+
 import org.springframework.transaction.annotation.Transactional;
 
 import gd.web.entity.OutStreamEntity;
@@ -16,4 +18,7 @@ public interface OutStreamDAO {
 
 	@Transactional
 	OutStreamEntity getActiveRecord(int staId);
+
+	@Transactional
+	List<OutStreamEntity> getEntityByDate(String startDate, String endDate, int staId);
 }

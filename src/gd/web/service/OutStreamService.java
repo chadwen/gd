@@ -1,5 +1,7 @@
 package gd.web.service;
 
+import java.util.List;
+
 import gd.web.entity.ChartDataEntity;
 import gd.web.entity.OutStreamEntity;
 
@@ -16,4 +18,6 @@ public interface OutStreamService {
 	OutStreamEntity getActiveRecord(int staId);
 
 	void createRecord(int staId);
+
+	List<OutStreamEntity> getEntityByDate(String startDate, String endDate, int staId);
 }

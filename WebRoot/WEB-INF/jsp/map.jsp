@@ -43,12 +43,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
 </div>	
 
-	<!--坐标-->
+	<!--坐标
 	<div>
 		<div style="float:left;width:5%;text-align:right"><span>坐标：</span></div>
 		<div id="coordinate" style="width:100%px;height:30px;background-color:#fff;margin-left:5%"></div>
 
 	</div>
+	-->
 	<!--地图-->
 	<div id="swuMap"></div>
 

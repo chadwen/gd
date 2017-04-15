@@ -10,8 +10,13 @@ public enum Enum {
 	//stream type IN OUT
 	IN,
 	OUT,
+	BOTH,
 	//point type G:gate, P:park
 	G,
 	P,
+	
+	STATIONCHANNEL,
+	PAEKCHANNEL,
+	TIMECHANNEL,
 	
 }

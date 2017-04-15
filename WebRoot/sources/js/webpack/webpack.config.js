@@ -9,7 +9,8 @@ module.exports = {
 			  wholestate : "./appConfig/WholeStateCfg.js",
 			  wholewholestate:"./appConfig/WholeWholeStateCfg.js",
 			  echart : "./appConfig/echart.js",
-			  homepage : "./appConfig/HomePageCfg.js"
+			  homepage : "./appConfig/HomePageCfg.js",
+			  exports : "./appConfig/ExportCfg.js"
 		  },
 		  
 		  

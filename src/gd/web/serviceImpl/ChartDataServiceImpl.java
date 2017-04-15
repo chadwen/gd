@@ -15,6 +15,7 @@ import gd.web.entity.viewModel.ChartData;
 import gd.web.service.ChartDataService;
 import gd.web.service.InStreamService;
 import gd.web.service.OutStreamService;
+import gd.web.service.StationService;
 import gd.web.util.Util;
 import gd.web.util.Enum;
 
@@ -29,6 +30,8 @@ public class ChartDataServiceImpl implements ChartDataService{
 	@Autowired
 	private OutStreamService outStreamService;
 	
+	@Autowired
+	private StationService stationService;
 	
 	@Override
 	public void processStreamTable(ChartDataEntity chartDataEntity) {
@@ -100,6 +103,8 @@ public class ChartDataServiceImpl implements ChartDataService{
 		chartData.setInDataList(inDataList);
 		chartData.setHourList(hourList);
 		chartData.setIds(ids);
+		chartData.setStaId(staId);
+		chartData.setBrief(stationService.getStationById(staId).getBrief());
 		return chartData;
 	}
 	

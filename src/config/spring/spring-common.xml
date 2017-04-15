@@ -67,6 +67,7 @@
        <property name="transactionManager" ref="transactionManager"></property>    
         <property name="transactionAttributes">    
             <props>
+                <prop key="get*">PROPAGATION_REQUIRED,readOnly</prop>   
                 <prop key="add*">PROPAGATION_REQUIRED,-Exception</prop>    
                 <prop key="modify*">PROPAGATION_REQUIRED,-Exception</prop>    
                 <prop key="del*">PROPAGATION_REQUIRED</prop>    

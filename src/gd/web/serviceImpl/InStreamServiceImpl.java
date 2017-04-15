@@ -1,6 +1,7 @@
 package gd.web.serviceImpl;
 
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -69,6 +70,12 @@ public class InStreamServiceImpl implements InStreamService{
 		inStreamEntity.setStaId(staId);
 		inStreamEntity.setCurrDate(Util.getFormatDate());
 		addInStream(inStreamEntity);
+	}
+	@Override
+	public List<InStreamEntity> getEntityByDate(String startDate, String endDate, int staId) {
+		// TODO Auto-generated method stub
+		
+		return inStreamDAO.getEntityByDate(startDate,endDate,staId);
 	}
 
 }

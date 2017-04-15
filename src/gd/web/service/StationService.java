@@ -3,6 +3,7 @@ package gd.web.service;
 import java.util.List;
 
 import gd.web.entity.StationEntity;
+import gd.web.entity.viewModel.DataTable;
 import gd.web.entity.viewModel.PointCommon;
 
 public interface StationService {
@@ -20,4 +21,6 @@ public interface StationService {
 	StationEntity getStationById(int id);
 
 	StationEntity convertToStation(PointCommon pointCommon);
+
+	List<DataTable> generateDataTable(String startDate, String endDate, int staId, String direction);
 }

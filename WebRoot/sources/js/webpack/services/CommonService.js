@@ -252,7 +252,7 @@ class CommonService{
 							if(userInfo.priv=="OPERATOR"){
 								html += '<li '
 									+active[1]
-									+' ><a  href="/gd/chartdata/wholeState">本站点动态</a></li>'
+									+' ><a  href="/gd/chartdata/wholeState">站点动态</a></li>'
 							}
     						html += '<li '
     							+active[2]
@@ -271,17 +271,17 @@ class CommonService{
 				html +='</ul>'
 					+'<ul class="nav navbar-nav navbar-right">'
 					+'<li class="dropdown" >'
-					+'<a href="#" class="dropdown-toggle" data-toggle="dropdown">'
+					+'<a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-user"></span>&nbsp;&nbsp;'
 					+ userInfo.userName
 					+'<b class="caret"></b>'
 	                +'</a>'
 	                +'<ul class="dropdown-menu">'
-	                +'<li><a style="cursor:pointer" id="accountinfo">账号信息</a></li>'
+	                +'<li><a style="cursor:pointer" id="accountinfo"><span class="glyphicon glyphicon-info-sign"></span>&nbsp;&nbsp;账号信息</a></li>'
 	                +'<li class="divider"></li>'
-	                +'<li><a style="cursor:pointer" id="logout">退出登录</a></li>'
-	                    +'<li class="divider"></li>'
-	                    +'<li><a style="cursor:pointer" id="changepwd">修改密码</a></li>'
-	                    +'</ul>'
+	                +'<li><a style="cursor:pointer" id="changepwd"><span class="glyphicon glyphicon-pencil"></span>&nbsp;&nbsp;修改密码</a></li>'
+	                +'<li class="divider"></li>'
+	                +'<li><a style="cursor:pointer" id="logout"><span class="glyphicon glyphicon-log-out"></span>&nbsp;&nbsp;退出登录</a></li>'
+	                +'</ul>'
 	                +'</li>'
 	            +'</ul>'
 			+'</div>'
@@ -293,7 +293,7 @@ class CommonService{
 			alert("not implement yet");
 		});	
 		$("#logout").bind("click",function(){
-			alert("not implement yet");
+			//alert("not implement yet");
 			window.location.href = "/gd/user/logout";			
 		});	
 		$("#changepwd").bind("click",function(){

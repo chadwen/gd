@@ -8,9 +8,14 @@ public class ChartData {
 	
 	private ArrayList<Integer> inDataList;
 	
+	//only two elements, IN and OUT id in chartdata table
 	private ArrayList<Integer> ids;
 	
 	private ArrayList<Integer> hourList;
+	
+	private int staId;
+	
+	private String brief;
 
 	public ArrayList<Integer> getOutDataList() {
 		return outDataList;
@@ -42,5 +47,21 @@ public class ChartData {
 
 	public void setHourList(ArrayList<Integer> hourList) {
 		this.hourList = hourList;
+	}
+
+	public int getStaId() {
+		return staId;
+	}
+
+	public void setStaId(int staId) {
+		this.staId = staId;
+	}
+
+	public String getBrief() {
+		return brief;
+	}
+
+	public void setBrief(String brief) {
+		this.brief = brief;
 	}
 }

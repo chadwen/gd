@@ -10,7 +10,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   <head>
     <base href="<%=basePath%>">
     <link rel="shortcut icon" href="/gd/sources/images/icon_swu.jpg">
-    <title>本站点动态</title>
+    <title>站点动态</title>
 	<meta http-equiv="pragma" content="no-cache">
 	<meta http-equiv="cache-control" content="no-cache">
 	<meta http-equiv="expires" content="0">    
@@ -39,11 +39,22 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
     <div id="main" style="width:90%;height:85%" ></div>
     
-    <div style="float:right">
-	<button class="btn" id="trig" >trigger</button>
-	<button class="btn btn-primary" id="testbtn">trigger</button>
-	<button class="btn" id="chartOut">OUT</button>
-	<button class="btn" id="chartIn">IN</button>
+    <div style="float:right;padding:0px 20px 0px 0px" id="btnContain">
+	<!-- <button class="btn" id="trig" >trigger</button>
+	<button class="btn btn-primary" id="testbtn">trigger</button> -->
+<!-- 	<button class="btn" id="chartOut">OUT</button>
+	<button class="btn" id="chartIn">IN</button> -->
+	
+	</div>
+	<div id = "saveStaId" style="display:none">
+	<c:choose>
+    <c:when test="${!empty staId}">
+      <c:out value="${staId}"/>
+    </c:when>
+   <c:otherwise>  
+      <c:out value="NONE"/>
+   </c:otherwise>
+  </c:choose>
 	</div>
 
 

@@ -11,6 +11,7 @@ import javax.servlet.http.HttpSession;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -67,7 +68,7 @@ public class ChartDataController {
 			System.out.println("the session is new and that means something wrong!!");
 		}
 		//
-		System.out.println("\nstart of the updateChartData!!!!");
+/*		System.out.println("\nstart of the updateChartData!!!!");
 		try{
 			System.out.println("user id is : "+session.getAttribute("userId") + " user name is : "+session.getAttribute("userName"));
 			System.out.println(session.getId());
@@ -79,7 +80,7 @@ public class ChartDataController {
 			return null;
 		}
 		
-		System.out.println("end of the updateChartData!!!!\n");
+		System.out.println("end of the updateChartData!!!!\n");*/
 		
 		chartDataEntity.setDatas(datas);
 		chartDataEntity.setCurrHour(currHour);
@@ -91,12 +92,11 @@ public class ChartDataController {
 		
 	}
 	@RequestMapping(value="/wholeState",method=RequestMethod.POST)
-	public @ResponseBody ChartData wholeStateAjax(int clientHour,HttpSession session){
-		if(session.getAttribute("staId")==null){
+	public @ResponseBody ChartData wholeStateAjax(int clientHour,int staId,HttpSession session){
+		/*if(session.getAttribute("staId")==null){
 			return null;
-		}
+		}*/
 		
-		int staId = (Integer)session.getAttribute("staId");
 		
 		return chartDataService.getReturnData(clientHour,staId);
 	}
@@ -107,7 +107,7 @@ public class ChartDataController {
 		if(session==null){
 			return "jsp/map";
 		}
-		session.getAttribute("userName");
+		/*session.getAttribute("userName");
 		session.getAttribute("userId");
 		session.getAttribute("priv");
 		session.getAttribute("staId");
@@ -117,7 +117,7 @@ public class ChartDataController {
 		System.out.println(session.getAttribute("userName"));
 		System.out.println(session.getAttribute("userId"));
 		System.out.println(session.getAttribute("priv"));
-		System.out.println(session.getAttribute("staId"));	
+		System.out.println(session.getAttribute("staId"));	*/
 		return "jsp/wholeState";
 	}
 	
@@ -128,6 +128,13 @@ public class ChartDataController {
 		}
 		return chartDataService.getWholeWholeData(clientHour);
 	}
+	@RequestMapping(value="/get/{id}",method = RequestMethod.GET)
+	public String getWholeStateById(@PathVariable int id,Model model){
+		model.addAttribute("staId", id);
+		return "jsp/wholeState";
+	}
+	
+	
 	@RequestMapping(value="/wholeWholeState",method = RequestMethod.GET)
 	public String wholeWholeGet(){		
 		return "jsp/wholeWholeState";
