@@ -1,5 +1,6 @@
 package gd.web.util;
 
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -36,6 +37,13 @@ public class Util {
 			list.add(Integer.parseInt(item));
 		}
 		return list;
+	}
+	public static double getFormatDouble(double dou){
+		return Math.round(dou*100)/100.0;
+	}
+	public static String getDecimalFormat(double dou){
+		DecimalFormat df  = new DecimalFormat("###.00");
+		return df.format(dou);
 	}
 	
 	public static String getFormatDate(){

@@ -17,6 +17,7 @@ import gd.web.service.InStreamService;
 import gd.web.service.OutStreamService;
 import gd.web.service.StationService;
 import gd.web.util.Enum;
+import gd.web.util.Util;
 
 @Service
 public class StationServiceImpl implements StationService{
@@ -89,20 +90,32 @@ public class StationServiceImpl implements StationService{
 			for(InStreamEntity item : inStreamList){
 				DataTable dt = new DataTable();
 				dt.setDateTime(item.getCurrDate());
-				dt.setDirection("ru");
+				dt.setDirection("入");
 				dt.setStaId(item.getStaId());
 				dt.setTotal(item.getTotal());
 				dt.setDatas(item.getDatas());
+				if(dt.getTotal() != -1){
+					dt.setAverage(Util.getFormatDouble(dt.getTotal()/24.0));
+				}else{
+					dt.setAverage(0);
+				}
+				dt.setStaBrief(getStaBrief(dt.getStaId()));
 				dataTables.add(dt);
 			}
 			List<OutStreamEntity> outStreamList = outStreamService.getEntityByDate(startDate,endDate,staId);
 			for(OutStreamEntity item : outStreamList){
 				DataTable dt = new DataTable();
 				dt.setDateTime(item.getCurrDate());
-				dt.setDirection("chu");
+				dt.setDirection("出");
 				dt.setStaId(item.getStaId());
 				dt.setTotal(item.getTotal());
 				dt.setDatas(item.getDatas());	
+				if(dt.getTotal() != -1){
+					dt.setAverage(Util.getFormatDouble(dt.getTotal()/24.0));
+				}else{
+					dt.setAverage(0);
+				}
+				dt.setStaBrief(getStaBrief(dt.getStaId()));
 				dataTables.add(dt);			
 			}
 
@@ -111,10 +124,16 @@ public class StationServiceImpl implements StationService{
 			for(InStreamEntity item : inStreamList){
 				DataTable dt = new DataTable();
 				dt.setDateTime(item.getCurrDate());
-				dt.setDirection("ru");
+				dt.setDirection("入");
 				dt.setStaId(item.getStaId());
 				dt.setTotal(item.getTotal());
 				dt.setDatas(item.getDatas());
+				if(dt.getTotal() != -1){
+					dt.setAverage(Util.getFormatDouble(dt.getTotal()/24.0));
+				}else{
+					dt.setAverage(0);
+				}
+				dt.setStaBrief(getStaBrief(dt.getStaId()));
 				dataTables.add(dt);
 			}
 			
@@ -123,11 +142,17 @@ public class StationServiceImpl implements StationService{
 			for(OutStreamEntity item : outStreamList){
 				DataTable dt = new DataTable();
 				dt.setDateTime(item.getCurrDate());
-				dt.setDirection("chu");
+				dt.setDirection("出");
 				dt.setStaId(item.getStaId());
 				dt.setTotal(item.getTotal());
-				dt.setDatas(item.getDatas());	
-				dataTables.add(dt);			
+				dt.setDatas(item.getDatas());
+				if(dt.getTotal() != -1){
+					dt.setAverage(Util.getFormatDouble(dt.getTotal()/24.0));
+				}else{
+					dt.setAverage(0);
+				}
+				dt.setStaBrief(getStaBrief(dt.getStaId()));
+				dataTables.add(dt);
 			}
 			
 		}else{
@@ -137,5 +162,11 @@ public class StationServiceImpl implements StationService{
 		
 		return dataTables;
 	}
-	
+	private String getStaBrief(int staId){
+		StationEntity se = getStationById(staId);
+		if(se!=null){
+			return se.getBrief();
+		}
+		return "";
+	}
 }

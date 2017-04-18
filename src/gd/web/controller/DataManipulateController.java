@@ -2,6 +2,7 @@ package gd.web.controller;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,7 +31,7 @@ public class DataManipulateController {
 	@Autowired
 	private StationService stationService;
 	
-	@RequestMapping(value="/get/{id}",method = RequestMethod.GET)
+	@RequestMapping(value="/get/{id}",method = RequestMethod.POST)
 	public void test(@PathVariable int id, HttpServletResponse response, HttpSession session) throws IOException{
 		String excelName = "StreamData-"+id;
 		String[] list =  new String[]{"firstcol","secondcol","thirdcol"};
@@ -46,29 +47,39 @@ public class DataManipulateController {
         ouputStream.flush();
         ouputStream.close();
 	}
-	@RequestMapping(value="/get/{startDate}/{endDate}/{staId}/{direction}",method = RequestMethod.POST)
-	public void generateExcel(@PathVariable String startDate,@PathVariable String endDate,@PathVariable int staId,@PathVariable String direction, HttpServletResponse response, HttpSession session) throws IOException{
+	//@RequestMapping(value="/get/{startDate}/{endDate}/{staId}/{direction}",method = RequestMethod.POST)
+	//for test
+	@RequestMapping(value="/get/{staId}",method = RequestMethod.GET)
+	//public void generateExcel(@PathVariable String startDate,@PathVariable String endDate,@PathVariable int staId,@PathVariable String direction, HttpServletResponse response, HttpSession session) throws IOException{
+	//for test
+	public void generateExcel(@PathVariable int staId, HttpServletResponse response, HttpSession session) throws IOException{
+		//for test
+		String startDate = "2017-04-10";
+		String endDate = "2017-04-16";
+		//int staId=1;
+		String direction=Enum.BOTH.toString();
+		
 		
 		List<DataTable> dataTables = stationService.generateDataTable(startDate,endDate,staId,direction);
 		if(dataTables == null){
 			return ;
 		}
-		
-		
-		
-		String excelName = "StreamData-"+staId;
+		HSSFWorkbook wb = new HSSFWorkbook();
+		try {
+			wb = ExcelUtil.generateExcel(dataTables);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		String excelName = "StreamData";
 		String[] list =  new String[]{"firstcol","secondcol","thirdcol"};
-		List<Integer> dataList = new ArrayList<Integer>();
-		dataList.add(11);
-		dataList.add(12);
-		dataList.add(13);
-		HSSFWorkbook wb = ExcelUtil.setWorkbook(list,dataList);
 		response.setContentType("application/vnd.ms-excel");    
         response.setHeader("Content-disposition", "attachment;filename="+ excelName +".xls");    
         OutputStream ouputStream = response.getOutputStream();    
         wb.write(ouputStream);
         ouputStream.flush();
         ouputStream.close();
+		
 	}
 
 }

@@ -60,4 +60,25 @@ public class InStreamDAOImpl implements InStreamDAO{
 		}
 		return null;
 	}
+
+	@Override
+	public List<InStreamEntity> getEntityByDate(String startDate, String endDate, int staId) {
+		// TODO Auto-generated method stub
+		String hql = "from InStreamEntity where staId = ? and isValid = ? and currDate <= ? and currDate >= ? ";
+		if(staId==0){
+			hql="from InStreamEntity where isValid = ? and currDate <= ? and currDate >= ? ";
+		}
+		Query query = sessionFactory.getCurrentSession().createQuery(hql);
+		if(staId ==0 ){
+			query.setInteger(0, 1);	
+			query.setString(1, endDate);
+			query.setString(2, startDate);			
+		}else{
+			query.setInteger(0, staId);
+			query.setInteger(1, 1);
+			query.setString(2, endDate);
+			query.setString(3, startDate);
+		}
+		return query.list();
+	}
 }

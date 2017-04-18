@@ -13,7 +13,7 @@ public class DataTable {
 	
 	private int total;
 	
-	private int average;
+	private double average;
 	
 	private String datas;
 
@@ -57,11 +57,11 @@ public class DataTable {
 		this.total = total;
 	}
 
-	public int getAverage() {
+	public double getAverage() {
 		return average;
 	}
 
-	public void setAverage(int average) {
+	public void setAverage(double average) {
 		this.average = average;
 	}
 
