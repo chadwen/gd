@@ -35,6 +35,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <div id="navi">
 </div>
 
+	<br>
 
     <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
     <div id="main" style="width:90%;height:85%" ></div>

@@ -140,10 +140,6 @@ public class UserController {
 		}
 		return "jsp/map";
 	}
-	@RequestMapping(value="/export",method = RequestMethod.GET)
-	public String export(){
-		return "jsp/export";
-	}
 	@RequestMapping(value="/login",method = RequestMethod.GET)
 	public String loginGet(){
 		return "jsp/login";

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>downloadpage1.html</title>
+	
+    <meta name="keywords" content="keyword1,keyword2,keyword3">
+    <meta name="description" content="this is my page">
+    <meta name="content-type" content="text/html; charset=ISO-8859-1">
+    
+    <!--<link rel="stylesheet" type="text/css" href="./styles.css">-->
+    
+	<link href="/gd/sources/js/bootstrap-3.3.7-dist/css/bootstrap.min.css" rel="stylesheet">
+	<link href="/gd/sources/js/bootstrap-3.3.7-dist/css/bootstrap-select.min.css" rel="stylesheet">
+	<link href="/gd/sources/js/plugins/jedate/skin/jedate.css" rel="stylesheet">
+
+	
+	<script src="/gd/sources/js/jquery-3.1.1.min.js"></script>
+	<script src="/gd/sources/js/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
+	<script src="/gd/sources/js/bootstrap-3.3.7-dist/js/bootstrap-select.min.js"></script>
+
+	<script src="/gd/sources/js/plugins/jedate/jedate.js"></script>
+
+  </head>
+  
+  <body>
+  <div class="col-md-8">
+  	站点车流数据
+	<form class="form-horizontal" role="form">
+
+	<hr>
+	  <div class="form-group col-md-12">
+	    <label>起始日期</label>
+	    <input class="form-control" id="startdate" type="text" placeholder="请选择起始日期" value=""  readonly>
+	  </div>
+	  <div class="form-group col-md-12">
+	    <label>终止日期</label>
+	    <input class="form-control" id="enddate" type="text" placeholder="请选择终止日期" value=""  readonly>
+	  </div>
+	
+	  <div class="form-group col-md-12">
+	    <label>站点</label>
+
+	      <select id="usertype" name="usertype" class="selectpicker show-tick form-control" multiple data-live-search="false">
+			<option value="0">苹果</option>
+			<option value="1">菠萝</option>
+			<option value="2">香蕉</option>
+		  </select>
+
+	  </div>
+	  <div class="col-md-12">
+		  <div style="float:right">
+		  	<button type="button" class="btn btn-default">&nbsp下载&nbsp</button>
+		  </div>
+	  </div>
+	</form>
+  </div>
+  </body>
+</html>

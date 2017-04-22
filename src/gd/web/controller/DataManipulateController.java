@@ -31,6 +31,13 @@ public class DataManipulateController {
 	@Autowired
 	private StationService stationService;
 	
+
+	@RequestMapping(value="/export",method = RequestMethod.GET)
+	public String export(){
+		return "jsp/export";
+	}
+	
+	
 	@RequestMapping(value="/get/{id}",method = RequestMethod.POST)
 	public void test(@PathVariable int id, HttpServletResponse response, HttpSession session) throws IOException{
 		String excelName = "StreamData-"+id;

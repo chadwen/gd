@@ -322,7 +322,7 @@ var CommonService = function () {
             }
             var self = this;
 
-            var html = '	<!--nav-->' + '<nav class="navbar navbar-default" role="navigation">' + '<div class="container-fluid">' + '<div class="navbar-header">' + '<a class="navbar-brand" href="/gd">车流监控系统</a>' + '</div>' + '<div>' + '<ul class="nav navbar-nav">' + '<li ' + active[0] + ' ><a  href="/gd">地图</a></li>';
+            var html = '	<!--nav-->' + '<nav class="navbar navbar-default" role="navigation">' + '<div class="container-fluid">' + '<div class="navbar-header">' + '<a class="navbar-brand" href="/gd">车流监控系统</a>' + '</div>' + '<div>' + '<ul class="nav navbar-nav">' + '<li ' + active[0] + ' ><a  style="border-left:1px solid;"href="/gd">地图</a></li>';
 
             /*					+'<li class="dropdown">'
             						+'<a href="#" class="dropdown-toggle" data-toggle="dropdown">'
@@ -331,7 +331,7 @@ var CommonService = function () {
             						+'</a>'
             						+'<ul class="dropdown-menu">'*/
             if (userInfo.priv == "OPERATOR") {
-                html += '<li ' + active[1] + ' ><a  href="/gd/chartdata/wholeState">站点动态</a></li>';
+                html += '<li ' + active[1] + ' ><a href="/gd/chartdata/wholeState">站点动态</a></li>';
             }
             html += '<li ' + active[2] + ' ><a href="/gd/chartdata/wholeWholeState">全局动态</a></li>';
 
@@ -339,9 +339,10 @@ var CommonService = function () {
             					+'</li>'*/
 
             if (userInfo.priv == "ADMINISTRATOR") {
-                html += '<li ' + active[3] + ' ><a  href="/gd/user/export">数据导出</a></li>';
+                html += '<li ' + active[3] + ' ><a  href="/gd/data/export">管理面板</a></li>';
             }
-            html += '</ul>' + '<ul class="nav navbar-nav navbar-right">' + '<li class="dropdown" >' + '<a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-user"></span>&nbsp;&nbsp;' + userInfo.userName + '<b class="caret"></b>' + '</a>' + '<ul class="dropdown-menu">' + '<li><a style="cursor:pointer" id="accountinfo"><span class="glyphicon glyphicon-info-sign"></span>&nbsp;&nbsp;账号信息</a></li>' + '<li class="divider"></li>' + '<li><a style="cursor:pointer" id="changepwd"><span class="glyphicon glyphicon-pencil"></span>&nbsp;&nbsp;修改密码</a></li>' + '<li class="divider"></li>' + '<li><a style="cursor:pointer" id="logout"><span class="glyphicon glyphicon-log-out"></span>&nbsp;&nbsp;退出登录</a></li>' + '</ul>' + '</li>' + '</ul>' + '</div>' + '</div>' + '</nav><!--nav-->';
+            html += '</ul>' + '<ul class="nav navbar-nav navbar-right">' + '<li class="dropdown" >' + '<a  style="border-left:1px solid;width:160px" href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-user"></span>&nbsp;&nbsp;' + userInfo.userName + '<b class="caret"></b>' + '</a>' + '<ul class="dropdown-menu">' + '<li><a style="cursor:pointer" id="accountinfo"><span class="glyphicon glyphicon-info-sign"></span>&nbsp;&nbsp;账号信息</a></li>' + '<li class="divider"></li>' + '<li><a style="cursor:pointer" id="changepwd"><span class="glyphicon glyphicon-pencil"></span>&nbsp;&nbsp;修改密码</a></li>' + '<li class="divider"></li>' + '<li><a style="cursor:pointer" id="logout"><span class="glyphicon glyphicon-log-out"></span>&nbsp;&nbsp;退出登录</a></li>' + '</ul>' + '</li>' + '</ul>' + '</div>' + '</div>' + '</nav><!--nav-->';
+            (0, _JQueryVendor2.default)("#navi").css("height", "50px");
             (0, _JQueryVendor2.default)("#navi").html(html);
 
             (0, _JQueryVendor2.default)("#accountinfo").bind("click", function () {
