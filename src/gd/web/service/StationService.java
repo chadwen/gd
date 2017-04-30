@@ -1,5 +1,6 @@
 package gd.web.service;
 
+import java.text.ParseException;
 import java.util.List;
 
 import gd.web.entity.StationEntity;
@@ -22,5 +23,7 @@ public interface StationService {
 
 	StationEntity convertToStation(PointCommon pointCommon);
 
-	List<DataTable> generateDataTable(String startDate, String endDate, int staId, String direction);
+	List<DataTable> generateDataTable(String startDate, String endDate, List<Integer> staId, String direction);
+
+	List<DataTable> generateDataTableCal(String startDate, String endDate, List<Integer> staIds, String direction) throws ParseException;
 }

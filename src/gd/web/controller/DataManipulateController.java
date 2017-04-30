@@ -3,9 +3,14 @@ package gd.web.controller;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.lang.reflect.InvocationTargetException;
+import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
@@ -16,10 +21,15 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import gd.web.util.ExcelUtil;
+import gd.web.util.Util;
+import gd.web.entity.StationEntity;
 import gd.web.entity.viewModel.DataTable;
+import gd.web.entity.viewModel.UserInfo;
 import gd.web.service.StationService;
+import gd.web.service.UserService;
 import gd.web.util.Enum;
 
 @Controller
@@ -31,34 +41,122 @@ public class DataManipulateController {
 	@Autowired
 	private StationService stationService;
 	
+	@Autowired
+	private UserService userService;
+	
+	
 
 	@RequestMapping(value="/export",method = RequestMethod.GET)
-	public String export(){
+	public String export(HttpSession session){
+		if(session.getAttribute("priv")==null || !(session.getAttribute("priv").toString().equals(Enum.ADMINISTRATOR.toString()))){
+			return "jsp/login";
+		}
 		return "jsp/export";
 	}
 	
 	
-	@RequestMapping(value="/get/{id}",method = RequestMethod.POST)
-	public void test(@PathVariable int id, HttpServletResponse response, HttpSession session) throws IOException{
-		String excelName = "StreamData-"+id;
-		String[] list =  new String[]{"firstcol","secondcol","thirdcol"};
-		List<Integer> dataList = new ArrayList<Integer>();
-		dataList.add(11);
-		dataList.add(12);
-		dataList.add(13);
-		HSSFWorkbook wb = ExcelUtil.setWorkbook(list,dataList);
-		response.setContentType("application/vnd.ms-excel");    
-        response.setHeader("Content-disposition", "attachment;filename="+ excelName +".xls");    
+
+	@RequestMapping(value="/getSingle/{startDate}/{endDate}/{staIds}/{direction}",method = RequestMethod.GET)
+	public void downloadSingle(@PathVariable String startDate,@PathVariable String endDate,@PathVariable String staIds,@PathVariable String direction, HttpServletResponse response, HttpSession session) throws IOException{
+		List<Integer> ids = Util.stringToList(staIds);
+		List<DataTable> dataTables = stationService.generateDataTable(startDate,endDate,ids,direction);
+		if(dataTables == null){
+			return ;
+		}
+		HSSFWorkbook wb = new HSSFWorkbook();
+		try {
+			wb = ExcelUtil.generateExcel(dataTables);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		String excelName = "站点车流数据("+startDate.replace("-", ".") + "-" + endDate.replace("-", ".") + ")";
+		response.setContentType("application/vnd.ms-excel");
+        response.setCharacterEncoding("utf-8"); 
+        response.setHeader("Content-Disposition", "attachment;filename="+new String(excelName.getBytes("gbk"), "iso8859-1")+".xls"); 
         OutputStream ouputStream = response.getOutputStream();    
         wb.write(ouputStream);
         ouputStream.flush();
         ouputStream.close();
 	}
-	//@RequestMapping(value="/get/{startDate}/{endDate}/{staId}/{direction}",method = RequestMethod.POST)
-	//for test
+	@RequestMapping(value="/getCal/{startDate}/{endDate}/{staIds}/{direction}",method = RequestMethod.GET)
+	public void downloadCal(@PathVariable String startDate,@PathVariable String endDate,@PathVariable String staIds,@PathVariable String direction, HttpServletResponse response, HttpSession session) throws IOException, ParseException{
+		List<Integer> ids = Util.stringToList(staIds);
+		List<DataTable> dataTables = stationService.generateDataTableCal(startDate,endDate,ids,direction);
+		if(dataTables == null){
+			return ;
+		}
+		HSSFWorkbook wb = new HSSFWorkbook();
+		try {
+			wb = ExcelUtil.generateExcel(dataTables);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		String excelName = "统计车流数据("+startDate.replace("-", ".") + "-" + endDate.replace("-", ".") + ")";
+		response.setContentType("application/vnd.ms-excel");  
+        response.setCharacterEncoding("utf-8");  
+        response.setHeader("Content-Disposition", "attachment;filename="+new String(excelName.getBytes("gbk"), "iso8859-1")+".xls"); 
+        OutputStream ouputStream = response.getOutputStream();    
+        wb.write(ouputStream);
+        ouputStream.flush();
+        ouputStream.close();
+	}
+	
+	@RequestMapping(value="/getAllStations",method = RequestMethod.GET)
+	public void getAllStations(HttpServletResponse response, HttpSession session) throws IOException{
+		List<StationEntity> staList = stationService.getAllStationEntity();
+		if(staList == null){
+			return ;
+		}
+		HSSFWorkbook wb = new HSSFWorkbook();
+		try {
+			wb = ExcelUtil.generateExcelStation(staList);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		String excelName = "出入站点信息";
+		response.setContentType("application/vnd.ms-excel");  
+        response.setCharacterEncoding("utf-8");  
+        response.setHeader("Content-Disposition", "attachment;filename="+new String(excelName.getBytes("gbk"), "iso8859-1")+".xls"); 
+        OutputStream ouputStream = response.getOutputStream();    
+        wb.write(ouputStream);
+        ouputStream.flush();
+        ouputStream.close();
+	}
+	@RequestMapping(value="/getLoginedStation",method = RequestMethod.POST)
+	public @ResponseBody List<UserInfo> getLoginedStation(HttpSession session){
+		/*if(session.getAttribute("userId")==null){
+			return null;
+		}*/
+		List<UserInfo> list = new ArrayList<UserInfo>();
+		ServletContext context = session.getServletContext(); 
+		Map<Integer,String> userMap ;
+		userMap = (Map<Integer, String>) context.getAttribute("user_map");
+		if(userMap==null){
+			return list;
+		}
+		Iterator<Entry<Integer, String>> itor=userMap.entrySet().iterator();
+
+		while(itor.hasNext()){
+			Map.Entry<Integer, String> entry=(Map.Entry<Integer, String>)itor.next();
+			UserInfo ui = new UserInfo();
+			ui.setUserId(entry.getKey());
+			ui.setStaId(userService.getUserById(entry.getKey()).getStaId());
+			if(ui.getStaId() == 0){
+				continue;
+			}
+			ui.setBrief(stationService.getStationById(ui.getStaId()).getBrief());
+			list.add(ui);
+		}
+		return list;
+	}
+	
+	
+	//for test useless now
 	@RequestMapping(value="/get/{staId}",method = RequestMethod.GET)
-	//public void generateExcel(@PathVariable String startDate,@PathVariable String endDate,@PathVariable int staId,@PathVariable String direction, HttpServletResponse response, HttpSession session) throws IOException{
-	//for test
 	public void generateExcel(@PathVariable int staId, HttpServletResponse response, HttpSession session) throws IOException{
 		//for test
 		String startDate = "2017-04-10";
@@ -66,8 +164,9 @@ public class DataManipulateController {
 		//int staId=1;
 		String direction=Enum.BOTH.toString();
 		
-		
-		List<DataTable> dataTables = stationService.generateDataTable(startDate,endDate,staId,direction);
+		List<Integer> staIds = new ArrayList<Integer>();
+		staIds.add(staId);
+		List<DataTable> dataTables = stationService.generateDataTable(startDate,endDate,staIds,direction);
 		if(dataTables == null){
 			return ;
 		}

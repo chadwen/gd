@@ -73,7 +73,7 @@ public class ChartDataServiceImpl implements ChartDataService{
 		
 		ChartDataEntity inRecord = getEntityByStaId(staId, Enum.IN.toString());
 		ChartDataEntity outRecord = getEntityByStaId(staId, Enum.OUT.toString());
-		if(Util.getIntervalDay(inRecord.getModifyTime())>1||Util.getIntervalDay(outRecord.getModifyTime())>1){
+		if(Util.getIntervalDay(inRecord.getModifyTime())>1 && Util.getIntervalDay(outRecord.getModifyTime())>1){
 			for(int i = 0 ; i < 24 ; i ++){
 				inDataList.add(0);
 				outDataList.add(0);

@@ -18,6 +18,7 @@ import org.apache.poi.poifs.filesystem.POIFSFileSystem;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
 
+import gd.web.entity.StationEntity;
 import gd.web.entity.viewModel.DataTable;
 
 public class ExcelUtil {
@@ -96,7 +97,7 @@ public class ExcelUtil {
             cell.setCellValue(excelHeader[i]);
             cell.setCellStyle(style);
             //sheet.autoSizeColumn(i);
-        }    
+        }
         for(int i = 0 ; i < list.size(); i++){
         	row = sheet.createRow(i+1);
         	row.createCell(0).setCellValue((Integer) list.get(0));
@@ -129,4 +130,33 @@ public class ExcelUtil {
 		}
         
     }
+	public static HSSFWorkbook generateExcelStation(List<StationEntity> staList) {
+		// TODO Auto-generated method stub
+        HSSFWorkbook wb = new HSSFWorkbook();
+        HSSFSheet sheet = wb.createSheet("data");    
+        sheet.setDefaultColumnWidth(10);
+        sheet.setColumnWidth(1, 20*250);
+        sheet.setColumnWidth(2, 20*500);
+        sheet.setColumnWidth(3, 20*250);
+        sheet.setColumnWidth(4, 20*250);
+        HSSFRow row = sheet.createRow((int) 0);    
+        HSSFCellStyle style = wb.createCellStyle();    
+        style.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+        String[] excelHeader = new String[]{"简称","全名","详细地址","电子地图x轴坐标","电子地图y轴坐标","代号"};
+        for (int i = 0; i < excelHeader.length; i++) {
+            HSSFCell cell = row.createCell(i);
+            cell.setCellValue(excelHeader[i]);
+            cell.setCellStyle(style);
+        }
+        for(int i = 0; i < staList.size(); i++){
+        	row = sheet.createRow(i+1);
+        	row.createCell(0).setCellValue(staList.get(i).getBrief());
+        	row.createCell(1).setCellValue(staList.get(i).getFullName());
+        	row.createCell(2).setCellValue(staList.get(i).getAddr());
+        	row.createCell(3).setCellValue(staList.get(i).getPosx());
+        	row.createCell(4).setCellValue(staList.get(i).getPosy());
+        	row.createCell(5).setCellValue(staList.get(i).getAlias());
+        }
+		return wb;
+	}
 }

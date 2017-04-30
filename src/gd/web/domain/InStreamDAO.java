@@ -20,4 +20,7 @@ public interface InStreamDAO {
 
 	@Transactional
 	List<InStreamEntity> getEntityByDate(String startDate, String endDate, int staId);
+
+	@Transactional
+	InStreamEntity getStreamByDateAndStaId(String date, int staId);
 }

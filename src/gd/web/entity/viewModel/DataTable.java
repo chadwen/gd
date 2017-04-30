@@ -1,5 +1,7 @@
 package gd.web.entity.viewModel;
 
+import java.util.HashSet;
+
 //for build excel file
 public class DataTable {
 
@@ -16,6 +18,8 @@ public class DataTable {
 	private double average;
 	
 	private String datas;
+	
+	private HashSet<String> briefSet;
 
 	public String getDateTime() {
 		return dateTime;
@@ -71,6 +75,14 @@ public class DataTable {
 
 	public void setDatas(String datas) {
 		this.datas = datas;
+	}
+
+	public HashSet<String> getBriefSet() {
+		return briefSet;
+	}
+
+	public void setBriefSet(HashSet<String> briefSet) {
+		this.briefSet = briefSet;
 	}
 	
 }

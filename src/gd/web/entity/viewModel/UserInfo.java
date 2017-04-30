@@ -9,6 +9,8 @@ public class UserInfo {
 	private Integer userId;
 	
 	private Integer staId;
+	
+	private String brief;
 
 	public String getPriv() {
 		return priv;
@@ -40,5 +42,13 @@ public class UserInfo {
 
 	public void setStaId(Integer staId) {
 		this.staId = staId;
+	}
+
+	public String getBrief() {
+		return brief;
+	}
+
+	public void setBrief(String brief) {
+		this.brief = brief;
 	}
 }

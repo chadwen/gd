@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Map;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -56,7 +58,24 @@ public class ChartDataController {
 	}
 	
 	@RequestMapping(value="/update/{id}",method = RequestMethod.POST)
-	public String updateChartData(@PathVariable int id,String datas,int currHour,HttpSession session){
+	public @ResponseBody UserInfo updateChartData(@PathVariable int id,String datas,int currHour,HttpSession session){
+		
+		UserInfo ui = new UserInfo();
+		
+		if((Integer)session.getAttribute("staId") != null && (Integer)session.getAttribute("staId")!= 0){
+			ServletContext context = session.getServletContext(); 
+			Map<Integer,String> userMap = (Map<Integer, String>) context.getAttribute("user_map");
+			if(userMap == null){
+				return null;
+			}
+
+			if(!userMap.containsKey((Integer)session.getAttribute("userId"))){
+				session.setAttribute("priv", Enum.NULLPRIV.toString());
+				session.removeAttribute("userId");
+				session.removeAttribute("userName");
+				session.removeAttribute("staId");
+			}
+		}
 		if(session.getAttribute("priv")==null || !session.getAttribute("priv").equals(Enum.OPERATOR.toString())){
 			return null;
 		}
@@ -88,7 +107,7 @@ public class ChartDataController {
 		chartDataService.updateChartData(chartDataEntity);
 
 		chartDataService.processStreamTable(chartDataEntity);
-		return "Success";
+		return ui;
 		
 	}
 	@RequestMapping(value="/wholeState",method=RequestMethod.POST)

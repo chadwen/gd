@@ -1,6 +1,7 @@
 package gd.web.controller;
 
 import java.util.Date;
+import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +38,11 @@ public class StationController {
 		}
 		//set chartdata here
 		return "jsp/map";
+	}
+	@RequestMapping(value="/getall",method = RequestMethod.POST)
+	public @ResponseBody List<StationEntity> getAllStation(){
+			
+		return stationService.getAllStationEntity();
 	}
 	
 	@RequestMapping(value="/get/{id}",method = RequestMethod.POST)

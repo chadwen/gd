@@ -295,8 +295,13 @@ class WholeState{
 			url:"/gd/chartdata/update/"+id,
 			dataType:"json",
 			data:{"datas":datas,"currHour":currHour},
-			success:function(data){},
-			error:function(){},
+			success:function(data){
+				console.log('update successs and data is :'+data);
+			},
+			error:function(){
+				console.log('error');
+				location.href="/gd/user/login";
+			},
 			complete:function(){},
 		});
 	}

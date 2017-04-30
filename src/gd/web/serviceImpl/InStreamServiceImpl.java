@@ -77,5 +77,10 @@ public class InStreamServiceImpl implements InStreamService{
 		
 		return inStreamDAO.getEntityByDate(startDate,endDate,staId);
 	}
+	@Override
+	public InStreamEntity getStreamByDateAndStaId(String date, int staId) {
+		// TODO Auto-generated method stub
+		return inStreamDAO.getStreamByDateAndStaId(date, staId);
+	}
 
 }

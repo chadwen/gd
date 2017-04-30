@@ -20,4 +20,6 @@ public interface OutStreamService {
 	void createRecord(int staId);
 
 	List<OutStreamEntity> getEntityByDate(String startDate, String endDate, int staId);
+
+	OutStreamEntity getStreamByDateAndStaId(String date, int staId);
 }

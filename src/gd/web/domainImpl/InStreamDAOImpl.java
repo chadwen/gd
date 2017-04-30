@@ -81,4 +81,21 @@ public class InStreamDAOImpl implements InStreamDAO{
 		}
 		return query.list();
 	}
+
+	@Override
+	public InStreamEntity getStreamByDateAndStaId(String date, int staId) {
+		// TODO Auto-generated method stub
+
+		String hql = "from InStreamEntity where currDate = ? and staId = ? and isValid = ?";
+		Query query = sessionFactory.getCurrentSession().createQuery(hql);
+		query.setString(0, date);
+		query.setInteger(1, staId);
+		query.setInteger(2, 1);
+
+		List<InStreamEntity> inStreamEntityList = query.list();
+		if(inStreamEntityList.size()>0){
+			return inStreamEntityList.get(0);
+		}
+		return null;
+	}
 }

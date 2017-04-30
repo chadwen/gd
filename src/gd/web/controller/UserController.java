@@ -194,18 +194,83 @@ public class UserController {
 		
 		//test
 		userMap.get(id);//session id
-		//sessionMap.get("jis");
-		
-		
 		return "redirect:/";
 	}
+	@RequestMapping(value="/confirmPwd",method = RequestMethod.POST)
+	public @ResponseBody String confirmPwd(int userId, String oriPwd){
+		
+		//UserEntity ue = userService.getUserById(Integer.parseInt(userId));
+		UserEntity ue = userService.getUserById(userId);
+		if(ue==null){
+			return "nouser";
+		}
+		String pwd = ue.getPassword();
+		System.out.println(pwd);
+		boolean b1 = ue.getPassword().equals(oriPwd);
+		boolean b2 = pwd.equals(oriPwd);
+		if(ue.getPassword().equals(oriPwd)){
+			return "success";
+		}
+		
+		return "mismatch";
+	}
+	@RequestMapping(value="/modifyPwd",method = RequestMethod.POST)
+	public @ResponseBody String modifyPwd(int userId, String newPwd){
+		UserEntity ue = userService.getUserById(userId);
+		if(ue==null){
+			return "nouser";
+		}
+		ue.setPassword(newPwd);
+		userService.updateUser(ue);
+		return "success";
+	}
+	
+	@RequestMapping(value="/clearStatus/{userId}",method = RequestMethod.POST)
+	public void clearStatus(@PathVariable int userId, HttpSession session){
+		ServletContext context = session.getServletContext(); 
+		Map<Integer,String> userMap = (Map<Integer, String>) context.getAttribute("user_map");
+		if(userMap==null || userMap.size() == 0){
+			return ;
+		}
+		if(userMap.containsKey(userId)){
+			userMap.remove(userId);
+		}
+	}
+	@RequestMapping(value="/resetpwd/{userId}",method = RequestMethod.POST)
+	public void resetpwd(@PathVariable int userId, HttpSession session){
+		UserEntity ue = userService.getUserById(userId);
+		if(ue == null){
+			return;
+		}
+		ue.setPassword("123456");
+		userService.updateUser(ue);
+	}
+	
 	@RequestMapping(value="/getUserInfo",method = RequestMethod.POST)
 	public @ResponseBody UserInfo getPriv(HttpSession session){
 		/*if(session.getAttribute("priv")==null){
 			return null;
 		}*/
-
 		UserInfo userInfo = new UserInfo();
+		if((Integer)session.getAttribute("staId") != null && (Integer)session.getAttribute("staId")!= 0){
+			ServletContext context = session.getServletContext(); 
+			Map<Integer,String> userMap = (Map<Integer, String>) context.getAttribute("user_map");
+			if(userMap == null){
+				return null;
+			}
+			if(userMap.containsKey((Integer)session.getAttribute("userId"))){
+				userInfo.setPriv((String)session.getAttribute("priv"));
+				userInfo.setUserId((Integer)session.getAttribute("userId"));
+				userInfo.setUserName((String)session.getAttribute("userName"));
+				userInfo.setStaId((Integer)session.getAttribute("staId"));
+				return userInfo;
+			}else{
+				session.setAttribute("priv", Enum.NULLPRIV.toString());
+				session.removeAttribute("userId");
+				session.removeAttribute("userName");
+				session.removeAttribute("staId");
+			}
+		}
 		userInfo.setPriv((String)session.getAttribute("priv"));
 		userInfo.setUserId((Integer)session.getAttribute("userId"));
 		userInfo.setUserName((String)session.getAttribute("userName"));

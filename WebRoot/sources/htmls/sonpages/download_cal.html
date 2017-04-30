@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>download_single</title>
+    <title>download_cal</title>
 	
     <meta name="content-type" content="text/html; charset=utf-8">
     
@@ -21,7 +21,7 @@
   
   <body>
   <div style="width:60%">
-  	站点车流数据
+  	统计车流数据
 	<form class="form-horizontal" role="form">
 
 	<hr>
@@ -46,9 +46,9 @@
 	    <label>站点</label>
 
 	      <select style="display:none" id="staIds" name="staIds" class="selectpicker show-tick form-control" multiple data-live-search="false">
-			<option value="1">八号门</option>
-			<option value="2">八号门</option>
-			<option value="3">八号门</option>
+			<option value="0">苹果</option>
+			<option value="1">菠萝</option>
+			<option value="2">香蕉</option>
 		  </select>
 
 	  </div>
@@ -60,6 +60,7 @@
 	</form>
   </div>
   <script type="text/javascript">
+
     jeDate.skin('gray');
 	jeDate({
 		dateCell:"#startdate",//isinitVal:true,
@@ -147,11 +148,11 @@
 				console.log('startdate>enddate');
 				alert('"起始日期"不能大于"终止日期"！');
 				return;
-			}else{		
+			}else{			
 				if(dire.length>3){
 					dire = "BOTH";
-				}	
-				var url = "/gd/data/getSingle/" +startdate + "/" + enddate + "/" + ids + "/" + dire;
+				}			
+				var url = "/gd/data/getCal/" +startdate + "/" + enddate + "/" + ids + "/" + dire;
 				console.log(url); 
 				//var url = "/gd/data/get/1";
 				console.log(url);

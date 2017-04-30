@@ -84,4 +84,20 @@ public class OutStreamDAOImpl implements OutStreamDAO{
 		}
 		return query.list();
 	}
+
+	@Override
+	public OutStreamEntity getStreamByDateAndStaId(String date, int staId) {
+		// TODO Auto-generated method stub
+
+		String hql = "from OutStreamEntity where currDate = ? and staId = ? and isValid = ?";
+		Query query = sessionFactory.getCurrentSession().createQuery(hql);
+		query.setString(0, date);
+		query.setInteger(1, staId);
+		query.setInteger(2, 1);
+		List<OutStreamEntity> outStreamEntityList = query.list();
+		if(outStreamEntityList.size()>0){
+			return outStreamEntityList.get(0);			
+		}
+		return null;
+	}
 }

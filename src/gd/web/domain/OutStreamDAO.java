@@ -21,4 +21,7 @@ public interface OutStreamDAO {
 
 	@Transactional
 	List<OutStreamEntity> getEntityByDate(String startDate, String endDate, int staId);
+
+	@Transactional
+	OutStreamEntity getStreamByDateAndStaId(String date, int staId);
 }

@@ -86,4 +86,10 @@ public class OutStreamServiceImpl implements OutStreamService{
 		
 		return outStreamDAO.getEntityByDate(startDate,endDate,staId);
 	}
+
+	@Override
+	public OutStreamEntity getStreamByDateAndStaId(String date, int staId) {
+		// TODO Auto-generated method stub
+		return outStreamDAO.getStreamByDateAndStaId(date, staId);
+	}
 }

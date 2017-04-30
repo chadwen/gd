@@ -7,7 +7,12 @@
         singleOpen: true,
         clickEffect: true
     };
+
+
+    
+    
     function Plugin(element, options) {
+
         this.element = element;
         this.settings = $.extend({},
         defaults, options);
@@ -17,6 +22,7 @@
     };
     $.extend(Plugin.prototype, {
         init: function() {
+            
             this.openSubmenu();
             this.submenuIndicators();
             if (defaults.clickEffect) {

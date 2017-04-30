@@ -1,4 +1,4 @@
-/*! // gd Version 1.0  4/14/2017, 7:21:58 AM --By wcy  */
+/*! // gd Version 1.0  4/30/2017, 8:34:55 AM --By wcy  */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -279,6 +279,14 @@ var CommonService = function () {
             });
         }
     }, {
+        key: 'LoadingOpaque',
+        value: function LoadingOpaque() {
+            var self = this;
+            self.index = parent.layer.load(1, {
+                shade: [1, '#fff'] //1透明度(不透明)的白色背景
+            });
+        }
+    }, {
         key: 'CloseLoading',
         value: function CloseLoading() {
             var self = this;
@@ -317,10 +325,10 @@ var CommonService = function () {
     }, {
         key: '_generateNavi',
         value: function _generateNavi(userInfo, active) {
+            var self = this;
             if (userInfo.priv != "ADMINISTRATOR" && userInfo.priv != "OPERATOR") {
                 return;
             }
-            var self = this;
 
             var html = '	<!--nav-->' + '<nav class="navbar navbar-default" role="navigation">' + '<div class="container-fluid">' + '<div class="navbar-header">' + '<a class="navbar-brand" href="/gd">车流监控系统</a>' + '</div>' + '<div>' + '<ul class="nav navbar-nav">' + '<li ' + active[0] + ' ><a  style="border-left:1px solid;"href="/gd">地图</a></li>';
 
@@ -353,7 +361,101 @@ var CommonService = function () {
                 window.location.href = "/gd/user/logout";
             });
             (0, _JQueryVendor2.default)("#changepwd").bind("click", function () {
-                alert("not implement yet");
+                console.log("not implement yet");
+                self.options = {
+                    header: '修改密码',
+                    content: //'<form role="form" id="addStation" method="POST" action="/gd/station/add">' +
+                    //'<div class="form-group">' +
+
+                    '<label for="name">原密码</label>' + '<input type="password" class="form-control" id="oriPwd" name="oriPwd" placeholder="">' + '<label for="name">新密码</label>' + '<input type="password" class="form-control" id="newPwd" name="newPwd" placeholder="">' + '<label for="name">确认新密码</label>' + '<input type="password" class="form-control" id="confPwd" name="confPwd" placeholder="">',
+                    //'<label for="name">出入站点简介</label>' +
+                    //'<input type="text" class="form-control" id="brief" name="brief" placeholder="默认为站点名称">' +
+
+                    //'<input type="hidden" class="form-control" id="imgPath" value="http://pic34.photophoto.cn/20150330/0007019952833279_b.jpg" name="imgPath">' +
+                    //'<input type="hidden" id="posx" name="posx" value="'+posx+'"/>' +
+                    //'<input type="hidden" id="posy" name="posy" value="'+posy+'"/>' +
+                    //'</div>'+
+                    //' </form>',
+                    footer: '<button type="button" class="btn btn-default pwdcancel">取消</button>' + '<button type="button" class="btn btn-primary pwdsubmit">修改</button>'
+
+                };
+                self.OpenParentModalLayer();
+                (0, _JQueryVendor2.default)('#oriPwd').on('blur', function () {
+                    console.log((0, _JQueryVendor2.default)('#oriPwd').val());
+                    self._confOriPwd((0, _JQueryVendor2.default)('#oriPwd').val(), userInfo);
+                });
+                (0, _JQueryVendor2.default)('.pwdcancel').click(function () {
+                    self.CloseLayer();
+                });
+                (0, _JQueryVendor2.default)('.pwdsubmit').click(function () {
+                    if ((0, _JQueryVendor2.default)('#oriPwd').val() == "") {
+                        console.log('original password empty');
+                        alert('original password empty');
+                    } else if ((0, _JQueryVendor2.default)('#newPwd').val() != (0, _JQueryVendor2.default)('#confPwd').val()) {
+                        console.log('new password diff');
+                        alert('new password diff');
+                    } else {
+                        var oriPwd = (0, _JQueryVendor2.default)('#oriPwd').val();
+                        _JQueryVendor2.default.ajax({
+                            type: "POST",
+                            url: "/gd/user/confirmPwd",
+                            traditional: true,
+                            dataType: "text",
+                            data: { userId: userInfo.userId, oriPwd: oriPwd },
+                            beforeSend: function beforeSend() {},
+                            success: function success(data) {
+                                console.log(data);
+                                if (data == 'mismatch') {
+                                    alert('pwd mismatch');
+                                } else {
+                                    var newPwd = (0, _JQueryVendor2.default)('#newPwd').val();
+                                    _JQueryVendor2.default.ajax({
+                                        type: "POST",
+                                        url: "/gd/user/modifyPwd",
+                                        traditional: true,
+                                        dataType: "text",
+                                        data: { userId: userInfo.userId, newPwd: newPwd },
+                                        beforeSend: function beforeSend() {},
+                                        success: function success(data) {
+                                            console.log(data);
+                                            if (data == 'success') {
+                                                alert('success');
+                                            } else {}
+                                        },
+                                        error: function error() {},
+                                        complete: function complete() {
+                                            self.CloseLayer();
+                                        }
+                                    });
+                                }
+                            },
+                            error: function error() {},
+                            complete: function complete() {}
+                        });
+                    }
+                });
+            });
+        }
+    }, {
+        key: '_confOriPwd',
+        value: function _confOriPwd(oriPwd, userInfo) {
+            console.log(userInfo);
+            console.log(userInfo.userId);
+            _JQueryVendor2.default.ajax({
+                type: "POST",
+                url: "/gd/user/confirmPwd",
+                traditional: true,
+                dataType: "text",
+                data: { "userId": userInfo.userId, "oriPwd": oriPwd },
+                beforeSend: function beforeSend() {},
+                success: function success(data) {
+                    console.log(data);
+                    if (data == 'mismatch') {
+                        alert('pwd mismatch');
+                    }
+                },
+                error: function error() {},
+                complete: function complete() {}
             });
         }
     }]);

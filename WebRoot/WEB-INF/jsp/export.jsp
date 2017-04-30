@@ -17,6 +17,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
 	<meta http-equiv="description" content="This is my page">
 	
+	<script src="/gd/sources/js/myJs/pageLoading.js"></script>
+	
 	<link href="/gd/sources/js/bootstrap-3.3.7-dist/css/bootstrap.min.css" rel="stylesheet">
 	<link href="/gd/sources/js/bootstrap-3.3.7-dist/css/bootstrap-select.min.css" rel="stylesheet">
 	<link href="/gd/sources/js/plugins/leftNavi/css/jquery-accordion-menu.css" rel="stylesheet">
@@ -26,8 +28,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<script src="/gd/sources/js/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
 	<script src="/gd/sources/js/bootstrap-3.3.7-dist/js/bootstrap-select.min.js"></script>
 	<script src="/gd/sources/js/webpack/unit/JqLayer/layer.js"></script>
-	<script src="/gd/sources/js/plugins/jedate/jedate.js"></script>
-	<script src="/gd/sources/js/plugins/leftNavi/js/jquery-accordion-menu.js"></script>
+	<!-- <script src="/gd/sources/js/plugins/jedate/jedate.js"></script> -->
+	<script id="leftNaviJS" src="/gd/sources/js/plugins/leftNavi/js/jquery-accordion-menu.js"></script>
 
 <script type="text/javascript">
 
@@ -63,7 +65,7 @@ $(function(){
 				</ul> -->
 			</li>
 			<li><a href="/gd/data/export#"><i class="fa fa-th-list"></i>查看站点动态</a>
-				<ul class="submenu">
+				<ul id="allStation" class="submenu">
 					<li><a href="/gd/data/export#">一号门</a></li>
 					<li><a href="/gd/data/export#">二号门</a></li>
 					<li><a href="/gd/data/export#">三号门</a></li>
@@ -77,13 +79,13 @@ $(function(){
 				<ul class="submenu">
 					<li><a id="singleData" href="/gd/data/export#">站点车流数据</a></li>
 					<li><a id="calculateData" href="/gd/data/export#">统计车流数据</a></li>
-					<li><a id="staInfo" href="/gd/data/export#">站点信息数据</a></li>					
+					<li><a id="staInfo" href="/gd/data/getAllStations">站点信息数据</a></li>					
 				</ul>
 			</li>
 			<li><a href="/gd/data/export#"><i class="fa fa-user"></i>管理操作员 </a>
 				<ul class="submenu">
-					<li><a href="/gd/data/export#">重置账号密码</a></li>
-					<li><a href="/gd/data/export#">清除登录状态</a></li>
+					<li><a id="resetpwd" href="/gd/data/export#">重置账号密码</a></li>
+					<li><a id="clearStatus" href="/gd/data/export#">清除登录状态</a></li>
 					<li><a href="/gd/data/export#">查看账号信息</a></li>
 					
 				</ul>
@@ -100,69 +102,9 @@ $(function(){
 
 <div id="manageContent" style="padding-top:30px" class="col-md-8">
 
-  <div style="display:none" id="singleData_div" class="col-md-8">
-  	站点车流数据
-	<form class="form-horizontal" role="form">
+<iframe id="iframeContent" frameborder=0 scrolling=no width=100% height="80%" src=""></iframe>
 
-	<hr>
-	  <div class="form-group col-md-12">
-	    <label>起始日期</label>
-	    <input class="form-control" id="single_startdate" type="text" placeholder="请选择起始日期" value=""  readonly>
-	  </div>
-	  <div class="form-group col-md-12">
-	    <label>终止日期</label>
-	    <input class="form-control" id="single_enddate" type="text" placeholder="请选择终止日期" value=""  readonly>
-	  </div>
-	
-	  <div class="form-group col-md-12">
-	    <label>站点</label>
 
-	      <select id="sta_single" name="station" class="selectpicker show-tick form-control" multiple data-live-search="false">
-			<option value="0">苹果</option>
-			<option value="1">菠萝</option>
-			<option value="2">香蕉</option>
-		  </select>
-
-	  </div>
-	  <div class="col-md-12">
-		  <div style="float:right">
-		  	<button id="singleData_btn" type="button" class="btn btn-default">&nbsp下载&nbsp</button>
-		  </div>
-	  </div>
-	</form>
-  </div>
-  
-   <div style="display:none" id="calData_div" class="col-md-8">
-  	统计车流数据
-	<form class="form-horizontal" role="form">
-
-	<hr>
-	  <div class="form-group col-md-12">
-	    <label>起始日期</label>
-	    <input class="form-control" id="sta_startdate" type="text" placeholder="请选择起始日期" value=""  readonly>
-	  </div>
-	  <div class="form-group col-md-12">
-	    <label>终止日期</label>
-	    <input class="form-control" id="sta_enddate" type="text" placeholder="请选择终止日期" value=""  readonly>
-	  </div>
-	
-	  <div class="form-group col-md-12">
-	    <label>站点</label>
-
-	      <select id="sta_cal" name="station" class="selectpicker show-tick form-control" multiple data-live-search="false">
-			<option value="0">苹果</option>
-			<option value="1">菠萝</option>
-			<option value="2">香蕉</option>
-		  </select>
-
-	  </div>
-	  <div class="col-md-12">
-		  <div style="float:right">
-		  	<button id="calData_btn" type="button" class="btn btn-default">&nbsp下载&nbsp</button>
-		  </div>
-	  </div>
-	</form>
-  </div>
   
   
 </div>
@@ -180,7 +122,7 @@ $(function(){
 
 </html>
 
-<script type="text/javascript">
+<!-- <script type="text/javascript">
     jeDate.skin('gray');
 
     	$('#btn').click(function(){
@@ -232,21 +174,44 @@ $(function(){
 		//minDate:"2015-10-19 00:00:00",
 		//maxDate:"2016-11-8 00:00:00"
 	})
-</script>
+</script> -->
+
 <script src="/gd/sources/js/webpack/build/exports.bundle.js"></script>
 <script>
 $(document).ready(function(){
-	$('#singleData').on("click",function(){
-  		$('#calData_div').css("display","none");
 
-  		$('#singleData_div').css("display","");
-  		
-  	});
-	$('#calculateData').on("click",function(){
-  		$('#singleData_div').css("display","none");
 
-  		$('#calData_div').css("display","");
-  	});
+	$.ajax({
+            type: "POST",
+            cache: false,
+	   		//traditional:true,//传数组时应设置为true
+            url: "/gd/station/getall",
+            dataType: 'json',
+            data: {},
+            success: function (data) {
+            	$("#allStation").html("");
+            	$("#allStation").attr("class","submenu");
+            	$.each(data, function(){
+				    console.log(this.id+","+this.brief);
+				    $("#allStation").append('<li><a href="/gd/chartdata/get/'+ this.id +'" target="_Blank" onclick=openNewTab(this)>'+this.brief+'</a></li>');
+				    //$("#allStation").append('<li><a href="javascript:void(0);" onclick="openNewTab(this)">'+this.brief+'</a></li>');
+				    
+				    
+				    
+				});
+				//$("#jquery-accordion-menu").jqueryAccordionMenu();
+				
+				
+				var head = $("head").remove('#leftNaviJS')
+				var file = "/gd/sources/js/plugins/leftNavi/js/jquery-accordion-menu.js";
+				head.append('<scr'+'ipt id="leftNaviJS" src="'+file+'" type="text/javascript">'+'</scr'+'ipt>');
+				//$("<scri"+"pt>"+"</scr"+"ipt>").attr({src:file,type:'text/javascript',id:'leftNaviJS'}).appendto(head);
+				$("#jquery-accordion-menu").jqueryAccordionMenu(); 
+            },
+		}); 
+		
+		
+
 });
 /* function generateDownloadHtml(title){
 	var htmls = '<div class="col-md-8">'+
