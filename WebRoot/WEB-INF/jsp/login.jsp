@@ -29,8 +29,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<body>
 		<div class="container" style="margin-top:10%">
 			<section id="content">
-				<form method="POST" action="/gd/user/login">
+				<form method="POST" id="login_form" action="/gd/user/login">
 					<h1>登录</h1>
+					<label id="msg"></label>
 					<div>
 						<input name="userName" type="text" placeholder="用户名" required="" id="userName" />
 					</div>
@@ -38,7 +39,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						<input name="password" type="password" placeholder="密码" required="" id="password" />
 					</div>
 					<div>
-						<input type="submit" value="登录" />
+						<input type="submit" id = "login_submit" value="登录" />
 						<a href="#">忘记密码</a>
 					</div>
 				</form><!-- form -->
@@ -49,3 +50,37 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		</div><!-- container -->
 	</body>
 </html>
+<<script type="text/javascript">
+	$('#login_submit').on('click',function(event){
+		event.preventDefault();
+		$.ajax({
+                type: "POST",
+                url:"/gd/user/login",
+                data:$('#login_form').serialize(),
+                async: false,
+                dataType:"text",
+                error: function(request) {
+                    console.log("Connection error");
+                },
+                success: function(data) {
+                	console.log(data);
+                	if(data=="mismatch"){
+                    	$("#msg").html("用户名或密码错误！");
+                	}else if(data=="hadLoaded"){
+                		$("#msg").html("用户已在别处登录！");
+                	}else if(data=="success"){
+                		location.href="/gd";
+                	}else{
+                		location.href="/gd";
+                	}
+                }
+		});
+	});
+</script>
+
+
+
+
+
+
+

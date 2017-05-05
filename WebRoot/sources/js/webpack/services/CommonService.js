@@ -310,13 +310,18 @@ class CommonService{
 						header: '修改密码',
 			            content://'<form role="form" id="addStation" method="POST" action="/gd/station/add">' +
 		                    //'<div class="form-group">' +
-
-		                    '<label for="name">原密码</label>' +
+			            	'<div>'+
+		                    '<label id="msg_ori" for="name">原密码</label>' +
 		                    '<input type="password" class="form-control" id="oriPwd" name="oriPwd" placeholder="">' +
+		                    '</div>'+
+			            	'<div>'+
 		                    '<label for="name">新密码</label>' +
 		                    '<input type="password" class="form-control" id="newPwd" name="newPwd" placeholder="">' +
-		                    '<label for="name">确认新密码</label>' +
-		                    '<input type="password" class="form-control" id="confPwd" name="confPwd" placeholder="">' ,
+		                    '</div>'+
+			            	'<div>'+
+		                    '<label id="msg_new" for="name">确认新密码</label>' +
+		                    '<input type="password" class="form-control" id="confPwd" name="confPwd" placeholder="">'+
+		                    '</div>',
 		                    //'<label for="name">出入站点简介</label>' +
 		                    //'<input type="text" class="form-control" id="brief" name="brief" placeholder="默认为站点名称">' +
 		                    
@@ -338,12 +343,16 @@ class CommonService{
 				self.CloseLayer();
 			});
 			$('.pwdsubmit').click(function(){
+				$('#msg_ori').html('原密码');
+				$('#msg_new').html('确认新密码');
 				if($('#oriPwd').val()==""){
 					console.log('original password empty');
-					alert('original password empty');
+					$('#msg_ori').html('原密码&nbsp&nbsp<small style="color:red">*密码不能为空！</small>');
+				}else if($('#newPwd').val() == ""){
+					$('#msg_new').html('确认新密码&nbsp&nbsp<small style="color:red">*新密码不能为空！</small>');
 				}else if($('#newPwd').val() != $('#confPwd').val()){
 					console.log('new password diff');
-					alert('new password diff');
+					$('#msg_new').html('确认新密码&nbsp&nbsp<small style="color:red">*两次输入的密码不一致！</small>');
 				}else{
 					let oriPwd = $('#oriPwd').val();
 					$.ajax({
@@ -356,8 +365,9 @@ class CommonService{
 							success : function(data) {
 								console.log(data);
 								if(data=='mismatch'){
-									alert('pwd mismatch');
+									$('#msg_ori').html('原密码&nbsp&nbsp<small style="color:red">*密码错误！</small>');
 								}else{
+									$('#msg_ori').html('原密码');
 									let newPwd = $('#newPwd').val();
 									$.ajax({
 										type : "POST",
@@ -369,9 +379,10 @@ class CommonService{
 											success : function(data) {
 												console.log(data);
 												if(data=='success'){
-													alert('success');
+													alert('修改成功！');
+													location.href="/gd/user/login";
 												}else{
-													
+													location.href="/gd/user/login";
 												}
 											},
 											error : function(){},
@@ -404,7 +415,10 @@ class CommonService{
 				success : function(data) {
 					console.log(data);
 					if(data=='mismatch'){
-						alert('pwd mismatch');
+						//alert('pwd mismatch');
+						$('#msg_ori').html('原密码&nbsp&nbsp<small style="color:red">*密码错误！</small>');
+					}else{
+						$('#msg_ori').html('原密码');
 					}
 				},
 				error : function(){},

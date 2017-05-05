@@ -145,12 +145,12 @@ public class UserController {
 		return "jsp/login";
 	}
 	@RequestMapping(value="/login",method = RequestMethod.POST)
-	public String loginPost(UserEntity userEntity,HttpSession session){
+	public @ResponseBody String loginPost(UserEntity userEntity,HttpSession session){
 		
 		userEntity = userService.login(userEntity);
 		if(userEntity==null){
 			// no user
-			return "jsp/error";
+			return "mismatch";
 		}
 		
 		ServletContext context = session.getServletContext(); 
@@ -161,7 +161,7 @@ public class UserController {
 			context.setAttribute("user_map", userMap);
 		}
 		if(userMap.containsKey(userEntity.getId())){
-			return "had_loaded";
+			return "hadLoaded";
 		}
 		userMap.put(userEntity.getId(), userEntity.getUserName());
 		
@@ -176,7 +176,7 @@ public class UserController {
 		
 		
 		userService.initStreamTable(userEntity.getStaId());
-		return "redirect:/";
+		return "success";
 	}
 	@RequestMapping(value="/logout",method = RequestMethod.GET)
 	public String logOut(HttpSession session){
@@ -215,13 +215,19 @@ public class UserController {
 		return "mismatch";
 	}
 	@RequestMapping(value="/modifyPwd",method = RequestMethod.POST)
-	public @ResponseBody String modifyPwd(int userId, String newPwd){
+	public @ResponseBody String modifyPwd(int userId, String newPwd, HttpSession session){
 		UserEntity ue = userService.getUserById(userId);
 		if(ue==null){
 			return "nouser";
 		}
 		ue.setPassword(newPwd);
-		userService.updateUser(ue);
+		userService.updateUser(ue);ServletContext context = session.getServletContext(); 
+		Map<Integer,String> userMap = (Map<Integer, String>) context.getAttribute("user_map");
+		if(userMap==null || userMap.size() == 0){
+			return "nouser";
+		}if(userMap.containsKey(userId)){
+			userMap.remove(userId);
+		}
 		return "success";
 	}
 	

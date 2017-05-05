@@ -1,4 +1,4 @@
-/*! // gd Version 1.0  4/30/2017, 8:34:55 AM --By wcy  */
+/*! // gd Version 1.0  5/2/2017, 5:06:59 AM --By wcy  */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -108,7 +108,7 @@ module.exports = __webpack_amd_options__;
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }(); //CommonService.js
@@ -124,343 +124,353 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 //import layer from '../unit/JqLayer/layer';
 //import layer from "../unit/JqLayer/layer/layer";
 var CommonService = function () {
-    function CommonService(options) {
-        _classCallCheck(this, CommonService);
+  function CommonService(options) {
+    _classCallCheck(this, CommonService);
 
-        this.options = options || {};
-        window.layer = layer;
+    this.options = options || {};
+    window.layer = layer;
+  }
+
+  _createClass(CommonService, [{
+    key: 'OpenModalLayer',
+    value: function OpenModalLayer() {
+      var self = this;
+      //参数默认值
+      self.options.header = self.options.header || '';
+      self.options.content = self.options.content || '';
+      self.options.footer = self.options.footer || '';
+      self.options.endFunction = self.options.endFunction || function () {};
+      layer.open({
+        id: 1,
+        //offset: '20%',//坐标
+        anim: 0, //动画
+        title: false, //标题
+        type: 1, //页面层
+        closeBtn: 0, //关闭按钮
+        area: '600px', //宽高
+        skin: 'layui-layer-rim', //风格
+        shade: 0.6, //遮罩层透明度
+        shadeClose: true, //点击遮罩关闭
+        resize: false, //拉伸
+        move: false, //拖动
+        content: '<div class="modal-content" style="border-radius:0px;">' + '<div class="modal-header">' + '<button type="button" class="close" onclick="parent.layer.closeAll();">&times;</button>' + '<h4 class="modal-title topTitle">' + self.options.header + '</h4>' + '</div>' + '<div class="modal-body">' + self.options.content + '</div>' + '<div class="modal-footer">' + self.options.footer + '</div>' + '</div>',
+        end: self.options.endFunction
+      });
     }
 
-    _createClass(CommonService, [{
-        key: 'OpenModalLayer',
-        value: function OpenModalLayer() {
-            var self = this;
-            //参数默认值
-            self.options.header = self.options.header || '';
-            self.options.content = self.options.content || '';
-            self.options.footer = self.options.footer || '';
-            self.options.endFunction = self.options.endFunction || function () {};
-            layer.open({
-                id: 1,
-                //offset: '20%',//坐标
-                anim: 0, //动画
-                title: false, //标题
-                type: 1, //页面层
-                closeBtn: 0, //关闭按钮
-                area: '600px', //宽高
-                skin: 'layui-layer-rim', //风格
-                shade: 0.6, //遮罩层透明度
-                shadeClose: true, //点击遮罩关闭
-                resize: false, //拉伸
-                move: false, //拖动
-                content: '<div class="modal-content" style="border-radius:0px;">' + '<div class="modal-header">' + '<button type="button" class="close" onclick="parent.layer.closeAll();">&times;</button>' + '<h4 class="modal-title topTitle">' + self.options.header + '</h4>' + '</div>' + '<div class="modal-body">' + self.options.content + '</div>' + '<div class="modal-footer">' + self.options.footer + '</div>' + '</div>',
-                end: self.options.endFunction
-            });
-        }
+    //be using
 
-        //be using
+  }, {
+    key: 'OpenParentModalLayer',
+    value: function OpenParentModalLayer() {
+      var self = this;
+      //参数默认值
+      self.options.header = self.options.header || '';
+      self.options.content = self.options.content || '';
+      self.options.footer = self.options.footer || '';
+      self.options.endFunction = self.options.endFunction || function () {};
+      layer.open({
+        id: 1,
+        offset: ['10%', '33%'], //坐标
+        anim: 3, //动画
+        title: false, //标题
+        type: 1, //页面层
+        closeBtn: 0, //关闭按钮
+        area: '33%', //宽高
+        skin: 'layui-layer-rim', //风格
+        shade: 0.6, //遮罩层透明度
+        shadeClose: true, //点击遮罩关闭
+        resize: false, //拉伸
+        move: false, //拖动
+        content: '<div class="modal-content" style="border-radius:0px;">' + '<div class="modal-header">' + '<button type="button" class="close" onclick="parent.layer.closeAll();">&times;</button>' + '<h4 class="modal-title topTitle">' + self.options.header + '</h4>' + '</div>' + '<div class="modal-body">' + self.options.content + '</div>' + '<div class="modal-footer">' + self.options.footer + '</div>' + '</div>',
+        end: self.options.endFunction
+      });
+    }
+  }, {
+    key: 'OpenParentModalLayerForDocIndexCtr',
+    value: function OpenParentModalLayerForDocIndexCtr() {
+      //与 OpenParentModalLayer 只有一个属性值不同：shadeClose: false, 禁止点击空白处关闭
+      var self = this;
+      //参数默认值
+      self.options.header = self.options.header || '';
+      self.options.content = self.options.content || '';
+      self.options.footer = self.options.footer || '';
+      self.options.endFunction = self.options.endFunction || function () {};
+      layer.open({
+        id: 1,
+        //offset: '20%',//坐标
+        anim: 0, //动画
+        title: false, //标题
+        type: 1, //页面层
+        closeBtn: 0, //关闭按钮
+        area: '600px', //宽高
+        skin: 'layui-layer-rim', //风格
+        shade: 0.6, //遮罩层透明度
+        shadeClose: false, //点击遮罩关闭
+        resize: false, //拉伸
+        move: false, //拖动
+        content: '<div class="modal-content" style="border-radius:0px;">' + '<div class="modal-header">' +
+        //'<button type="button" class="close" onclick="parent.layer.closeAll();">&times;</button>' +
+        '<h4 class="modal-title topTitle">' + self.options.header + '</h4>' + '</div>' + '<div class="modal-body">' + self.options.content + '</div>' + '<div class="modal-footer">' + self.options.footer + '</div>' + '</div>',
+        end: self.options.endFunction
+      });
+    }
+  }, {
+    key: 'OpenSaveModalLayer',
+    value: function OpenSaveModalLayer() {
+      var self = this;
+      //参数默认值
+      self.options.header = self.options.header || '';
+      self.options.content = self.options.content || '';
+      parent.layer.open({
+        id: 1,
+        //offset: '20%',
+        anim: 0, //动画
+        title: false, //标题
+        type: 1, //页面层
+        closeBtn: 0, //关闭按钮
+        area: '600px', //宽高
+        skin: 'layui-layer-rim', //风格
+        shade: 0.6, //遮罩层透明度
+        shadeClose: false, //点击遮罩关闭
+        resize: false, //拉伸
+        move: false, //拖动
+        content: '<div class="modal-content">' + '<div class="modal-header">' + '<button type="button" class="close" onclick="parent.layer.closeAll();">&times;</button>' + '<h4 class="modal-title topTitle">' + self.options.header + '</h4>' + '</div>' + '<div class="modal-body">' + self.options.content + '</div>' + '<div class="modal-footer">' + '<button type="button" class="btn btn-default CloseLayer" onclick="parent.layer.closeAll();">关闭</button>' + '<button type="submit" class="btn btn-primary">保存</button>' + '</div>' + '</div>'
+      });
+      (0, _JQueryVendor2.default)('.btn.btn-primary', window.parent.document).click(function () {
+        parent.layer.closeAll();
+        self.options.Submit(this);
+      });
+    }
+  }, {
+    key: 'OpenConfirmModalLayer',
+    value: function OpenConfirmModalLayer() {
+      var _this = this;
 
-    }, {
-        key: 'OpenParentModalLayer',
-        value: function OpenParentModalLayer() {
-            var self = this;
-            //参数默认值
-            self.options.header = self.options.header || '';
-            self.options.content = self.options.content || '';
-            self.options.footer = self.options.footer || '';
-            self.options.endFunction = self.options.endFunction || function () {};
-            layer.open({
-                id: 1,
-                offset: ['10%', '33%'], //坐标
-                anim: 3, //动画
-                title: false, //标题
-                type: 1, //页面层
-                closeBtn: 0, //关闭按钮
-                area: '33%', //宽高
-                skin: 'layui-layer-rim', //风格
-                shade: 0.6, //遮罩层透明度
-                shadeClose: true, //点击遮罩关闭
-                resize: false, //拉伸
-                move: false, //拖动
-                content: '<div class="modal-content" style="border-radius:0px;">' + '<div class="modal-header">' + '<button type="button" class="close" onclick="parent.layer.closeAll();">&times;</button>' + '<h4 class="modal-title topTitle">' + self.options.header + '</h4>' + '</div>' + '<div class="modal-body">' + self.options.content + '</div>' + '<div class="modal-footer">' + self.options.footer + '</div>' + '</div>',
-                end: self.options.endFunction
-            });
-        }
-    }, {
-        key: 'OpenParentModalLayerForDocIndexCtr',
-        value: function OpenParentModalLayerForDocIndexCtr() {
-            //与 OpenParentModalLayer 只有一个属性值不同：shadeClose: false, 禁止点击空白处关闭
-            var self = this;
-            //参数默认值
-            self.options.header = self.options.header || '';
-            self.options.content = self.options.content || '';
-            self.options.footer = self.options.footer || '';
-            self.options.endFunction = self.options.endFunction || function () {};
-            layer.open({
-                id: 1,
-                //offset: '20%',//坐标
-                anim: 0, //动画
-                title: false, //标题
-                type: 1, //页面层
-                closeBtn: 0, //关闭按钮
-                area: '600px', //宽高
-                skin: 'layui-layer-rim', //风格
-                shade: 0.6, //遮罩层透明度
-                shadeClose: false, //点击遮罩关闭
-                resize: false, //拉伸
-                move: false, //拖动
-                content: '<div class="modal-content" style="border-radius:0px;">' + '<div class="modal-header">' +
-                //'<button type="button" class="close" onclick="parent.layer.closeAll();">&times;</button>' +
-                '<h4 class="modal-title topTitle">' + self.options.header + '</h4>' + '</div>' + '<div class="modal-body">' + self.options.content + '</div>' + '<div class="modal-footer">' + self.options.footer + '</div>' + '</div>',
-                end: self.options.endFunction
-            });
-        }
-    }, {
-        key: 'OpenSaveModalLayer',
-        value: function OpenSaveModalLayer() {
-            var self = this;
-            //参数默认值
-            self.options.header = self.options.header || '';
-            self.options.content = self.options.content || '';
-            parent.layer.open({
-                id: 1,
-                //offset: '20%',
-                anim: 0, //动画
-                title: false, //标题
-                type: 1, //页面层
-                closeBtn: 0, //关闭按钮
-                area: '600px', //宽高
-                skin: 'layui-layer-rim', //风格
-                shade: 0.6, //遮罩层透明度
-                shadeClose: false, //点击遮罩关闭
-                resize: false, //拉伸
-                move: false, //拖动
-                content: '<div class="modal-content">' + '<div class="modal-header">' + '<button type="button" class="close" onclick="parent.layer.closeAll();">&times;</button>' + '<h4 class="modal-title topTitle">' + self.options.header + '</h4>' + '</div>' + '<div class="modal-body">' + self.options.content + '</div>' + '<div class="modal-footer">' + '<button type="button" class="btn btn-default CloseLayer" onclick="parent.layer.closeAll();">关闭</button>' + '<button type="submit" class="btn btn-primary">保存</button>' + '</div>' + '</div>'
-            });
-            (0, _JQueryVendor2.default)('.btn.btn-primary', window.parent.document).click(function () {
-                parent.layer.closeAll();
-                self.options.Submit(this);
-            });
-        }
-    }, {
-        key: 'OpenConfirmModalLayer',
-        value: function OpenConfirmModalLayer() {
-            var _this = this;
+      var self = this;
+      parent.layer.open({
+        id: 1,
+        anim: 0, //动画
+        title: false, //标题
+        type: 1, //页面层
+        closeBtn: 0, //关闭按钮
+        area: '600px', //宽高
+        skin: 'layui-layer-rim', //风格
+        shade: 0.6, //遮罩层透明度
+        shadeClose: false, //点击遮罩关闭
+        resize: false, //拉伸
+        move: false, //拖动
+        content: '<div class="modal-content">' + '<div class="modal-header">' + '<button type="button" class="close" onclick="parent.layer.closeAll();">&times;</button>' + '<h4 class="modal-title topTitle">' + self.options.header + '</h4>' + '</div>' + '<div class="modal-body">' + self.options.content + '</div>' + '<div class="modal-footer">' + '<button type="button" class="btn btn-default" onclick="parent.layer.closeAll();">否</button>' + '<button type="button" id="btnConfirm" class="btn btn-default">是</button>' + '</div>' + '</div>'
+      });
+      var confirmctr = (0, _JQueryVendor2.default)("#btnConfirm");
+      if (confirmctr[0] == undefined) {
+        confirmctr = (0, _JQueryVendor2.default)("#btnConfirm", window.parent.document);
+      }
+      confirmctr.bind('click', function () {
+        if (self.options.Confirm != undefined) self.options.Confirm.call(_this);
+      });
+    }
+  }, {
+    key: 'Loading',
+    value: function Loading() {
+      var self = this;
+      self.index = parent.layer.load(1, {
+        shade: [0.1, '#fff'] //0.1透明度的白色背景
+      });
+    }
+  }, {
+    key: 'LoadingOpaque',
+    value: function LoadingOpaque() {
+      var self = this;
+      self.index = parent.layer.load(1, {
+        shade: [1, '#fff'] //1透明度(不透明)的白色背景
+      });
+    }
+  }, {
+    key: 'CloseLoading',
+    value: function CloseLoading() {
+      var self = this;
+      parent.layer.close(self.index);
+    }
 
-            var self = this;
-            parent.layer.open({
-                id: 1,
-                anim: 0, //动画
-                title: false, //标题
-                type: 1, //页面层
-                closeBtn: 0, //关闭按钮
-                area: '600px', //宽高
-                skin: 'layui-layer-rim', //风格
-                shade: 0.6, //遮罩层透明度
-                shadeClose: false, //点击遮罩关闭
-                resize: false, //拉伸
-                move: false, //拖动
-                content: '<div class="modal-content">' + '<div class="modal-header">' + '<button type="button" class="close" onclick="parent.layer.closeAll();">&times;</button>' + '<h4 class="modal-title topTitle">' + self.options.header + '</h4>' + '</div>' + '<div class="modal-body">' + self.options.content + '</div>' + '<div class="modal-footer">' + '<button type="button" class="btn btn-default" onclick="parent.layer.closeAll();">否</button>' + '<button type="button" id="btnConfirm" class="btn btn-default">是</button>' + '</div>' + '</div>'
-            });
-            var confirmctr = (0, _JQueryVendor2.default)("#btnConfirm");
-            if (confirmctr[0] == undefined) {
-                confirmctr = (0, _JQueryVendor2.default)("#btnConfirm", window.parent.document);
-            }
-            confirmctr.bind('click', function () {
-                if (self.options.Confirm != undefined) self.options.Confirm.call(_this);
-            });
-        }
-    }, {
-        key: 'Loading',
-        value: function Loading() {
-            var self = this;
-            self.index = parent.layer.load(1, {
-                shade: [0.1, '#fff'] //0.1透明度的白色背景
-            });
-        }
-    }, {
-        key: 'LoadingOpaque',
-        value: function LoadingOpaque() {
-            var self = this;
-            self.index = parent.layer.load(1, {
-                shade: [1, '#fff'] //1透明度(不透明)的白色背景
-            });
-        }
-    }, {
-        key: 'CloseLoading',
-        value: function CloseLoading() {
-            var self = this;
-            parent.layer.close(self.index);
-        }
+    //1 成功 2 失败/异常  3感叹号 4印章 5失望标签符
 
-        //1 成功 2 失败/异常  3感叹号 4印章 5失望标签符
+  }, {
+    key: 'AlertMessage',
+    value: function AlertMessage(message, iconNum) {
+      var self = this;
+      self.options.iconNum = iconNum || 1;
+      parent.layer.alert(message, {
+        icon: self.options.iconNum,
+        skin: 'layer-ext-moon' //该皮肤由layer.seaning.com友情扩展。关于皮肤的扩展规则，去这里查阅
+      });
+    }
+  }, {
+    key: 'PromptMsg',
+    value: function PromptMsg(message, iconNum) {
+      var self = this;
+      self.options.iconNum = iconNum || 1;
+      parent.layer.msg(message, {
+        icon: self.options.iconNum,
+        time: 5000 //3秒关闭（如果不配置，默认是3秒）
+      }, function () {
+        //提示窗关闭后do something
+      });
+    }
+  }, {
+    key: 'CloseLayer',
+    value: function CloseLayer() {
+      parent.layer.closeAll();
+    }
+  }, {
+    key: '_generateNavi',
+    value: function _generateNavi(userInfo, active) {
+      var self = this;
+      if (userInfo.priv != "ADMINISTRATOR" && userInfo.priv != "OPERATOR") {
+        return;
+      }
 
-    }, {
-        key: 'AlertMessage',
-        value: function AlertMessage(message, iconNum) {
-            var self = this;
-            self.options.iconNum = iconNum || 1;
-            parent.layer.alert(message, {
-                icon: self.options.iconNum,
-                skin: 'layer-ext-moon' //该皮肤由layer.seaning.com友情扩展。关于皮肤的扩展规则，去这里查阅
-            });
-        }
-    }, {
-        key: 'PromptMsg',
-        value: function PromptMsg(message, iconNum) {
-            var self = this;
-            self.options.iconNum = iconNum || 1;
-            parent.layer.msg(message, {
-                icon: self.options.iconNum,
-                time: 5000 //3秒关闭（如果不配置，默认是3秒）
-            }, function () {
-                //提示窗关闭后do something
-            });
-        }
-    }, {
-        key: 'CloseLayer',
-        value: function CloseLayer() {
-            parent.layer.closeAll();
-        }
-    }, {
-        key: '_generateNavi',
-        value: function _generateNavi(userInfo, active) {
-            var self = this;
-            if (userInfo.priv != "ADMINISTRATOR" && userInfo.priv != "OPERATOR") {
-                return;
-            }
+      var html = '	<!--nav-->' + '<nav class="navbar navbar-default" role="navigation">' + '<div class="container-fluid">' + '<div class="navbar-header">' + '<a class="navbar-brand" href="/gd">车流监控系统</a>' + '</div>' + '<div>' + '<ul class="nav navbar-nav">' + '<li ' + active[0] + ' ><a  style="border-left:1px solid;"href="/gd">地图</a></li>';
 
-            var html = '	<!--nav-->' + '<nav class="navbar navbar-default" role="navigation">' + '<div class="container-fluid">' + '<div class="navbar-header">' + '<a class="navbar-brand" href="/gd">车流监控系统</a>' + '</div>' + '<div>' + '<ul class="nav navbar-nav">' + '<li ' + active[0] + ' ><a  style="border-left:1px solid;"href="/gd">地图</a></li>';
+      /*					+'<li class="dropdown">'
+      						+'<a href="#" class="dropdown-toggle" data-toggle="dropdown">'
+      							+'动态'
+      							+'<b class="caret"></b>'
+      						+'</a>'
+      						+'<ul class="dropdown-menu">'*/
+      if (userInfo.priv == "OPERATOR") {
+        html += '<li ' + active[1] + ' ><a href="/gd/chartdata/wholeState">站点动态</a></li>';
+      }
+      html += '<li ' + active[2] + ' ><a href="/gd/chartdata/wholeWholeState">全局动态</a></li>';
 
-            /*					+'<li class="dropdown">'
-            						+'<a href="#" class="dropdown-toggle" data-toggle="dropdown">'
-            							+'动态'
-            							+'<b class="caret"></b>'
-            						+'</a>'
-            						+'<ul class="dropdown-menu">'*/
-            if (userInfo.priv == "OPERATOR") {
-                html += '<li ' + active[1] + ' ><a href="/gd/chartdata/wholeState">站点动态</a></li>';
-            }
-            html += '<li ' + active[2] + ' ><a href="/gd/chartdata/wholeWholeState">全局动态</a></li>';
+      /*						html += '</ul>'
+      					+'</li>'*/
 
-            /*						html += '</ul>'
-            					+'</li>'*/
+      if (userInfo.priv == "ADMINISTRATOR") {
+        html += '<li ' + active[3] + ' ><a  href="/gd/data/export">管理面板</a></li>';
+      }
+      html += '</ul>' + '<ul class="nav navbar-nav navbar-right">' + '<li class="dropdown" >' + '<a  style="border-left:1px solid;width:160px" href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-user"></span>&nbsp;&nbsp;' + userInfo.userName + '<b class="caret"></b>' + '</a>' + '<ul class="dropdown-menu">' + '<li><a style="cursor:pointer" id="accountinfo"><span class="glyphicon glyphicon-info-sign"></span>&nbsp;&nbsp;账号信息</a></li>' + '<li class="divider"></li>' + '<li><a style="cursor:pointer" id="changepwd"><span class="glyphicon glyphicon-pencil"></span>&nbsp;&nbsp;修改密码</a></li>' + '<li class="divider"></li>' + '<li><a style="cursor:pointer" id="logout"><span class="glyphicon glyphicon-log-out"></span>&nbsp;&nbsp;退出登录</a></li>' + '</ul>' + '</li>' + '</ul>' + '</div>' + '</div>' + '</nav><!--nav-->';
+      (0, _JQueryVendor2.default)("#navi").css("height", "50px");
+      (0, _JQueryVendor2.default)("#navi").html(html);
 
-            if (userInfo.priv == "ADMINISTRATOR") {
-                html += '<li ' + active[3] + ' ><a  href="/gd/data/export">管理面板</a></li>';
-            }
-            html += '</ul>' + '<ul class="nav navbar-nav navbar-right">' + '<li class="dropdown" >' + '<a  style="border-left:1px solid;width:160px" href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-user"></span>&nbsp;&nbsp;' + userInfo.userName + '<b class="caret"></b>' + '</a>' + '<ul class="dropdown-menu">' + '<li><a style="cursor:pointer" id="accountinfo"><span class="glyphicon glyphicon-info-sign"></span>&nbsp;&nbsp;账号信息</a></li>' + '<li class="divider"></li>' + '<li><a style="cursor:pointer" id="changepwd"><span class="glyphicon glyphicon-pencil"></span>&nbsp;&nbsp;修改密码</a></li>' + '<li class="divider"></li>' + '<li><a style="cursor:pointer" id="logout"><span class="glyphicon glyphicon-log-out"></span>&nbsp;&nbsp;退出登录</a></li>' + '</ul>' + '</li>' + '</ul>' + '</div>' + '</div>' + '</nav><!--nav-->';
-            (0, _JQueryVendor2.default)("#navi").css("height", "50px");
-            (0, _JQueryVendor2.default)("#navi").html(html);
+      (0, _JQueryVendor2.default)("#accountinfo").bind("click", function () {
+        alert("not implement yet");
+      });
+      (0, _JQueryVendor2.default)("#logout").bind("click", function () {
+        //alert("not implement yet");
+        window.location.href = "/gd/user/logout";
+      });
+      (0, _JQueryVendor2.default)("#changepwd").bind("click", function () {
+        console.log("not implement yet");
+        self.options = {
+          header: '修改密码',
+          content: //'<form role="form" id="addStation" method="POST" action="/gd/station/add">' +
+          //'<div class="form-group">' +
+          '<div>' + '<label id="msg_ori" for="name">原密码</label>' + '<input type="password" class="form-control" id="oriPwd" name="oriPwd" placeholder="">' + '</div>' + '<div>' + '<label for="name">新密码</label>' + '<input type="password" class="form-control" id="newPwd" name="newPwd" placeholder="">' + '</div>' + '<div>' + '<label id="msg_new" for="name">确认新密码</label>' + '<input type="password" class="form-control" id="confPwd" name="confPwd" placeholder="">' + '</div>',
+          //'<label for="name">出入站点简介</label>' +
+          //'<input type="text" class="form-control" id="brief" name="brief" placeholder="默认为站点名称">' +
 
-            (0, _JQueryVendor2.default)("#accountinfo").bind("click", function () {
-                alert("not implement yet");
-            });
-            (0, _JQueryVendor2.default)("#logout").bind("click", function () {
-                //alert("not implement yet");
-                window.location.href = "/gd/user/logout";
-            });
-            (0, _JQueryVendor2.default)("#changepwd").bind("click", function () {
-                console.log("not implement yet");
-                self.options = {
-                    header: '修改密码',
-                    content: //'<form role="form" id="addStation" method="POST" action="/gd/station/add">' +
-                    //'<div class="form-group">' +
+          //'<input type="hidden" class="form-control" id="imgPath" value="http://pic34.photophoto.cn/20150330/0007019952833279_b.jpg" name="imgPath">' +
+          //'<input type="hidden" id="posx" name="posx" value="'+posx+'"/>' +
+          //'<input type="hidden" id="posy" name="posy" value="'+posy+'"/>' +
+          //'</div>'+
+          //' </form>',
+          footer: '<button type="button" class="btn btn-default pwdcancel">取消</button>' + '<button type="button" class="btn btn-primary pwdsubmit">修改</button>'
 
-                    '<label for="name">原密码</label>' + '<input type="password" class="form-control" id="oriPwd" name="oriPwd" placeholder="">' + '<label for="name">新密码</label>' + '<input type="password" class="form-control" id="newPwd" name="newPwd" placeholder="">' + '<label for="name">确认新密码</label>' + '<input type="password" class="form-control" id="confPwd" name="confPwd" placeholder="">',
-                    //'<label for="name">出入站点简介</label>' +
-                    //'<input type="text" class="form-control" id="brief" name="brief" placeholder="默认为站点名称">' +
-
-                    //'<input type="hidden" class="form-control" id="imgPath" value="http://pic34.photophoto.cn/20150330/0007019952833279_b.jpg" name="imgPath">' +
-                    //'<input type="hidden" id="posx" name="posx" value="'+posx+'"/>' +
-                    //'<input type="hidden" id="posy" name="posy" value="'+posy+'"/>' +
-                    //'</div>'+
-                    //' </form>',
-                    footer: '<button type="button" class="btn btn-default pwdcancel">取消</button>' + '<button type="button" class="btn btn-primary pwdsubmit">修改</button>'
-
-                };
-                self.OpenParentModalLayer();
-                (0, _JQueryVendor2.default)('#oriPwd').on('blur', function () {
-                    console.log((0, _JQueryVendor2.default)('#oriPwd').val());
-                    self._confOriPwd((0, _JQueryVendor2.default)('#oriPwd').val(), userInfo);
-                });
-                (0, _JQueryVendor2.default)('.pwdcancel').click(function () {
-                    self.CloseLayer();
-                });
-                (0, _JQueryVendor2.default)('.pwdsubmit').click(function () {
-                    if ((0, _JQueryVendor2.default)('#oriPwd').val() == "") {
-                        console.log('original password empty');
-                        alert('original password empty');
-                    } else if ((0, _JQueryVendor2.default)('#newPwd').val() != (0, _JQueryVendor2.default)('#confPwd').val()) {
-                        console.log('new password diff');
-                        alert('new password diff');
-                    } else {
-                        var oriPwd = (0, _JQueryVendor2.default)('#oriPwd').val();
-                        _JQueryVendor2.default.ajax({
-                            type: "POST",
-                            url: "/gd/user/confirmPwd",
-                            traditional: true,
-                            dataType: "text",
-                            data: { userId: userInfo.userId, oriPwd: oriPwd },
-                            beforeSend: function beforeSend() {},
-                            success: function success(data) {
-                                console.log(data);
-                                if (data == 'mismatch') {
-                                    alert('pwd mismatch');
-                                } else {
-                                    var newPwd = (0, _JQueryVendor2.default)('#newPwd').val();
-                                    _JQueryVendor2.default.ajax({
-                                        type: "POST",
-                                        url: "/gd/user/modifyPwd",
-                                        traditional: true,
-                                        dataType: "text",
-                                        data: { userId: userInfo.userId, newPwd: newPwd },
-                                        beforeSend: function beforeSend() {},
-                                        success: function success(data) {
-                                            console.log(data);
-                                            if (data == 'success') {
-                                                alert('success');
-                                            } else {}
-                                        },
-                                        error: function error() {},
-                                        complete: function complete() {
-                                            self.CloseLayer();
-                                        }
-                                    });
-                                }
-                            },
-                            error: function error() {},
-                            complete: function complete() {}
-                        });
-                    }
-                });
-            });
-        }
-    }, {
-        key: '_confOriPwd',
-        value: function _confOriPwd(oriPwd, userInfo) {
-            console.log(userInfo);
-            console.log(userInfo.userId);
+        };
+        self.OpenParentModalLayer();
+        (0, _JQueryVendor2.default)('#oriPwd').on('blur', function () {
+          console.log((0, _JQueryVendor2.default)('#oriPwd').val());
+          self._confOriPwd((0, _JQueryVendor2.default)('#oriPwd').val(), userInfo);
+        });
+        (0, _JQueryVendor2.default)('.pwdcancel').click(function () {
+          self.CloseLayer();
+        });
+        (0, _JQueryVendor2.default)('.pwdsubmit').click(function () {
+          (0, _JQueryVendor2.default)('#msg_ori').html('原密码');
+          (0, _JQueryVendor2.default)('#msg_new').html('确认新密码');
+          if ((0, _JQueryVendor2.default)('#oriPwd').val() == "") {
+            console.log('original password empty');
+            (0, _JQueryVendor2.default)('#msg_ori').html('原密码&nbsp&nbsp<small style="color:red">*密码不能为空！</small>');
+          } else if ((0, _JQueryVendor2.default)('#newPwd').val() == "") {
+            (0, _JQueryVendor2.default)('#msg_new').html('确认新密码&nbsp&nbsp<small style="color:red">*新密码不能为空！</small>');
+          } else if ((0, _JQueryVendor2.default)('#newPwd').val() != (0, _JQueryVendor2.default)('#confPwd').val()) {
+            console.log('new password diff');
+            (0, _JQueryVendor2.default)('#msg_new').html('确认新密码&nbsp&nbsp<small style="color:red">*两次输入的密码不一致！</small>');
+          } else {
+            var oriPwd = (0, _JQueryVendor2.default)('#oriPwd').val();
             _JQueryVendor2.default.ajax({
-                type: "POST",
-                url: "/gd/user/confirmPwd",
-                traditional: true,
-                dataType: "text",
-                data: { "userId": userInfo.userId, "oriPwd": oriPwd },
-                beforeSend: function beforeSend() {},
-                success: function success(data) {
-                    console.log(data);
-                    if (data == 'mismatch') {
-                        alert('pwd mismatch');
+              type: "POST",
+              url: "/gd/user/confirmPwd",
+              traditional: true,
+              dataType: "text",
+              data: { userId: userInfo.userId, oriPwd: oriPwd },
+              beforeSend: function beforeSend() {},
+              success: function success(data) {
+                console.log(data);
+                if (data == 'mismatch') {
+                  (0, _JQueryVendor2.default)('#msg_ori').html('原密码&nbsp&nbsp<small style="color:red">*密码错误！</small>');
+                } else {
+                  (0, _JQueryVendor2.default)('#msg_ori').html('原密码');
+                  var newPwd = (0, _JQueryVendor2.default)('#newPwd').val();
+                  _JQueryVendor2.default.ajax({
+                    type: "POST",
+                    url: "/gd/user/modifyPwd",
+                    traditional: true,
+                    dataType: "text",
+                    data: { userId: userInfo.userId, newPwd: newPwd },
+                    beforeSend: function beforeSend() {},
+                    success: function success(data) {
+                      console.log(data);
+                      if (data == 'success') {
+                        alert('修改成功！');
+                        location.href = "/gd/user/login";
+                      } else {
+                        location.href = "/gd/user/login";
+                      }
+                    },
+                    error: function error() {},
+                    complete: function complete() {
+                      self.CloseLayer();
                     }
-                },
-                error: function error() {},
-                complete: function complete() {}
+                  });
+                }
+              },
+              error: function error() {},
+              complete: function complete() {}
             });
-        }
-    }]);
+          }
+        });
+      });
+    }
+  }, {
+    key: '_confOriPwd',
+    value: function _confOriPwd(oriPwd, userInfo) {
+      console.log(userInfo);
+      console.log(userInfo.userId);
+      _JQueryVendor2.default.ajax({
+        type: "POST",
+        url: "/gd/user/confirmPwd",
+        traditional: true,
+        dataType: "text",
+        data: { "userId": userInfo.userId, "oriPwd": oriPwd },
+        beforeSend: function beforeSend() {},
+        success: function success(data) {
+          console.log(data);
+          if (data == 'mismatch') {
+            //alert('pwd mismatch');
+            (0, _JQueryVendor2.default)('#msg_ori').html('原密码&nbsp&nbsp<small style="color:red">*密码错误！</small>');
+          } else {
+            (0, _JQueryVendor2.default)('#msg_ori').html('原密码');
+          }
+        },
+        error: function error() {},
+        complete: function complete() {}
+      });
+    }
+  }]);
 
-    return CommonService;
+  return CommonService;
 }();
 
 exports.default = CommonService;
