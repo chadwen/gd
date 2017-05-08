@@ -40,6 +40,11 @@ public class UserServiceImpl implements UserService{
 	}
 
 	@Override
+	public UserEntity getUserByStaId(int id) {
+		return userDAO.getUserByStaId(id);
+	}
+
+	@Override
 	public void addUser(UserEntity userEntity) {
 		userDAO.addUser(userEntity);
 	}
@@ -90,6 +95,16 @@ public class UserServiceImpl implements UserService{
 		}
 		userMap.put(userEntity.getId(), userEntity.getUserName());
 	}*/
+
+	@Override
+	public void deleteUserByStaId(int id) {
+		// TODO Auto-generated method stub
+		UserEntity ue = userDAO.getUserByStaId(id);
+		if(ue == null){
+			return;
+		}
+		userDAO.deleteUserById(ue.getId());
+	}
 	
 	
 }

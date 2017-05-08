@@ -43,9 +43,10 @@ public class UserDAOImpl implements UserDAO{
 	
 	@Override
 	public UserEntity getUserById(int id){
-		String queryStr = "from UserEntity where id = ?";
+		String queryStr = "from UserEntity where id = ? and isValid = ?";
 		Query query = sessionFactory.getCurrentSession().createQuery(queryStr);
 		query.setInteger(0, id);
+		query.setInteger(1, 1);
 		List<UserEntity> uList = query.list();
 		if(uList.size() != 0){
 			return uList.get(0);
@@ -66,6 +67,16 @@ public class UserDAOImpl implements UserDAO{
 	}
 	
 	@Override
+	public void deleteUserById(int id){
+		UserEntity ue = getUserById(id);
+		if(ue == null){
+			return;
+		}
+		ue.setIsValid(0);
+		updateUser(ue);
+	}
+	
+	@Override
 	public void updateUser(UserEntity userEntity) {
 		sessionFactory.getCurrentSession().update(userEntity);
 		
@@ -83,6 +94,16 @@ public class UserDAOImpl implements UserDAO{
 		if(uList.size() != 0){
 			return uList.get(0);
 		}
+		return null;
+	}
+
+	@Override
+	public UserEntity getUserByStaId(int id) {
+		// TODO Auto-generated method stub
+		String queryStr = "from UserEntity where staId = ? and isValid = ?";
+		Query query = sessionFactory.getCurrentSession().createQuery(queryStr);
+		query.setInteger(0, id);
+		query.setInteger(1, 1);
 		return null;
 	}
 }

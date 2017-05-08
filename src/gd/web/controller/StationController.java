@@ -78,4 +78,10 @@ public class StationController {
 		stationService.deleteStation(id);
 		return "redirect:/user/entry";
 	}
+	//delete station. in fact, set isValid to 0.
+	@RequestMapping(value="/delete/{id}",method = RequestMethod.GET)
+	public String deleteSta(@PathVariable int id){
+		stationService.deleteStation(id);
+		return "redirect:/user/entry";
+	}
 }

@@ -46,4 +46,11 @@ public class ParkController {
 		parkService.deletePark(id);
 		return "redirect:/user/entry";
 	}
+	
+	//delete park. in fact, set isValid to 0.
+	@RequestMapping(value="/delete/{id}",method = RequestMethod.GET)
+	public String deleteParkGet(@PathVariable int id){
+		parkService.deletePark(id);
+		return "redirect:/user/entry";
+	}
 }

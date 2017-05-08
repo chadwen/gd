@@ -22,5 +22,11 @@ public interface UserDAO {
 
 	@Transactional
 	UserEntity login(UserEntity userEntity);
+
+	@Transactional
+	UserEntity getUserByStaId(int id);
+
+	@Transactional
+	void deleteUserById(int id);
 	
 }

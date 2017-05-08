@@ -55,13 +55,22 @@ public class StationDAOImpl implements StationDAO{
 	@Override
 	public void deleteStation(int id) {
 		// TODO Auto-generated method stub
-		sessionFactory.getCurrentSession().delete(sessionFactory.getCurrentSession().get(StationEntity.class, id));
-		
+		//sessionFactory.getCurrentSession().delete(sessionFactory.getCurrentSession().get(StationEntity.class, id));
+		StationEntity se = getStationById(id);
+		if(se == null){
+			return ;
+		}
+		se.setIsValid(0);
+		updateStation(se);
 	}
 
 	@Override
 	public StationEntity getStationById(int id) {
 		// TODO Auto-generated method stub
-		return (StationEntity)sessionFactory.getCurrentSession().get(StationEntity.class, id);
+		StationEntity se = (StationEntity)sessionFactory.getCurrentSession().get(StationEntity.class, id);
+		if(se==null || se.getIsValid()==0){
+			return null;
+		}
+		return se;
 	}
 }

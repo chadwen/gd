@@ -41,7 +41,13 @@ public class ParkDAOImpl implements ParkDAO{
 	@Override
 	public void deletePark(int id) {
 		// TODO Auto-generated method stub
-		sessionFactory.getCurrentSession().delete(sessionFactory.getCurrentSession().get(ParkEntity.class, id));
+		//sessionFactory.getCurrentSession().delete(sessionFactory.getCurrentSession().get(ParkEntity.class, id));
+		ParkEntity pe = getParkById(id);
+		if(pe == null){
+			return;
+		}
+		pe.setIsValid(0);
+		updatePark(pe);
 	}
 
 	@Override

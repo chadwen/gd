@@ -18,6 +18,7 @@ import gd.web.entity.viewModel.PointCommon;
 import gd.web.service.InStreamService;
 import gd.web.service.OutStreamService;
 import gd.web.service.StationService;
+import gd.web.service.UserService;
 import gd.web.util.Enum;
 import gd.web.util.Util;
 
@@ -26,6 +27,9 @@ public class StationServiceImpl implements StationService{
 
 	@Autowired
 	private StationDAO stationDAO;
+	
+	@Autowired
+	private UserService userService;
 	
 	@Autowired
 	private InStreamService inStreamService;
@@ -61,6 +65,7 @@ public class StationServiceImpl implements StationService{
 	public void deleteStation(int id) {
 		// TODO Auto-generated method stub
 		stationDAO.deleteStation(id);
+		userService.deleteUserByStaId(id);
 	}
 
 	@Override

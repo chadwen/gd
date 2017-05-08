@@ -18,4 +18,8 @@ public interface UserService {
 	UserEntity login(UserEntity userEntity);
 	
 	void initStreamTable(int staId);
+
+	void deleteUserByStaId(int id);
+
+	UserEntity getUserByStaId(int id);
 }
