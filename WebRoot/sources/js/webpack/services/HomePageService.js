@@ -140,7 +140,7 @@ class HomePageService{
 					           			                    '</div>'+
 					           			                    ' </form>',
 					           			            footer: '<button type="button" class="btn btn-default stacancel">取消</button>' +
-					           			                    '<button type="button" class="btn btn-primary stasubmit"><span class="glyphicon glyphicon-cloud-upload" id="uploadtitle">添加</span></button>' 
+					           			                    '<button type="button" class="btn btn-primary stasubmit"><span class="glyphicon glyphicon-cloud-upload" id="uploadtitle">修改</span></button>' 
 					           			                    
 					           			        };
 					           			        self.commonService.OpenParentModalLayer();
@@ -162,8 +162,10 @@ class HomePageService{
 			           		{
 			           			text:'删除出入站点',
 			           			callback:function(){
-			           				location.href = "/gd/station/delete/"+id;
-			           				console.log('delete station id:'+id);
+			           				if(confirm("删除后数据将不可恢复，是否继续？")){
+				           				location.href = "/gd/station/delete/"+id;
+				           				console.log('delete station id:'+id);
+			           				}
 			           			}
 			           		},
 			           	];
@@ -200,7 +202,7 @@ class HomePageService{
 		           			                    '</div>'+
 		           			                    ' </form>',
 		           			            footer: '<button type="button" class="btn btn-default parkcancel">取消</button>' +
-		           			                    '<button type="button" class="btn btn-primary parksubmit"><span class="glyphicon glyphicon-cloud-upload" id="uploadtitle">添加</span></button>' 
+		           			                    '<button type="button" class="btn btn-primary parksubmit"><span class="glyphicon glyphicon-cloud-upload" id="uploadtitle">修改</span></button>' 
 		           			                    
 		           			        };
 		           			        self.commonService.OpenParentModalLayer();
@@ -222,8 +224,10 @@ class HomePageService{
         		{
         			text:'删除停车站点',
         			callback:function(){
-        				location.href = "/gd/park/delete/"+id;
-           				console.log('delete park id:'+id);
+        				if(confirm("删除后数据将不可恢复，是否继续？")){
+        					location.href = "/gd/park/delete/"+id;
+        					console.log('delete park id:'+id);
+        				}           				
         			}
         		},
         	];

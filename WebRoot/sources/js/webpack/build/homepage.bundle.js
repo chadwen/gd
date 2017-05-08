@@ -884,7 +884,7 @@ var HomePageService = function () {
 								self.commonService.options = {
 									header: '修改出入站点',
 									content: '<form role="form" id="updateStation" method="POST" action="/gd/station/update">' + '<div class="form-group">' + '<input type="hidden" id="id" name="id" value="' + data.id + '"/>' + '<label for="name">出入站点名称</label>' + '<input type="text" class="form-control" id="fullName" name="fullName" value="' + data.fullName + '">' + '<label for="name">出入站点代号</label>' + '<input type="text" class="form-control" id="alias" name="alias" value="' + data.alias + '">' + '<label for="name">出入站点地址</label>' + '<input type="text" class="form-control" id="addr" name="addr" value="' + data.addr + '">' + '<label for="name">出入站点简介</label>' + '<input type="text" class="form-control" id="brief" name="brief" value="' + data.brief + '">' + '</div>' + ' </form>',
-									footer: '<button type="button" class="btn btn-default stacancel">取消</button>' + '<button type="button" class="btn btn-primary stasubmit"><span class="glyphicon glyphicon-cloud-upload" id="uploadtitle">添加</span></button>'
+									footer: '<button type="button" class="btn btn-default stacancel">取消</button>' + '<button type="button" class="btn btn-primary stasubmit"><span class="glyphicon glyphicon-cloud-upload" id="uploadtitle">修改</span></button>'
 
 								};
 								self.commonService.OpenParentModalLayer();
@@ -903,8 +903,10 @@ var HomePageService = function () {
 				}, {
 					text: '删除出入站点',
 					callback: function callback() {
-						location.href = "/gd/station/delete/" + id;
-						console.log('delete station id:' + id);
+						if (confirm("删除后数据将不可恢复，是否继续？")) {
+							location.href = "/gd/station/delete/" + id;
+							console.log('delete station id:' + id);
+						}
 					}
 				}];
 			}
@@ -922,7 +924,7 @@ var HomePageService = function () {
 								self.commonService.options = {
 									header: '修改停车站点',
 									content: '<form role="form" id="updatePark" method="POST" action="/gd/park/update">' + '<div class="form-group">' + '<input type="hidden" id="id" name="id" value="' + data.id + '"/>' + '<label for="name">停车站点名称</label>' + '<input type="text" class="form-control" id="fullName" name="fullName" value="' + data.fullName + '">' + '<label for="name">停车站点代号</label>' + '<input type="text" class="form-control" id="alias" name="alias" value="' + data.alias + '">' + '<label for="name">停车站点地址</label>' + '<input type="text" class="form-control" id="addr" name="addr" value="' + data.addr + '">' + '<label for="name">停车站点简介</label>' + '<input type="text" class="form-control" id="brief" name="brief" value="' + data.brief + '">' + '<label for="name">停车站点车位总量</label>' + '<input type="text" class="form-control" id="totalLot" name="totalLot" value="' + data.totalLot + '">' + '</div>' + ' </form>',
-									footer: '<button type="button" class="btn btn-default parkcancel">取消</button>' + '<button type="button" class="btn btn-primary parksubmit"><span class="glyphicon glyphicon-cloud-upload" id="uploadtitle">添加</span></button>'
+									footer: '<button type="button" class="btn btn-default parkcancel">取消</button>' + '<button type="button" class="btn btn-primary parksubmit"><span class="glyphicon glyphicon-cloud-upload" id="uploadtitle">修改</span></button>'
 
 								};
 								self.commonService.OpenParentModalLayer();
@@ -941,8 +943,10 @@ var HomePageService = function () {
 				}, {
 					text: '删除停车站点',
 					callback: function callback() {
-						location.href = "/gd/park/delete/" + id;
-						console.log('delete park id:' + id);
+						if (confirm("删除后数据将不可恢复，是否继续？")) {
+							location.href = "/gd/park/delete/" + id;
+							console.log('delete park id:' + id);
+						}
 					}
 				}];
 			}
