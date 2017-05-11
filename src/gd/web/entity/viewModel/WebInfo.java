@@ -4,24 +4,46 @@ import java.util.List;
 
 public class WebInfo {
 	
-	private int ConnectedNum;
+	private int connectedNum;
 	
-	private List<UserInfo> userList;
+	private List<UserInfo> staList;
+
+	private String message;
+	
+	private boolean success;
+	
+	
 
 	public int getConnectedNum() {
-		return ConnectedNum;
+		return connectedNum;
 	}
 
 	public void setConnectedNum(int connectedNum) {
-		ConnectedNum = connectedNum;
+		this.connectedNum = connectedNum;
 	}
 
-	public List<UserInfo> getUserList() {
-		return userList;
+	public List<UserInfo> getStaList() {
+		return staList;
 	}
 
-	public void setUserList(List<UserInfo> userList) {
-		this.userList = userList;
+	public void setStaList(List<UserInfo> staList) {
+		this.staList = staList;
+	}
+
+	public String getMessage() {
+		return message;
+	}
+
+	public void setMessage(String message) {
+		this.message = message;
+	}
+
+	public boolean isSuccess() {
+		return success;
+	}
+
+	public void setSuccess(boolean success) {
+		this.success = success;
 	}
 	
 }

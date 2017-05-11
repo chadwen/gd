@@ -65392,7 +65392,7 @@ var Export = function () {
 		key: 'initEvent',
 		value: function initEvent() {
 			var self = this;
-
+			$('#iframeContent').attr("src", "/gd/sources/htmls/sonpages/webInfo.html");
 			$('#singleData').on("click", function () {
 				self.commonService.Loading();
 				$('#iframeContent').attr("src", "/gd/sources/htmls/sonpages/download_single.html");

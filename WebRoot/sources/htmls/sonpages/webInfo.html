@@ -13,12 +13,35 @@
   </head>
   
   <body>
-  <div id="onlineStations" style="padding-top:30px" class="col-md-8">
-  	djiaojfiod
+  <div style="padding-top:30px" class="col-md-3">
+  	<div id="connectedNum" style="margin-top:30px">
+  		连接数:0
+  	</div>
+  	
   </div>
-  <div id="connectedNum" style="padding-top:30px" class="col-md-4">
-  	jfidsosf
+  <div id="onlineStations" style="padding-top:30px" class="col-md-9">
+  	
+  <table class="table">
+  <caption style="text-align:center">在线站点:0</caption>
+  <thead>
+    <tr>
+      <th>用户名</th>
+      <th>简介</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Tanmay</td>
+      <td>Bangalore</td>
+    </tr>
+    <tr>
+      <td>Sachin</td>
+      <td>Mumbai</td>
+    </tr>
+  </tbody>
+</table>
   </div>
+
 
 
   </body>
@@ -34,7 +57,29 @@ $(document).ready(function(){
             	//self.commonService.LoadingOpaque();
             },			
 			success:function(data){
-				
+				$('#onlineStations table').html('');
+				$('#onlineStations table').append(
+				'<caption style="text-align:center">在线站点:'+data.staList.length+'</caption>'+
+				  '<thead>'+
+				    '<tr>'+
+				      '<th>用户名</th>'+
+				      '<th>简介</th>'+
+				    '</tr>'+
+				  '</thead>'+
+				  '<tbody>'
+				  );
+				 var htmlt = "";
+				 for(var i = 0; i < data.staList.length; i++){
+				 	htmlt += '<tr>'+
+				  				'<td>'+data.staList[i].userName+'</td>'+
+				  				'<td>'+data.staList[i].brief+'</td>'+
+				  			 '</tr>';
+				 }
+				  
+				 htmlt += '</tbody>';
+				 $('#onlineStations table').append(htmlt);
+				 $('#connectedNum').html('连接数:'+data.connectedNum);
+				 
 				
 			},
 			error:function(){

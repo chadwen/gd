@@ -27,8 +27,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import gd.web.util.ExcelUtil;
 import gd.web.util.Util;
 import gd.web.entity.StationEntity;
+import gd.web.entity.UserEntity;
 import gd.web.entity.viewModel.DataTable;
 import gd.web.entity.viewModel.UserInfo;
+import gd.web.entity.viewModel.WebInfo;
 import gd.web.service.StationService;
 import gd.web.service.UserService;
 import gd.web.util.Enum;
@@ -56,17 +58,43 @@ public class DataManipulateController {
 	}
 	
 	@RequestMapping(value="/getWebInfo",method = RequestMethod.POST)
-	public @ResponseBody List<List<String>> getWebInfo(HttpSession session){
+	public @ResponseBody WebInfo getWebInfo(HttpSession session){
+		WebInfo wi = new WebInfo();
 		
 		ServletContext context = session.getServletContext();
+		Map<Integer,Integer> connectedMap = (Map<Integer, Integer>) context.getAttribute("connected_Map");
+		if(connectedMap == null || connectedMap.size() == 0){
+			wi.setConnectedNum(0);			
+		}else{
+			wi.setConnectedNum(connectedMap.get(0));
+		}
 		Map<Integer,String> userMap ;
 		userMap = (Map<Integer, String>) context.getAttribute("user_map");
 		if(userMap==null){
 			userMap = new HashMap<Integer,String>();
 			context.setAttribute("user_map", userMap);
 		}
-		UserInfo ui = new UserInfo();
-		return null;
+
+		List<UserInfo> staList = new ArrayList<UserInfo>();
+		Iterator<Entry<Integer, String>> itor=userMap.entrySet().iterator();
+
+		while(itor.hasNext()){
+			Map.Entry<Integer, String> entry=(Map.Entry<Integer, String>)itor.next();
+			UserInfo ui = new UserInfo();
+			ui.setUserId(entry.getKey());
+			UserEntity ue = userService.getUserById(entry.getKey());
+			if(ue != null){
+				ui.setUserName(ue.getUserName());
+				ui.setStaId(ue.getStaId());
+				if(ui.getStaId() == 0){
+					continue;
+				}
+			}
+			ui.setBrief(stationService.getStationById(ui.getStaId()).getBrief());
+			staList.add(ui);
+		}
+		wi.setStaList(staList);
+		return wi;
 	}
 	
 	@RequestMapping(value="/getChartData",method = RequestMethod.POST)
