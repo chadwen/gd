@@ -19,4 +19,7 @@ public enum Enum {
 	PAEKCHANNEL,
 	TIMECHANNEL,
 	
+	PIE,
+	BAR,
+	
 }

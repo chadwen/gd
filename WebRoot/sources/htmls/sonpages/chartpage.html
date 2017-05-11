@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>download_cal</title>
+    <title>数据图表</title>
 	
     <meta name="content-type" content="text/html; charset=utf-8">
     
@@ -20,30 +20,18 @@
   </head>
   
   <body>
-  <div style="width:60%">
-  	统计车流数据
-	<form class="form-horizontal" role="form">
-
-	<hr>
-	  <div class="form-group col-md-12">
+  
+<div>
+	<div class="form-group col-md-2">
 	    <label>起始日期</label>
 	    <input class="form-control" id="startdate" type="text" placeholder="请选择起始日期" value=""  readonly>
 	  </div>
-	  <div class="form-group col-md-12">
+	  <div class="form-group col-md-2">
 	    <label>终止日期</label>
 	    <input class="form-control" id="enddate" type="text" placeholder="请选择终止日期" value=""  readonly>
 	  </div>
-	  <div class="form-group col-md-12">
-	    <label>方向</label>
-
-	      <select style="display:none" id="direction" name="direction" class="selectpicker show-tick form-control" multiple data-live-search="false">
-			<option value="OUT">出</option>
-			<option value="IN">入</option>
-		  </select>
-	  </div>
-	
-	  <div class="form-group col-md-12">
-	    <label>站点</label>
+  <div class="form-group col-md-3">
+	    <label>请选择站点</label>
 
 	      <select style="display:none" id="staIds" name="staIds" class="selectpicker show-tick form-control" multiple data-live-search="false">
 			<option value="0">一号门</option>
@@ -52,16 +40,33 @@
 		  </select>
 
 	  </div>
-	  <div class="col-md-12">
-		  <div style="float:right">
-		  	<button id="buttonDownload" type="button" class="btn btn-default">&nbsp下载&nbsp</button>
-		  </div>
-	  </div>
-	</form>
-  </div>
-  <script type="text/javascript">
-
-    jeDate.skin('gray');
+	<div class="form-group col-md-2">
+	  <label for="name">图例</label>
+		<select class="form-control" id="chartType" name="chartType" >
+			<option value="PIE">饼图</option>
+			<option value="BAR">柱状图</option>
+		</select>
+  	</div>
+	<div class="form-group col-md-2">
+	  <label for="name">方向</label>
+		<select class="form-control" id="direction" name="direction" >
+			<option value="OUT">出</option>
+			<option value="IN">入</option>
+		</select>
+  	</div>
+  	<div class="form-group col-md-1">
+  		<button id="viewChart" type="button" class="btn" style="margin-top:18px">查看</button>
+  	</div>
+</div>
+	<br>
+    <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+    <div id="main" style="width:800px;height:533px; margin-top:50px" >
+    
+    </div>
+    
+    
+    <script type="text/javascript">
+	jeDate.skin('gray');
 	jeDate({
 		dateCell:"#startdate",//isinitVal:true,
 		format:"YYYY-MM-DD",
@@ -82,7 +87,11 @@
 		//minDate:"2015-10-19 00:00:00",
 		//maxDate:"2016-11-8 00:00:00"
 	})
-	function getIds(){
+	$(document).ready(function(){
+	    parent.document.getElementById("iframeContent").height=0;
+		parent.document.getElementById("iframeContent").height=document.body.scrollHeight;
+	});
+ 	/* function getIds(){
 		var selected = "";
 		$('#staIds option:selected').each(function(){
 			selected = selected + $(this).val() + ",";
@@ -92,14 +101,32 @@
 		//console.log(selected);
 		return selected.substring(0,selected.length-1);
 	}
-	function getDire(){
+	function getValues(){
+		var categories = [];
+		$('#staIds option:selected').each(function(){
+			categories.push($(this).text());
+		});
+		//console.log(selected);
+		//selected = selected.substring(0,selected.length-1);
+		//console.log(selected);
+		return categories;
+	}
+	function getChartType(){
 		var selected = "";
-		$('#direction option:selected').each(function(){
+		$('#chartType option:selected').each(function(){
 			selected = selected + $(this).val() + ",";
 		});
 		//selected = selected.substring(0, selected.length - 1);
 		return selected.substring(0,selected.length-1);
 	}
+	$("#viewChart").on("click",function(){
+		if(getValues() == ""){
+			alert("no selected!");
+		}else{
+			alert(getValues());
+		}
+		alert(getChartType());
+	});
 	$(document).ready(function(){
 		
 		$.ajax({
@@ -114,52 +141,12 @@
             	$.each(data, function(){
 				    console.log(this.id+","+this.brief);
 				    $("#staIds").append('<option value="'+this.id+'">'+this.brief+'</option>');
-				
+					
 				});
             },
 		});
-		
-		$("#buttonDownload").on("click",function(){
-			var startdate = $("#startdate").val();
-			var enddate = $("#enddate").val();
-			var ids = getIds();
-			var dire = getDire();
-			if(startdate==""){
-				console.log('startdate==""');
-				alert('起始日期不能为空！');
-				return;
-			}
-			else if(enddate==""){
-				console.log('enddate==""');
-				alert('终止日期不能为空！');
-				return;
-			}
-			else if(ids==""){
-				console.log('ids==""');
-				alert('站点不能为空！');
-				return;
-			}
-			else if(dire==""){
-				console.log('dire==""');
-				alert('方向不能为空！');
-				return;
-			}
-			else if(startdate>enddate){
-				console.log('startdate>enddate');
-				alert('"起始日期"不能大于"终止日期"！');
-				return;
-			}else{			
-				if(dire.length>3){
-					dire = "BOTH";
-				}			
-				var url = "/gd/data/getCal/" +startdate + "/" + enddate + "/" + ids + "/" + dire;
-				console.log(url); 
-				//var url = "/gd/data/get/1";
-				console.log(url);
-				location.href = url;
-			}
-		});
-	});
+	});  */
 </script>
   </body>
 </html>
+<script src="/gd/sources/js/webpack/build/demo.bundle.js"></script>

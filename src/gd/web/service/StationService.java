@@ -26,4 +26,6 @@ public interface StationService {
 	List<DataTable> generateDataTable(String startDate, String endDate, List<Integer> staId, String direction);
 
 	List<DataTable> generateDataTableCal(String startDate, String endDate, List<Integer> staIds, String direction) throws ParseException;
+
+	List<Integer> getListData(String startDate, String endDate, List<Integer> staIds, String direction) throws ParseException;
 }

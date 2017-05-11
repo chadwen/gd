@@ -266,4 +266,46 @@ public class StationServiceImpl implements StationService{
 			datasList.set(i, datasList.get(i)+list.get(i));
 		}
 	}
+	@Override
+	public List<Integer> getListData(String startDate, String endDate, List<Integer> staIds, String direction) throws ParseException{
+		List<String> dateList = Util.getStringDateList(startDate,endDate);
+		if(dateList == null || dateList.size() ==0){
+			return null;
+		}
+		List<Integer> list = new ArrayList<Integer>();
+		OutStreamEntity ose = null;
+		InStreamEntity ise = null;
+		if(Enum.OUT.toString().equals(direction)){
+			for(int staId : staIds){
+				int total = 0;
+				for(String date : dateList){
+					ose = outStreamService.getStreamByDateAndStaId(date,staId);
+					if(ose == null){
+						continue;
+					}
+					int tempTotal = ose.getTotal();
+					if(tempTotal>=0){
+						total += tempTotal;
+					}
+				}
+				list.add(total);
+			}
+		}else if(Enum.IN.toString().equals(direction)){
+			for(int staId : staIds){
+				int total = 0;
+				for(String date : dateList){
+					ise = inStreamService.getStreamByDateAndStaId(date,staId);
+					if(ise == null){
+						continue;
+					}
+					int tempTotal = ise.getTotal();
+					if(tempTotal>=0){
+						total += tempTotal;
+					}
+				}
+				list.add(total);
+			}
+		}
+		return list;
+	}
 }

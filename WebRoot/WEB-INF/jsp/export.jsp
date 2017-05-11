@@ -56,8 +56,8 @@ $(function(){
 	<div id="jquery-accordion-menu" class="jquery-accordion-menu white">
 		<ul id="leftNavi-list">
 		   <li><a href="#"><i class="fa fa-home"></i>Home </a></li>
-		   <li class="active"><a href="/gd/data/export#"><i class="fa fa-info"></i>本站信息</a></li>
-			<li><a href="/gd/data/export#"><i class="fa fa-bar-chart-o"></i>查看数据图表</a>
+		   <li class="active"><a id="webInfo" href="/gd/data/export#"><i class="fa fa-info"></i>本站信息</a></li>
+			<li><a id="showCharts" href="/gd/data/export#"><i class="fa fa-bar-chart-o"></i>查看数据图表</a>
 				<!-- <ul class="submenu">
 					<li><a href="/gd/data/export#">饼图</a></li>
 					<li><a href="/gd/data/export#">柱状图</a></li>
@@ -117,70 +117,19 @@ $(function(){
 	$("#jquery-accordion-menu").jqueryAccordionMenu();
 	
 </script>
+
 </body>
 
 
 </html>
 
-<!-- <script type="text/javascript">
-    jeDate.skin('gray');
 
-    	$('#btn').click(function(){
-    		var sjdi = $('#startdate').val();
-    		var jsi = $('#startdate');
-    		console.log(sjdi);
-    		console.log(jsi);
-    		//alert($('startdate').val());
-    	});
-
-	jeDate({
-		dateCell:"#single_startdate",//isinitVal:true,
-		format:"YYYY-MM-DD",
-		isTime:false, //isClear:false,
-		choosefun:function(elem, val) {
-			//$('#startdate').val(val);
-		},
-		//minDate:"2015-10-19 00:00:00",
-		//maxDate:"2016-11-8 00:00:00"
-	})
-	jeDate({
-		dateCell:"#single_enddate",//isinitVal:true,
-		format:"YYYY-MM-DD",
-		isTime:false, //isClear:false,
-		choosefun:function(elem, val) {
-			//$('#enddate').val(elem);
-		},
-		//minDate:"2015-10-19 00:00:00",
-		//maxDate:"2016-11-8 00:00:00"
-	})
-
-	jeDate({
-		dateCell:"#cal_startdate",//isinitVal:true,
-		format:"YYYY-MM-DD",
-		isTime:false, //isClear:false,
-		choosefun:function(elem, val) {
-			//$('#startdate').val(val);
-		},
-		//minDate:"2015-10-19 00:00:00",
-		//maxDate:"2016-11-8 00:00:00"
-	})
-	jeDate({
-		dateCell:"#cal_enddate",//isinitVal:true,
-		format:"YYYY-MM-DD",
-		isTime:false, //isClear:false,
-		choosefun:function(elem, val) {
-			//$('#enddate').val(elem);
-		},
-		//minDate:"2015-10-19 00:00:00",
-		//maxDate:"2016-11-8 00:00:00"
-	})
-</script> -->
 
 <script src="/gd/sources/js/webpack/build/exports.bundle.js"></script>
+
 <script>
+
 $(document).ready(function(){
-
-
 	$.ajax({
             type: "POST",
             cache: false,
@@ -213,41 +162,5 @@ $(document).ready(function(){
 		
 
 });
-/* function generateDownloadHtml(title){
-	var htmls = '<div class="col-md-8">'+
-  	title+
-	'<form class="form-horizontal" role="form">'+
-
-	'<hr>'+
-	  '<div class="form-group col-md-12">'+
-	    '<label>起始日期</label>'+
-	    '<input class="form-control" id="startdate" type="text" placeholder="请选择起始日期" value=""  readonly>'+
-	  '</div>'+
-	  '<div class="form-group col-md-12">'+
-	    '<label>终止日期</label>'+
-	    '<input class="form-control" id="enddate" type="text" placeholder="请选择终止日期" value=""  readonly>'+
-	  '</div>'+
-	
-	  '<div class="form-group col-md-12">'+
-	    '<label>站点</label>'+
-
-	      '<select id="usertype" name="usertype" class="selectpicker show-tick form-control" multiple data-live-search="false">'+
-			'<option value="0">苹果</option>'+
-			'<option value="1">菠萝</option>'+
-			'<option value="2">香蕉</option>'+
-		  '</select>'+
-
-	  '</div>'+
-	  '<div class="col-md-12">'+
-		  '<div style="float:right">'+
-		  	'<button type="button" class="btn btn-default">&nbsp下载&nbsp</button>'+
-		  '</div>'+
-	  '</div>'+
-	'</form>'+
-  '</div>';
-  return htmls;
-
-} */
-
 </script>
 

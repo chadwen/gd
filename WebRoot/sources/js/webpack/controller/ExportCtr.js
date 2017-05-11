@@ -40,6 +40,15 @@ class Export{
 		$('#resetpwd').on('click',function(){
 			self._resetpwd();
 		});
+		$('#showCharts').on("click",function(){
+			self.commonService.Loading();
+	  		$('#iframeContent').attr("src","/gd/sources/htmls/sonpages/chartpage.html");
+	  		
+	  	});
+		$('#webInfo').on("click",function(){
+			self.commonService.Loading();
+	  		$('#iframeContent').attr("src","/gd/sources/htmls/sonpages/webInfo.html");			
+		});
 		/*$('#staInfo').on("click",function(){
 			location.href = "/gd/data/getAllStations";
 		});*/

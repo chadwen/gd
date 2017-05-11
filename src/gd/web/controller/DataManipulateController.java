@@ -5,6 +5,7 @@ import java.io.OutputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -54,6 +55,44 @@ public class DataManipulateController {
 		return "jsp/export";
 	}
 	
+	@RequestMapping(value="/getWebInfo",method = RequestMethod.POST)
+	public @ResponseBody List<List<String>> getWebInfo(HttpSession session){
+		
+		ServletContext context = session.getServletContext();
+		Map<Integer,String> userMap ;
+		userMap = (Map<Integer, String>) context.getAttribute("user_map");
+		if(userMap==null){
+			userMap = new HashMap<Integer,String>();
+			context.setAttribute("user_map", userMap);
+		}
+		UserInfo ui = new UserInfo();
+		return null;
+	}
+	
+	@RequestMapping(value="/getChartData",method = RequestMethod.POST)
+	public @ResponseBody List<Integer> getChartData(String ids,String chartType,String startdate,String enddate,String direction) throws ParseException{
+		/*if(session.getAttribute("userId")==null){
+			return null;
+		}*/
+		List<Integer> staIds = Util.stringToList(ids);
+		
+		
+		List<Integer> list = stationService.getListData(startdate,enddate,staIds,direction);
+		if(list==null){
+			list=new ArrayList<Integer>();
+			for(int i =0; i < staIds.size(); i++){
+				list.add(0);
+			}
+		}
+		if(list.size()<staIds.size()){
+			int length = staIds.size()-list.size();
+			for(int i = 0; i < length; i++){
+				list.add(0);
+			}
+		}
+		
+		return list;
+	}
 	
 
 	@RequestMapping(value="/getSingle/{startDate}/{endDate}/{staIds}/{direction}",method = RequestMethod.GET)

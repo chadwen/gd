@@ -2,6 +2,7 @@ package gd.web.serviceImpl.listener;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.ServletContext;
@@ -22,17 +23,42 @@ public class SessionListener implements HttpSessionListener{
 	@Override
 	public void sessionCreated(HttpSessionEvent event) {
 		// TODO Auto-generated method stub
+		System.out.println("\nstart of the listener--sessionCreated!!!");
+		HttpSession session = event.getSession();
+		ServletContext context = session.getServletContext();
+		Map<Integer,Integer> connectedMap = (Map<Integer, Integer>) context.getAttribute("connected_Map");
+		if(connectedMap == null){
+			connectedMap = new HashMap<Integer,Integer>();
+			connectedMap.put(0, 0);
+			context.setAttribute("connected_Map", connectedMap);
+		}
+		if(connectedMap.containsKey(0)){
+			//int crrrentTotal = connectedMap.get(0);
+			connectedMap.put(0, connectedMap.get(0)+1);
+			//connectedMap.
+		}
+		System.out.println("connected num:"+connectedMap.get(0));
+		System.out.println("\nend of the listener--sessionCreated!!!");
 		
 	}
 
 	@Override
 	public void sessionDestroyed(HttpSessionEvent event) {
 		// TODO Auto-generated method stub
-		System.out.println("\nstart of the listener!!!");
+		System.out.println("\nstart of the listener--sessionDestroyed!!!");
 		HttpSession session = event.getSession();
-
-		
 		ServletContext context = session.getServletContext();
+		
+
+		Map<Integer,Integer> connectedMap = (Map<Integer, Integer>) context.getAttribute("connected_Map");
+		if(connectedMap == null){
+			return ;
+			/*connectedMap = new HashMap<Integer,Integer>();
+			connectedMap.put(0, 0);
+			context.setAttribute("connected_Map", connectedMap);*/
+		}
+		connectedMap.put(0, connectedMap.get(0)-1);
+		
 		Map<Integer,String> userMap = (Map<Integer, String>) context.getAttribute("user_map");
 		if(userMap==null){
 			System.out.println("the userMap is null");
@@ -63,7 +89,7 @@ public class SessionListener implements HttpSessionListener{
 			userService.updateUser(userEntity);
 			userMap.remove(session.getAttribute("userId"));
 		}*/
-		System.out.println("end of the listener!!!\n");
+		System.out.println("end of the listener--sessionDestroyed!!!\n");
 	}
 
 }
