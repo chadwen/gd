@@ -50,7 +50,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		</div><!-- container -->
 	</body>
 </html>
-<<script type="text/javascript">
+<script type="text/javascript">
 	$('#login_submit').on('click',function(event){
 		event.preventDefault();
 		$.ajax({
