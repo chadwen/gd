@@ -104,6 +104,10 @@ public class UserDAOImpl implements UserDAO{
 		Query query = sessionFactory.getCurrentSession().createQuery(queryStr);
 		query.setInteger(0, id);
 		query.setInteger(1, 1);
+		List<UserEntity> uList = query.list();
+		if(uList.size() != 0){
+			return uList.get(0);
+		}
 		return null;
 	}
 }

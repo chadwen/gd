@@ -24,7 +24,7 @@ public class StationDAOImpl implements StationDAO{
 	@Override
 	public StationEntity getEntityByAlias(String staAlias) {
 		// TODO Auto-generated method stub
-		String hql = "from StationEntity where staAlias = ? and isValid = ?";
+		String hql = "from StationEntity where alias = ? and isValid = ?";
 		Query query = sessionFactory.getCurrentSession().createQuery(hql);
 		query.setString(0, staAlias);
 		query.setInteger(1, 1);

@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import gd.web.entity.StationEntity;
 import gd.web.entity.viewModel.PointCommon;
 import gd.web.service.StationService;
+import gd.web.service.UserService;
 
 @Controller
 @RequestMapping(value="/station")
@@ -25,6 +26,9 @@ public class StationController {
 	
 	@Autowired
 	private StationService stationService;
+	
+	@Autowired
+	private UserService userService;
 	
 	
 	@RequestMapping(value="/add",method = RequestMethod.POST)
@@ -53,6 +57,7 @@ public class StationController {
 	
 	@RequestMapping(value="/update",method = RequestMethod.POST)
 	public String updateStation(PointCommon pointCommon){
+		userService.updateUser(userService.getUserByStaId(pointCommon.getId()));
 		
 		stationService.updateStation(stationService.convertToStation(pointCommon));
 		return "redirect:/user/entry";
@@ -75,12 +80,16 @@ public class StationController {
 	
 	@RequestMapping(value="/delete/{id}",method = RequestMethod.POST)
 	public String deleteStation(@PathVariable int id){
+		//userService.getUserByStaId(id);
+		userService.deleteUserByStaId(id);
+		
 		stationService.deleteStation(id);
 		return "redirect:/user/entry";
 	}
 	//delete station. in fact, set isValid to 0.
 	@RequestMapping(value="/delete/{id}",method = RequestMethod.GET)
 	public String deleteSta(@PathVariable int id){
+		userService.deleteUserByStaId(id);
 		stationService.deleteStation(id);
 		return "redirect:/user/entry";
 	}
