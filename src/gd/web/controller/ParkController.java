@@ -25,6 +25,10 @@ public class ParkController {
 	
 	@RequestMapping(value="/add",method = RequestMethod.POST)
 	public String addPark(ParkEntity parkEntity){
+
+		if("".equals(parkEntity.getBrief())){
+			parkEntity.setBrief(parkEntity.getFullName());
+		}
 		parkService.addPark(parkEntity);
 		return "jsp/map";
 	}

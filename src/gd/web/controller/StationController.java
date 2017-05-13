@@ -1,7 +1,12 @@
 package gd.web.controller;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,12 +39,23 @@ public class StationController {
 	@RequestMapping(value="/add",method = RequestMethod.POST)
 	public String addStation(StationEntity stationEntity){
 
+		if("".equals(stationEntity.getBrief())){
+			stationEntity.setBrief(stationEntity.getFullName());
+		}
 		stationService.addStation(stationEntity);
 		
 		StationEntity newSta = stationService.getEntityByAlias(stationEntity.getAlias());
 		if(newSta==null){
 			return "jsp/error";
 		}
+		//set chartdata here
+		return "jsp/map";
+	}
+	
+	@RequestMapping(value="/add",method = RequestMethod.GET)
+	public String addStationGet(){
+
+		
 		//set chartdata here
 		return "jsp/map";
 	}
@@ -88,7 +104,13 @@ public class StationController {
 	}
 	//delete station. in fact, set isValid to 0.
 	@RequestMapping(value="/delete/{id}",method = RequestMethod.GET)
-	public String deleteSta(@PathVariable int id){
+	public String deleteSta(@PathVariable int id,HttpSession session){
+		ServletContext context = session.getServletContext(); 
+		Map<Integer,String> userMap ;
+		userMap = (Map<Integer, String>) context.getAttribute("user_map");
+		if(userMap.containsKey(id)){
+			userMap.remove(id);
+		}
 		userService.deleteUserByStaId(id);
 		stationService.deleteStation(id);
 		return "redirect:/user/entry";

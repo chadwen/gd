@@ -22,13 +22,13 @@ class HomePageService{
 		           			            content:'<form role="form" id="addStation" method="POST" action="/gd/station/add">' +
 		           			                    '<div class="form-group">' +
 
-		           			                    '<label for="name">出入站点名称</label>' +
+		           			                    '<label for="name">出入站点名称*</label>' +
 		           			                    '<input type="text" class="form-control" id="fullName" name="fullName" placeholder="一号门">' +
-		           			                    '<label for="name">出入站点代号</label>' +
+		           			                    '<label for="name">出入站点代号*</label>' +
 		           			                    '<input type="text" class="form-control" id="alias" name="alias" placeholder="G1">' +
-		           			                    '<label for="name">出入站点地址</label>' +
+		           			                    '<label for="name">出入站点地址*</label>' +
 		           			                    '<input type="text" class="form-control" id="addr" name="addr" placeholder="北碚天生街道xx号西南大学一号门">' +
-		           			                    '<label for="name">出入站点简介</label>' +
+		           			                    '<label for="name">出入站点简称</label>' +
 		           			                    '<input type="text" class="form-control" id="brief" name="brief" placeholder="默认为站点名称">' +
 		           			                    
 			           			                '<input type="hidden" class="form-control" id="imgPath" value="http://pic34.photophoto.cn/20150330/0007019952833279_b.jpg" name="imgPath">' +
@@ -42,9 +42,13 @@ class HomePageService{
 		           			        };
 		           			        self.commonService.OpenParentModalLayer();
 		           			     $('.stasubmit').click(function(){
-		           			    	 $('#addStation').submit();
-		           					console.log("submit now");
-		           					self.commonService.CloseLayer();
+		           			    	 if($('#fullName').val()=="" || $('#alias').val()=="" || $('#addr').val()=="" ){
+		           			    		 alert("必填字段不能留空！");
+		           			    	 }else{
+			           			    	 $('#addStation').submit();
+			           			    	 console.log("submit now");
+			           			    	 self.commonService.CloseLayer();
+		           			    	 }
 		           				});
 		           			     $('.stacancel').click(function(){
 		           				  self.commonService.CloseLayer();
@@ -59,15 +63,15 @@ class HomePageService{
 		           			            content: '<form role="form" id="addPark" method="POST" action="/gd/park/add">' +
 		           			                    '<div class="form-group">' +
 
-		           			                    '<label for="name">停车站点名称</label>' +
+		           			                    '<label for="name">停车站点名称*</label>' +
 		           			                    '<input type="text" class="form-control" id="fullName" name="fullName" placeholder="一号停车点">' +
-		           			                    '<label for="name">停车站点代号</label>' +
+		           			                    '<label for="name">停车站点代号*</label>' +
 		           			                    '<input type="text" class="form-control" id="alias" name="alias" placeholder="P1">' +
-		           			                    '<label for="name">停车站点地址</label>' +
+		           			                    '<label for="name">停车站点地址*</label>' +
 		           			                    '<input type="text" class="form-control" id="addr" name="addr" placeholder="北碚天生街道xx号西南大学一号停车点">' +
-		           			                    '<label for="name">停车站点简介</label>' +
+		           			                    '<label for="name">停车站点简称</label>' +
 		           			                    '<input type="text" class="form-control" id="brief" name="brief" placeholder="默认为停车点名称">' +
-		           			                    '<label for="name">停车站点车位总量</label>' +
+		           			                    '<label for="name">停车站点车位总量*</label>' +
 		           			                    '<input type="text" class="form-control" id="totalLot" name="totalLot" placeholder="停车点车位总量">' +
 
 			           			                '<input type="hidden" class="form-control" id="imgPath" value="http://pic34.photophoto.cn/20150330/0007019952833279_b.jpg" name="imgPath">' +
@@ -81,9 +85,14 @@ class HomePageService{
 		           			        };
 		           			        self.commonService.OpenParentModalLayer();
 		           			     $('.parksubmit').click(function(){
-		           			    	 $('#addPark').submit();
-		           					console.log("submit now");
-		           					self.commonService.CloseLayer();
+
+		           			    	 if($('#fullName').val()=="" || $('#alias').val()=="" || $('#addr').val()=="" || $('#totalLot').val()==""){
+		           			    		 alert("必填字段不能留空！");
+		           			    	 }else{
+			           			    	 $('#addPark').submit();
+			           			    	 console.log("submit now");
+			           			    	 self.commonService.CloseLayer();
+		           			    	 }
 		           				});
 		           			     $('.parkcancel').click(function(){
 		           				  self.commonService.CloseLayer();
