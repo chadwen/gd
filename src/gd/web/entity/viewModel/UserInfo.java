@@ -1,5 +1,7 @@
 package gd.web.entity.viewModel;
 
+import gd.web.entity.StationEntity;
+
 public class UserInfo {
 
 	private String priv;
@@ -11,6 +13,8 @@ public class UserInfo {
 	private Integer staId;
 	
 	private String brief;
+	
+	private StationEntity station;
 
 	public String getPriv() {
 		return priv;
@@ -50,5 +54,13 @@ public class UserInfo {
 
 	public void setBrief(String brief) {
 		this.brief = brief;
+	}
+
+	public StationEntity getStation() {
+		return station;
+	}
+
+	public void setStation(StationEntity station) {
+		this.station = station;
 	}
 }

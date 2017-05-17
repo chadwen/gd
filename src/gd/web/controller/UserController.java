@@ -26,6 +26,7 @@ import org.springframework.web.context.support.WebApplicationContextUtils;
 import gd.web.entity.ChartDataEntity;
 import gd.web.entity.UserEntity;
 import gd.web.entity.viewModel.UserInfo;
+import gd.web.service.StationService;
 import gd.web.service.UserService;
 import gd.web.util.Enum;
 import gd.web.util.Util;
@@ -39,6 +40,9 @@ public class UserController {
 	
 	@Autowired
 	private UserService userService;
+	
+	@Autowired
+	private StationService stationService;
 	
 	//@Autowired
 	//private ChartDataService chartDataService;
@@ -262,13 +266,14 @@ public class UserController {
 			ServletContext context = session.getServletContext(); 
 			Map<Integer,String> userMap = (Map<Integer, String>) context.getAttribute("user_map");
 			if(userMap == null){
-				return null;
+				return userInfo;
 			}
 			if(userMap.containsKey((Integer)session.getAttribute("userId"))){
 				userInfo.setPriv((String)session.getAttribute("priv"));
 				userInfo.setUserId((Integer)session.getAttribute("userId"));
 				userInfo.setUserName((String)session.getAttribute("userName"));
 				userInfo.setStaId((Integer)session.getAttribute("staId"));
+				userInfo.setStation(stationService.getStationById(userInfo.getStaId()));
 				return userInfo;
 			}else{
 				session.setAttribute("priv", Enum.NULLPRIV.toString());
@@ -277,10 +282,16 @@ public class UserController {
 				session.removeAttribute("staId");
 			}
 		}
+		if((Integer)session.getAttribute("staId") == null){
+			session.setAttribute("priv", Enum.NULLPRIV.toString());
+		}
 		userInfo.setPriv((String)session.getAttribute("priv"));
 		userInfo.setUserId((Integer)session.getAttribute("userId"));
 		userInfo.setUserName((String)session.getAttribute("userName"));
 		userInfo.setStaId((Integer)session.getAttribute("staId"));
+		/*if(userInfo.getStaId() != null && userInfo.getStaId() != 0){
+			userInfo.setStation(stationService.getStationById(userInfo.getStaId()));
+		}*/
 		return userInfo;
 	}
 	

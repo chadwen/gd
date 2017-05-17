@@ -1,4 +1,4 @@
-/*! // gd Version 1.0  5/16/2017, 4:07:44 PM --By wcy  */
+/*! // gd Version 1.0  5/17/2017, 8:34:09 PM --By wcy  */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -541,10 +541,15 @@ var HomePage = function () {
 					console.log(userInfo);
 					self.priv = userInfo.priv;
 					self.userInfo = userInfo;
-					if (self.priv != 'NULLPRIV') {
+					console.log(self.priv);
+					if (self.priv != 'NULLPRIV' && self.priv != null) {
 						self.commonService._generateNavi(userInfo, self.active);
 					}
-					self._initMap();
+					if (self.userInfo.station != null) {
+						self._initMap(parseFloat(self.userInfo.station.posx), parseFloat(self.userInfo.station.posy));
+					} else {
+						self._initMap(106.428907, 29.826584);
+					}
 					self._initPoint();
 				},
 				error: function error() {
@@ -554,10 +559,10 @@ var HomePage = function () {
 		}
 	}, {
 		key: '_initMap',
-		value: function _initMap() {
+		value: function _initMap(position_x, position_y) {
 			var self = this;
 			var map = self.map;
-			var point = new BMap.Point(106.428907, 29.826584);
+			var point = new BMap.Point(position_x, position_y);
 			map.centerAndZoom(point, 16);
 			map.addControl(new BMap.MapTypeControl()); //添加地图类型控件
 			map.setCurrentCity("cq"); // 设置地图显示的城市 此项是必须设置的。没看出来
