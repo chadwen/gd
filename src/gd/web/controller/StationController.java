@@ -35,7 +35,11 @@ public class StationController {
 	@Autowired
 	private UserService userService;
 	
-	
+	/**
+	 * add station
+	 * @param stationEntity
+	 * @return
+	 */
 	@RequestMapping(value="/add",method = RequestMethod.POST)
 	public String addStation(StationEntity stationEntity){
 
@@ -51,7 +55,10 @@ public class StationController {
 		//set chartdata here
 		return "jsp/map";
 	}
-	
+	/**
+	 * when refresh with the special method, do not go to "POST"
+	 * @return
+	 */
 	@RequestMapping(value="/add",method = RequestMethod.GET)
 	public String addStationGet(){
 
@@ -59,18 +66,30 @@ public class StationController {
 		//set chartdata here
 		return "jsp/map";
 	}
+	/**
+	 * a recipient method for Ajax. get all station for initialize the map page.
+	 * @return
+	 */
 	@RequestMapping(value="/getall",method = RequestMethod.POST)
 	public @ResponseBody List<StationEntity> getAllStation(){
 			
 		return stationService.getAllStationEntity();
 	}
-	
+	/**
+	 * a recipient method for Ajax. i don't know when it used, where is the trigger.
+	 * @param id
+	 * @return
+	 */
 	@RequestMapping(value="/get/{id}",method = RequestMethod.POST)
 	public @ResponseBody StationEntity getStation(@PathVariable int id){
 			
 		return stationService.getStationById(id);
 	}
-	
+	/**
+	 * update station info
+	 * @param pointCommon
+	 * @return
+	 */
 	@RequestMapping(value="/update",method = RequestMethod.POST)
 	public String updateStation(PointCommon pointCommon){
 		userService.updateUser(userService.getUserByStaId(pointCommon.getId()));
@@ -78,6 +97,35 @@ public class StationController {
 		stationService.updateStation(stationService.convertToStation(pointCommon));
 		return "redirect:/user/entry";
 	}
+	/**
+	 * when refresh with the special method, do not go to "POST"
+	 * @return
+	 */
+	@RequestMapping(value="/update",method = RequestMethod.GET)
+	public String updateStationGet(){
+		
+		return "jsp/map";
+	}
+	/**
+	 * delete station. in fact, set isValid to 0.
+	 * @param id
+	 * @param session
+	 * @return
+	 */
+	@RequestMapping(value="/delete/{id}",method = RequestMethod.GET)
+	public String deleteSta(@PathVariable int id,HttpSession session){
+		ServletContext context = session.getServletContext(); 
+		Map<Integer,String> userMap ;
+		userMap = (Map<Integer, String>) context.getAttribute("user_map");
+		if(userMap.containsKey(id)){
+			userMap.remove(id);
+		}
+		userService.deleteUserByStaId(id);
+		stationService.deleteStation(id);
+		return "redirect:/user/entry";
+	}
+	
+	//useless
 	/**
 	 * test method update
 	 * @param id
@@ -93,25 +141,17 @@ public class StationController {
 		return "redirect:/user/entry";
 		//return "jsp/map";
 	}
-	
+
+	/**
+	 * delete station
+	 * @param id
+	 * @return
+	 */
 	@RequestMapping(value="/delete/{id}",method = RequestMethod.POST)
 	public String deleteStation(@PathVariable int id){
 		//userService.getUserByStaId(id);
 		userService.deleteUserByStaId(id);
 		
-		stationService.deleteStation(id);
-		return "redirect:/user/entry";
-	}
-	//delete station. in fact, set isValid to 0.
-	@RequestMapping(value="/delete/{id}",method = RequestMethod.GET)
-	public String deleteSta(@PathVariable int id,HttpSession session){
-		ServletContext context = session.getServletContext(); 
-		Map<Integer,String> userMap ;
-		userMap = (Map<Integer, String>) context.getAttribute("user_map");
-		if(userMap.containsKey(id)){
-			userMap.remove(id);
-		}
-		userService.deleteUserByStaId(id);
 		stationService.deleteStation(id);
 		return "redirect:/user/entry";
 	}

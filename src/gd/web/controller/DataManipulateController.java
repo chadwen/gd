@@ -35,6 +35,7 @@ import gd.web.service.StationService;
 import gd.web.service.UserService;
 import gd.web.util.Enum;
 
+
 @Controller
 @RequestMapping(value="/data")
 public class DataManipulateController {
@@ -48,7 +49,11 @@ public class DataManipulateController {
 	private UserService userService;
 	
 	
-
+	/***
+	 * go to the page
+	 * @param session
+	 * @return
+	 */
 	@RequestMapping(value="/export",method = RequestMethod.GET)
 	public String export(HttpSession session){
 		if(session.getAttribute("priv")==null || !(session.getAttribute("priv").toString().equals(Enum.ADMINISTRATOR.toString()))){
@@ -57,24 +62,31 @@ public class DataManipulateController {
 		return "jsp/export";
 	}
 	
+	/***
+	 * a recipient method for Ajax. get web info, connected number and logined user(except administrator)
+	 * @param session
+	 * @return
+	 */
 	@RequestMapping(value="/getWebInfo",method = RequestMethod.POST)
 	public @ResponseBody WebInfo getWebInfo(HttpSession session){
 		WebInfo wi = new WebInfo();
 		
 		ServletContext context = session.getServletContext();
+		//the map "connectedMap" was set in gd.web.serviceImpl.listener.SessionListener when session created
 		Map<Integer,Integer> connectedMap = (Map<Integer, Integer>) context.getAttribute("connected_Map");
 		if(connectedMap == null || connectedMap.size() == 0){
 			wi.setConnectedNum(0);			
 		}else{
 			wi.setConnectedNum(connectedMap.get(0));
 		}
+		//that map will be set when user login.
 		Map<Integer,String> userMap ;
 		userMap = (Map<Integer, String>) context.getAttribute("user_map");
 		if(userMap==null){
 			userMap = new HashMap<Integer,String>();
 			context.setAttribute("user_map", userMap);
 		}
-
+		//get userInfo for display in page.
 		List<UserInfo> staList = new ArrayList<UserInfo>();
 		Iterator<Entry<Integer, String>> itor=userMap.entrySet().iterator();
 
@@ -86,6 +98,7 @@ public class DataManipulateController {
 			if(ue != null){
 				ui.setUserName(ue.getUserName());
 				ui.setStaId(ue.getStaId());
+				//except administrator.
 				if(ui.getStaId() == 0){
 					continue;
 				}
@@ -97,6 +110,16 @@ public class DataManipulateController {
 		return wi;
 	}
 	
+	/***
+	 * a recipient method for Ajax. get data for drawing BAR and PIE chart.
+	 * @param ids
+	 * @param chartType
+	 * @param startdate
+	 * @param enddate
+	 * @param direction
+	 * @return
+	 * @throws ParseException
+	 */
 	@RequestMapping(value="/getChartData",method = RequestMethod.POST)
 	public @ResponseBody List<Integer> getChartData(String ids,String chartType,String startdate,String enddate,String direction) throws ParseException{
 		/*if(session.getAttribute("userId")==null){
@@ -123,6 +146,16 @@ public class DataManipulateController {
 	}
 	
 
+	/***
+	 * download station data by excel(single)
+	 * @param startDate
+	 * @param endDate
+	 * @param staIds
+	 * @param direction
+	 * @param response
+	 * @param session()
+	 * @throws IOException
+	 */
 	@RequestMapping(value="/getSingle/{startDate}/{endDate}/{staIds}/{direction}",method = RequestMethod.GET)
 	public void downloadSingle(@PathVariable String startDate,@PathVariable String endDate,@PathVariable String staIds,@PathVariable String direction, HttpServletResponse response, HttpSession session) throws IOException{
 		List<Integer> ids = Util.stringToList(staIds);
@@ -146,6 +179,17 @@ public class DataManipulateController {
         ouputStream.flush();
         ouputStream.close();
 	}
+	/***
+	 * download station data by excel
+	 * @param startDate
+	 * @param endDate
+	 * @param staIds
+	 * @param direction
+	 * @param response
+	 * @param session
+	 * @throws IOException
+	 * @throws ParseException
+	 */
 	@RequestMapping(value="/getCal/{startDate}/{endDate}/{staIds}/{direction}",method = RequestMethod.GET)
 	public void downloadCal(@PathVariable String startDate,@PathVariable String endDate,@PathVariable String staIds,@PathVariable String direction, HttpServletResponse response, HttpSession session) throws IOException, ParseException{
 		List<Integer> ids = Util.stringToList(staIds);
@@ -169,7 +213,12 @@ public class DataManipulateController {
         ouputStream.flush();
         ouputStream.close();
 	}
-	
+	/***
+	 * download all stations' info data by excel
+	 * @param response
+	 * @param session
+	 * @throws IOException
+	 */
 	@RequestMapping(value="/getAllStations",method = RequestMethod.GET)
 	public void getAllStations(HttpServletResponse response, HttpSession session) throws IOException{
 		List<StationEntity> staList = stationService.getAllStationEntity();
@@ -193,6 +242,11 @@ public class DataManipulateController {
         ouputStream.flush();
         ouputStream.close();
 	}
+	/***
+	 * a recipient method for Ajax. get logined stations.
+	 * @param session
+	 * @return
+	 */
 	@RequestMapping(value="/getLoginedStation",method = RequestMethod.POST)
 	public @ResponseBody List<UserInfo> getLoginedStation(HttpSession session){
 		/*if(session.getAttribute("userId")==null){

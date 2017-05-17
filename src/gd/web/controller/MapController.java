@@ -23,11 +23,18 @@ public class MapController {
 	@Autowired
 	private ParkService parkService;
 	
+	/**
+	 * a recipient method for Ajax. get all stations for initializing map
+	 * @return
+	 */
 	@RequestMapping(value="initStation",method=RequestMethod.POST)
 	public @ResponseBody List<StationEntity> initStation(){
 		return stationService.getAllStationEntity();
 	}
-	
+	/**
+	 * a recipient method for Ajax. get all parks for initializing map
+	 * @return
+	 */
 	@RequestMapping(value="initPark",method=RequestMethod.POST)
 	public @ResponseBody List<ParkEntity> initPark(){
 		return parkService.getAllParkEntity();

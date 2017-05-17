@@ -38,6 +38,7 @@ public class ChartDataController {
 	
 
 	/**
+	 *  an initialization method
 	 *  when this method will be called? 
 	 *  	when OPERATOR sign in, Ajax nothing to return.
 	 *  	when ADMINISTRATOR want to watch the data of the station, Ajax nothing to return.
@@ -49,14 +50,22 @@ public class ChartDataController {
 	public void initChart(@PathVariable int staId,int currHour){
 		ChartDataEntity chartDataEntity = chartDataService.getEntityByStaId(staId,Enum.IN.toString());
 		if(chartDataEntity == null){
-			
+			return;
 		}
+		//get miss hours that user unlogin.
 		int missHour = currHour+24-chartDataEntity.getCurrHour();
 		if(missHour>0){
 			chartDataService.resetChart(missHour,staId);
-		}		
+		}
 	}
-	
+	/**
+	 * a recipient method for Ajax. 
+	 * @param id
+	 * @param datas
+	 * @param currHour
+	 * @param session
+	 * @return
+	 */
 	@RequestMapping(value="/update/{id}",method = RequestMethod.POST)
 	public @ResponseBody UserInfo updateChartData(@PathVariable int id,String datas,int currHour,HttpSession session){
 		
@@ -110,6 +119,13 @@ public class ChartDataController {
 		return ui;
 		
 	}
+	/**
+	 * a recipient method for Ajax. get station dynamic data.
+	 * @param clientHour
+	 * @param staId
+	 * @param session
+	 * @return
+	 */
 	@RequestMapping(value="/wholeState",method=RequestMethod.POST)
 	public @ResponseBody ChartData wholeStateAjax(int clientHour,int staId,HttpSession session){
 		/*if(session.getAttribute("staId")==null){
@@ -120,6 +136,11 @@ public class ChartDataController {
 		return chartDataService.getReturnData(clientHour,staId);
 	}
 	
+	/**
+	 * go to the page.
+	 * @param request
+	 * @return
+	 */
 	@RequestMapping(value="/wholeState",method = RequestMethod.GET)
 	public String wholeState(HttpServletRequest request){
 		HttpSession session = request.getSession();
@@ -139,7 +160,12 @@ public class ChartDataController {
 		System.out.println(session.getAttribute("staId"));	*/
 		return "jsp/wholeState";
 	}
-	
+	/**
+	 * a recipient method for Ajax. get all station dynamic data.
+	 * @param clientHour
+	 * @param session
+	 * @return
+	 */
 	@RequestMapping(value="/wholeWholeState",method = RequestMethod.POST)
 	public @ResponseBody ChartData wholeWholePost(int clientHour,HttpSession session){
 		if(session.getAttribute("priv")==null){
@@ -147,13 +173,21 @@ public class ChartDataController {
 		}
 		return chartDataService.getWholeWholeData(clientHour);
 	}
+	/**
+	 * go to the page.
+	 * @param id
+	 * @param model
+	 * @return
+	 */
 	@RequestMapping(value="/get/{id}",method = RequestMethod.GET)
 	public String getWholeStateById(@PathVariable int id,Model model){
 		model.addAttribute("staId", id);
 		return "jsp/wholeState";
 	}
-	
-	
+	/**
+	 * go to the page.
+	 * @return
+	 */
 	@RequestMapping(value="/wholeWholeState",method = RequestMethod.GET)
 	public String wholeWholeGet(){		
 		return "jsp/wholeWholeState";
