@@ -17,9 +17,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
 	<meta http-equiv="description" content="This is my page">
 	
-	<link href="/gd/sources/js/bootstrap-3.3.7-dist/css/bootstrap.min.css" rel="stylesheet">
-	<script src="/gd/sources/js/jquery-3.1.1.min.js"></script>
-	<script src="/gd/sources/js/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
+	<link href="<%=basePath%>/sources/js/bootstrap-3.3.7-dist/css/bootstrap.min.css" rel="stylesheet">
+	<script src="<%=basePath%>/sources/js/jquery-3.1.1.min.js"></script>
+	<script src="<%=basePath%>/sources/js/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
 
   </head>
   
@@ -44,9 +44,48 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 </table>
 </div>
 
+
+<div class="col-md-10 col-md-offset-2">
+
+
+<h3>get by jsp</h3>
+<p>
+pre+proj name is: <%=basePath %>
+</p>
+<hr>
+<h3>get by js</h3>
+
+<p id="pp"></p>
+<p id="pp1"></p>
+<p id="pp2"></p>
+<p id="pp3"></p>
+<p id="pp4"></p>
+</div>
 </body>
 
 </body>
 </html>
+<script type="text/javascript">
+<!--
+function getFullPath(){
+	return window.document.location.href;
+}
+function getPosName(){
+	return window.document.location.pathname;
+}
+function getProjName(){
+	return getPosName().substring(0,getPosName().substr(1).indexOf('/')+1);
+}
+function getPreName(){
+	return getFullPath().substring(0,getFullPath().indexOf(getPosName()));
+}
+//alert(getFullPath());
+$('#pp').html("current URL is: "+getFullPath());
+$('#pp1').html("post name is: "+getPosName());
+$('#pp2').html("project name is: "+getProjName());
+$('#pp3').html("pre name is: "+getPreName());
+$('#pp4').html("pre+proj name is: "+getPreName()+getProjName());
+//-->
+</script>
 
 

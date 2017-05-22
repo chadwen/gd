@@ -47,6 +47,11 @@ public class UserController {
 	//@Autowired
 	//private ChartDataService chartDataService;
 	
+	@RequestMapping(value="/get/aop",method = RequestMethod.GET)
+	public void testAddt(){
+		System.out.println("before here, there should be something before");
+	}
+	
 	/***
 	 * get session method, for developer to watch the logined users.
 	 * @param model
