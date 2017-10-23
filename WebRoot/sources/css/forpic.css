@@ -1,0 +1,25 @@
+
+
+
+@media screen and (min-width: 981px) {
+	body{
+		font-family: '20th_centenary_fauxregular'; 
+	}
+}  
+@media screen and (max-width: 980px) {
+	img{
+		width:100%;
+	}
+	body{
+		font-size:500%;		
+		/* font-family: '14_minutessharp'; */
+		/* font-family: '20th_centenary_fauxregular'; */
+		/* font-family: '1900_80_5regular'; */
+		/* font-family: 'ciscocisco'; */
+		/* font-family: 'griscondensed_regular'; */
+		/* font-family: 'handwriting'; */
+		/* font-family: 'haymakerregular'; */
+		/* font-family: 'lifecraftregular'; */
+		font-family: 'mithrilregular';
+	}
+}  

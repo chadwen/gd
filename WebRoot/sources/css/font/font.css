@@ -1,0 +1,109 @@
+
+
+
+
+@font-face {
+    font-family: '14_minutessharp';
+    src: url('14_minutes-webfont.woff2') format('woff2'),
+         url('14_minutes-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+
+
+
+@font-face {
+    font-family: '20th_centenary_fauxregular';
+    src: url('20th_centenary_faux-webfont.woff2') format('woff2'),
+         url('20th_centenary_faux-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+
+
+
+@font-face {
+    font-family: '1900_80_5regular';
+    src: url('1900805-webfont.woff2') format('woff2'),
+         url('1900805-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+
+/*---------------------------------------------------------*/
+
+
+@font-face {
+    font-family: 'ciscocisco';
+    src: url('cisco-webfont.woff2') format('woff2'),
+         url('cisco-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+
+
+
+@font-face {
+    font-family: 'griscondensed_regular';
+    src: url('gris-webfont.woff2') format('woff2'),
+         url('gris-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+
+
+
+@font-face {
+    font-family: 'handwriting';
+    src: url('handwriting-webfont.woff2') format('woff2'),
+         url('handwriting-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+
+
+
+@font-face {
+    font-family: 'haymakerregular';
+    src: url('haymaker-webfont.woff2') format('woff2'),
+         url('haymaker-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+
+
+
+@font-face {
+    font-family: 'lifecraftregular';
+    src: url('lifecraft_font-webfont.woff2') format('woff2'),
+         url('lifecraft_font-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+
+
+
+@font-face {
+    font-family: 'mithrilregular';
+    src: url('mithril-webfont.woff2') format('woff2'),
+         url('mithril-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+
+}
