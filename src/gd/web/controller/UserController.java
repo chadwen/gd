@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
@@ -59,7 +60,12 @@ public class UserController {
 	 * @return
 	 */
 	@RequestMapping(value="/get/session",method = RequestMethod.GET)
-	public String getSession(Model model,HttpSession session){
+	public String getSession(Model model,HttpSession session,HttpServletRequest request){
+		String proxyIP = request.getRemoteAddr();
+		String realIP = request.getHeader("x-forwarded-for");
+		if(realIP == null || realIP.length() == 0 || "unknown".equalsIgnoreCase(realIP)){
+			realIP = proxyIP;
+		}
 		
 		UserInfo userInfo = new UserInfo();
 		userInfo.setPriv((String)session.getAttribute("priv"));
@@ -87,6 +93,8 @@ public class UserController {
 		}
 		userMap.keySet();
 		model.addAttribute("userMap", userMap);
+		model.addAttribute("realIP",realIP);
+		model.addAttribute("proxyIP",proxyIP);
 		return "jsp/getSession";
 	}
 	/***

@@ -67,8 +67,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   </tbody>
 </table>
 </div>
+<div class="col-md-10 col-md-offset-2">
+<br/>
+<br/>
+<p>Proxy IP: ${proxyIP}</p>
+<p>Real IP: ${realIP}</p>
 
-
+<hr>
+</div>
 <div class="col-md-10 col-md-offset-2">
 
 
