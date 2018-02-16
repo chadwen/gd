@@ -1,11 +1,14 @@
 package gd.web.serviceImpl.listener;
 
+import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpSessionEvent;
 import javax.servlet.http.HttpSessionListener;
@@ -14,17 +17,24 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import gd.web.entity.UserEntity;
 import gd.web.service.UserService;
+import gd.web.util.*;
 
 public class SessionListener implements HttpSessionListener{
 
 	@Autowired
 	private UserService userService;
 	
+	//@Autowired
+	//private HttpServletRequest request;
+	
 	@Override
 	public void sessionCreated(HttpSessionEvent event) {
 		// TODO Auto-generated method stub
+		StringBuilder sb = new StringBuilder();
+		sb.append(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date())).append("\t");
 		System.out.println("\nstart of the listener--sessionCreated!!!");
 		HttpSession session = event.getSession();
+
 		ServletContext context = session.getServletContext();
 		Map<Integer,Integer> connectedMap = (Map<Integer, Integer>) context.getAttribute("connected_Map");
 		if(connectedMap == null){
@@ -40,6 +50,11 @@ public class SessionListener implements HttpSessionListener{
 		System.out.println("connected num:"+connectedMap.get(0));
 		System.out.println("\nend of the listener--sessionCreated!!!");
 		
+		String logPath = "D:\\tomcat_log\\gd\\listeningLog.txt";
+		File f = new File(logPath);
+		sb.append("session created!");
+		sb.append("\r\n");
+		FileIO.appendWriteFileWithString(f,sb.toString());
 	}
 
 	@Override
