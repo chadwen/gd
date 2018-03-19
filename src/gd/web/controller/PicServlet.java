@@ -54,6 +54,18 @@ public class PicServlet extends HttpServlet {
 		out.println("<html>");
 		out.println("<head>");
 		out.println("<title>pic"+jsp + " " + count + "</title>");
+		
+		out.println("<meta http-equiv=\"pragma\" content=\"no-cache\">");
+		out.println("<meta http-equiv=\"cache-control\" content=\"no-cache\">");
+		out.println("<meta http-equiv=\"expires\" content=\"0\">"); 
+		out.println("<meta http-equiv=\"keywords\" content=\"keyword1,keyword2,keyword3\">");
+		out.println("<meta http-equiv=\"description\" content=\"This is my page\">");		
+		out.println("<link href=\"/gd/sources/js/bootstrap-3.3.7-dist/css/bootstrap.min.css\" rel=\"stylesheet\">");
+		out.println("<script src=\"/gd/sources/js/jquery-3.1.1.min.js\"></script>");
+		out.println("<script src=\"/gd/sources/js/bootstrap-3.3.7-dist/js/bootstrap.min.js\"></script>");
+		out.println("<link href=\"/gd/sources/css/forpic.css\" rel=\"stylesheet\">");
+		
+		
 		out.println("</head>");
 		out.println("<body>");
 		out.println(sb.toString());
@@ -69,7 +81,11 @@ public class PicServlet extends HttpServlet {
     private int getLink(StringBuilder sb,int picF,int jsp){
 
     	int count = 0;
+    	
 		String filePath = "D:\\Workspaces\\MyEclipse 2016\\gd\\WebRoot\\sources\\images\\pic\\pic_col"+picF+"\\pic"+jsp+"\\";
+		if(picF == 0){
+			filePath = "D:\\Tomcat 8.0\\webapps\\gd\\sources\\images\\pic\\pic_col"+picF+"\\pic"+jsp+"\\";
+		}
 		String picn1 = "pic_col"+picF+"/";
 		String picn2 = "pic"+jsp+"/";
 		File f = new File(filePath);
@@ -85,7 +101,7 @@ public class PicServlet extends HttpServlet {
 			File file = fileList[i];
 			if(!file.isDirectory()){
 				str = "<img src='/gd/sources/images/pic/"+ picn1 +  picn2 +file.getName()+"' />";
-				sb.append(str).append("<br>");
+				sb.append(str).append("\r\n");
 			}
 		}
 		return count;
