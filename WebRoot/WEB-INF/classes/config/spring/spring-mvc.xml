@@ -32,13 +32,14 @@
 	
 	
 	<mvc:annotation-driven />
+    <!-- 静态资源(js/image)的访问 -->
+    <mvc:resources location="/sources/" mapping="/sources/**"/>
+    
 	<context:component-scan base-package="gd.web"></context:component-scan> 
 	
 	<!-- 配置文件上传 -->
     <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver"/>
 
-    <!-- 静态资源(js/image)的访问 -->
-    <mvc:resources location="/sources/" mapping="/sources/**"/>
     <!-- 定义视图解析器 -->
     <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">  
         <property name="prefix" value="/WEB-INF/"></property>  
